@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Recruiters | Vantage OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    body { font-family: 'Inter', sans-serif; background-color: #f9f9fe; }
+    h1, h2, h3, .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+</style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: { extend: { "colors": {
+        "primary-container": "#005bc2", "surface-container-low": "#f3f3f8",
+        "surface-container": "#ededf2", "on-surface": "#1a1c1f",
+        "surface": "#f9f9fe", "surface-container-highest": "#e2e2e7",
+        "surface-container-lowest": "#ffffff", "primary": "#004495",
+        "outline-variant": "#c2c6d5", "surface-container-high": "#e8e8ed",
+        "secondary": "#4b5e87", "outline": "#727784", "on-primary": "#ffffff",
+        "error": "#ba1a1a", "background": "#f9f9fe"
+      }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "18px", "xl": "24px", "full": "9999px" } } }
+    }
+</script>
+</head>
+<body class="text-on-surface min-h-screen">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+<div class="mb-10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">panorama_vertical</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">Vantage OS</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1 font-medium">Digital Curator</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100/50 transition-colors" href="/admin">
+<span class="material-symbols-outlined text-[20px]">dashboard</span><span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100/50 transition-colors" href="/admin/students">
+<span class="material-symbols-outlined text-[20px]">groups</span><span class="text-sm font-medium">Students</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100/50 transition-colors" href="/admin/drives">
+<span class="material-symbols-outlined text-[20px]">work</span><span class="text-sm font-medium">Drives</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-blue-700 font-semibold border-r-4 border-blue-600 bg-slate-100/50 transition-colors" href="/admin/recruiters">
+<span class="material-symbols-outlined text-[20px]">business</span><span class="text-sm font-medium">Recruiters</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100/50 transition-colors" href="/admin/tsheets">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span><span class="text-sm font-medium">T-Sheets</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100/50 transition-colors" href="/admin/analytics">
+<span class="material-symbols-outlined text-[20px]">analytics</span><span class="text-sm font-medium">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button id="logout-btn" class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors w-full">
+<span class="material-symbols-outlined text-[20px]">logout</span><span class="text-sm font-medium">Logout</span>
+</button>
+</div>
+</aside>
+
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 h-[56px] bg-white/70 backdrop-blur-[25px] flex justify-between items-center pl-[250px] pr-8 z-30">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-headline font-bold text-on-surface tracking-tight">Recruiters</h2>
+</div>
+<div class="flex items-center gap-3">
+<button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-full transition-all relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+</button>
+<button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer border-2 border-white shadow-sm">--</button>
+</div>
+</header>
+
+<!-- Main Content -->
+<main class="pt-[72px] pl-[244px] pr-8 pb-12 min-h-screen">
+<!-- Page Header -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<h2 class="text-[2.5rem] font-extrabold tracking-tight leading-none text-on-surface headline">Recruiter Accounts</h2>
+<p class="text-slate-500 mt-2">Manage all company recruiter access and activity.</p>
+</div>
+</div>
+
+<!-- Tabs -->
+<div class="flex gap-1 mb-6 bg-surface-container-low p-1 rounded-xl w-fit">
+<button id="tab-companies" onclick="switchTab('companies')" class="px-5 py-2 text-sm font-semibold bg-white shadow-sm rounded-lg text-primary transition-all">Companies</button>
+<button id="tab-drives" onclick="switchTab('drives')" class="px-5 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all">Drives by Recruiter</button>
+</div>
+
+<!-- Companies Tab -->
+<div id="panel-companies">
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low/50 border-b border-outline-variant/20">
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Company / Name</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Email</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Total Drives</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Active Drives</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Joined</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Status</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Actions</th>
+</tr>
+</thead>
+<tbody id="companies-tbody" class="divide-y divide-surface-container-high">
+<tr><td colspan="7" class="px-6 py-16 text-center text-slate-400">
+<span class="material-symbols-outlined text-3xl block mb-3 animate-pulse">hourglass_top</span>Loading recruiters…
+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Drives by Recruiter Tab -->
+<div id="panel-drives" class="hidden">
+<div class="mb-4 flex items-center gap-3">
+<label class="text-sm text-slate-600 font-medium">Recruiter:</label>
+<select id="recruiter-filter" class="bg-white border border-outline-variant rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20">
+<option value="">All Recruiters</option>
+</select>
+</div>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low/50 border-b border-outline-variant/20">
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Drive Title</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Recruiter</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Type</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">CTC</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Applications</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Status</th>
+</tr>
+</thead>
+<tbody id="recruiter-drives-tbody" class="divide-y divide-surface-container-high">
+<tr><td colspan="6" class="px-6 py-16 text-center text-slate-400">Select a recruiter or load all drives</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+
+<!-- Notify Modal -->
+<div id="notify-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden items-center justify-center p-8">
+<div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="text-lg font-bold headline">Notify Recruiter</h3>
+<button onclick="closeNotifyModal()" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-6 space-y-4">
+<p class="text-sm text-slate-600">Sending to: <span id="notify-recruiter-email" class="font-semibold"></span></p>
+<div>
+<label class="text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-1">Subject</label>
+<input id="notify-subject" class="w-full bg-surface-container-low border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20" placeholder="e.g. Account update" type="text" />
+</div>
+<div>
+<label class="text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-1">Message</label>
+<textarea id="notify-message" class="w-full bg-surface-container-low border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20" rows="4" placeholder="Type your message…"></textarea>
+</div>
+</div>
+<div class="p-6 border-t border-slate-100 flex justify-end gap-3">
+<button onclick="closeNotifyModal()" class="px-5 py-2 rounded-xl border border-slate-200 text-sm font-semibold hover:bg-slate-50">Cancel</button>
+<button id="btn-send-notify" class="px-6 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">Send</button>
+</div>
+</div>
+</div>
+
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("admin")) { /* redirected */ }
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+const STATUS_MAP = {
+    'OPEN':      { cls: 'bg-emerald-100 text-emerald-700', label: 'Active' },
+    'DRAFT':     { cls: 'bg-amber-100 text-amber-700',   label: 'Pending Approval' },
+    'CLOSED':    { cls: 'bg-slate-200 text-slate-600',   label: 'Closed' },
+    'COMPLETED': { cls: 'bg-blue-100 text-blue-700',     label: 'Completed' },
+};
+
+let recruiters = [];
+let notifyTargetId = null;
+let currentTab = 'companies';
+
+function switchTab(tab) {
+    currentTab = tab;
+    document.getElementById('panel-companies').classList.toggle('hidden', tab !== 'companies');
+    document.getElementById('panel-drives').classList.toggle('hidden', tab !== 'drives');
+    document.getElementById('tab-companies').className = tab === 'companies'
+        ? 'px-5 py-2 text-sm font-semibold bg-white shadow-sm rounded-lg text-primary transition-all'
+        : 'px-5 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all';
+    document.getElementById('tab-drives').className = tab === 'drives'
+        ? 'px-5 py-2 text-sm font-semibold bg-white shadow-sm rounded-lg text-primary transition-all'
+        : 'px-5 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all';
+    if (tab === 'drives') loadRecruiterDrives();
+}
+
+async function loadRecruiters() {
+    const tbody = document.getElementById('companies-tbody');
+    const data = await apiFetch('/api/admin/recruiters');
+    if (!data) return;
+    recruiters = data;
+
+    // Populate recruiter filter
+    const sel = document.getElementById('recruiter-filter');
+    sel.innerHTML = '<option value="">All Recruiters</option>' +
+        recruiters.map(r => `<option value="${r.recruiter_id}">${r.recruiter_name || r.company_name} (${r.email})</option>`).join('');
+
+    if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-16 text-center text-slate-400">No recruiter accounts yet</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = data.map(r => {
+        const active = r.is_active !== false;
+        return `<tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-6 py-4">
+                <p class="font-semibold text-sm text-slate-900">${r.company_name || '—'}</p>
+                <p class="text-xs text-slate-500">${r.recruiter_name || ''}</p>
+            </td>
+            <td class="px-6 py-4 text-sm text-slate-700">${r.email}</td>
+            <td class="px-6 py-4 text-sm font-mono text-slate-700">${r.total_drives ?? 0}</td>
+            <td class="px-6 py-4 text-sm font-mono text-emerald-600">${r.active_drives ?? 0}</td>
+            <td class="px-6 py-4 text-xs text-slate-500">${r.created_at ? new Date(r.created_at).toLocaleDateString() : '—'}</td>
+            <td class="px-6 py-4">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${active ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'}">
+                    ${active ? 'Active' : 'Deactivated'}
+                </span>
+            </td>
+            <td class="px-6 py-4">
+                <div class="flex gap-2">
+                    <button onclick="toggleStatus('${r.id}', ${active})"
+                        class="px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors ${active ? 'border-red-200 text-red-600 hover:bg-red-50' : 'border-emerald-200 text-emerald-700 hover:bg-emerald-50'}">
+                        ${active ? 'Deactivate' : 'Activate'}
+                    </button>
+                    <button onclick="openNotifyModal('${r.id}', '${r.email}')"
+                        class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">mail</span>Notify
+                    </button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+async function toggleStatus(userId, currentlyActive) {
+    const res = await apiFetch(`/api/admin/recruiters/${userId}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ is_active: !currentlyActive })
+    });
+    if (res) {
+        showToast(`Recruiter ${currentlyActive ? 'deactivated' : 'activated'}`, 'success');
+        loadRecruiters();
+    }
+}
+
+async function loadRecruiterDrives() {
+    const tbody = document.getElementById('recruiter-drives-tbody');
+    const recruiterId = document.getElementById('recruiter-filter').value;
+    tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-10 text-center text-slate-400 animate-pulse">Loading…</td></tr>`;
+
+    let url = '/api/admin/drives';
+    if (recruiterId) url += `?recruiter_id=${recruiterId}`;
+    const data = await apiFetch(url);
+    if (!data || !data.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-16 text-center text-slate-400">No drives found</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = data.map(d => {
+        const st = STATUS_MAP[d.status] || { cls: 'bg-slate-100 text-slate-500', label: d.status };
+        return `<tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-6 py-4">
+                <p class="font-semibold text-sm">${d.drive_title || '—'}</p>
+                <p class="text-xs text-slate-500">${d.role_title || ''}</p>
+            </td>
+            <td class="px-6 py-4 text-xs text-slate-600">${d.recruiter_email || '—'}</td>
+            <td class="px-6 py-4 text-xs text-slate-600">${d.job_type ? d.job_type.replace('_', ' ') : '—'}</td>
+            <td class="px-6 py-4 text-xs font-mono text-primary">${d.ctc_lpa ? d.ctc_lpa + ' LPA' : '—'}</td>
+            <td class="px-6 py-4 text-xs text-slate-700">${d.applications_count ?? 0}</td>
+            <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${st.cls}">${st.label}</span></td>
+        </tr>`;
+    }).join('');
+}
+
+function openNotifyModal(userId, email) {
+    notifyTargetId = userId;
+    document.getElementById('notify-recruiter-email').textContent = email;
+    document.getElementById('notify-subject').value = '';
+    document.getElementById('notify-message').value = '';
+    const modal = document.getElementById('notify-modal');
+    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+}
+
+function closeNotifyModal() {
+    const modal = document.getElementById('notify-modal');
+    modal.style.display = 'none';
+    modal.classList.add('hidden');
+}
+
+document.getElementById('btn-send-notify')?.addEventListener('click', async () => {
+    const subject = document.getElementById('notify-subject').value.trim();
+    const message = document.getElementById('notify-message').value.trim();
+    if (!subject || !message) { showToast('Subject and message are required', 'error'); return; }
+    const res = await apiFetch('/api/admin/message/recruiter', {
+        method: 'POST',
+        body: JSON.stringify({ recruiter_id: notifyTargetId, title: subject, message })
+    });
+    if (res) {
+        showToast('Message sent to recruiter', 'success');
+        closeNotifyModal();
+    }
+});
+
+document.getElementById('recruiter-filter')?.addEventListener('change', loadRecruiterDrives);
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadRecruiters();
+    initAdminHeader();
+});
+</script>
+</body></html>

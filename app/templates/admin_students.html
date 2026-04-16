@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vantage OS | Student Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#7e2e00",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "background": "#f9f9fe",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#f9f9fe",
+                    "on-surface-variant": "#424753",
+                    "secondary": "#4b5e87",
+                    "surface-container-highest": "#e2e2e7",
+                    "inverse-surface": "#2e3034",
+                    "inverse-on-surface": "#f0f0f5",
+                    "inverse-primary": "#adc6ff",
+                    "tertiary-fixed": "#ffdbcd",
+                    "tertiary-container": "#a43f02",
+                    "on-primary-container": "#cad9ff",
+                    "on-tertiary-fixed": "#360f00",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e2e2e7",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#ffd0bd",
+                    "surface-container-high": "#e8e8ed",
+                    "primary-container": "#005bc2",
+                    "surface-container": "#ededf2",
+                    "primary": "#004495",
+                    "outline-variant": "#c2c6d5",
+                    "on-primary-fixed": "#001a41",
+                    "surface-tint": "#005bc1",
+                    "outline": "#727784",
+                    "secondary-container": "#bbcffd",
+                    "on-background": "#1a1c1f",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#33466d",
+                    "surface-container-low": "#f3f3f8",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "on-surface": "#1a1c1f",
+                    "surface-bright": "#f9f9fe",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-dim": "#d9dade",
+                    "primary-fixed-dim": "#adc6ff",
+                    "secondary-fixed-dim": "#b3c6f5",
+                    "on-secondary-container": "#445880",
+                    "on-primary-fixed-variant": "#004494",
+                    "secondary-fixed": "#d8e2ff",
+                    "on-secondary-fixed": "#021a3f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "18px",
+                    "xl": "24px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Inter"],
+                    "label": ["Inter"],
+                    "mono": ["JetBrains Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9fe; color: #1a1c1f; }
+        .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-nav { backdrop-filter: blur(25px); background: rgba(255, 255, 255, 0.7); }
+        .shimmer {
+            background: linear-gradient(90deg, #f3f3f8 25%, #e8e8ed 50%, #f3f3f8 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e2e7; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- Floating Sidebar (SideNavBar) -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+<div class="flex items-center gap-3 mb-10">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" data-icon="vantage">panorama_vertical</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 leading-none">Vantage OS</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Digital Curator</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors duration-300" href="/admin">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-blue-700 font-semibold border-r-4 border-blue-600 bg-slate-100/50" href="/admin/students">
+<span class="material-symbols-outlined text-[20px]" data-icon="gallery_thumbnail">gallery_thumbnail</span>
+<span class="text-sm">Students</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/drives">
+<span class="material-symbols-outlined text-[20px]" data-icon="inventory_2">inventory_2</span>
+<span class="text-sm font-medium">Drives</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/recruiters">
+<span class="material-symbols-outlined text-[20px]">business</span>
+<span class="text-sm font-medium">Recruiters</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/tsheets">
+<span class="material-symbols-outlined text-[20px]" data-icon="description">description</span>
+<span class="text-sm font-medium">T-Sheets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/analytics">
+<span class="material-symbols-outlined text-[20px]" data-icon="analytics">analytics</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+</nav>
+<div class="pt-6 mt-6 border-t border-slate-100 space-y-2">
+<div class="flex items-center gap-3 px-3 py-2">
+<div class="w-8 h-8 rounded-full border border-slate-200 bg-surface-container-high flex items-center justify-center text-slate-400 text-xs font-bold">A</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-slate-900">Admin</span>
+<span class="text-[10px] text-slate-500">Account</span>
+</div>
+</div>
+<button id="logout-btn" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors duration-300 w-full">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="pl-[244px] pt-[56px] min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full h-[56px] glass-nav flex justify-between items-center pl-[250px] pr-8 z-30">
+<div class="flex items-center gap-8">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]" data-icon="search">search</span>
+<input class="bg-surface-container-high border-none rounded-full pl-10 pr-4 py-1.5 text-sm w-[300px] focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400" placeholder="Search exhibits..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors relative">
+<span class="material-symbols-outlined text-[20px] text-slate-600">notifications</span>
+<span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+</button>
+<button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer select-none border-2 border-white shadow-sm">--</button>
+</div>
+</header>
+<!-- Student Content Section -->
+<div class="p-8 max-w-[1400px] mx-auto">
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="text-4xl font-extrabold font-headline tracking-tight text-on-surface">Students</h2>
+<p class="text-slate-500 mt-1 font-medium">Manage and curate the academic exhibits of the 2024 cohort.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-600" data-icon="info">info</span>
+<span class="text-xs font-mono text-slate-400 uppercase tracking-wider">Total Records: 1,284</span>
+</div>
+</div>
+<!-- Horizontal Filter Bar -->
+<div class="bg-surface-container-low rounded-xl p-4 mb-8 flex flex-wrap items-center gap-4">
+<div class="flex-1 min-w-[200px]">
+<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Search</label>
+<input id="filter-search" class="w-full bg-white border-none rounded-xl text-sm py-2.5 pl-4 focus:ring-2 focus:ring-primary/10" placeholder="Roll No, Name or Email" type="text"/>
+</div>
+<div class="w-[160px]">
+<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Branch</label>
+<select id="filter-branch" class="w-full bg-white border-none rounded-xl text-sm py-2.5 px-3 focus:ring-2 focus:ring-primary/10 appearance-none">
+<option value="">All Branches</option>
+</select>
+</div>
+<div class="w-[120px]">
+<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Grad Year</label>
+<select id="filter-year" class="w-full bg-white border-none rounded-xl text-sm py-2.5 px-3 focus:ring-2 focus:ring-primary/10 appearance-none">
+<option value="">Any Year</option>
+<option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option>
+</select>
+</div>
+<div class="w-[100px]">
+<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Min CGPA</label>
+<input id="filter-min-cgpa" class="w-full bg-white border-none rounded-xl text-sm py-2.5 px-3 focus:ring-2 focus:ring-primary/10" placeholder="e.g. 7.0" type="number" min="0" max="10" step="0.1"/>
+</div>
+<div class="w-[100px]">
+<label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Max CGPA</label>
+<input id="filter-max-cgpa" class="w-full bg-white border-none rounded-xl text-sm py-2.5 px-3 focus:ring-2 focus:ring-primary/10" placeholder="e.g. 10" type="number" min="0" max="10" step="0.1"/>
+</div>
+<div class="flex items-end gap-2">
+<button id="btn-apply-filters" class="bg-on-surface text-white px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>Apply
+</button>
+<button id="btn-clear-filters" class="bg-surface-container-high text-slate-600 px-4 py-2.5 rounded-xl text-sm hover:bg-slate-200 transition-colors">
+Clear
+</button>
+<button id="btn-recalc-cgpa" class="bg-blue-50 text-blue-700 border border-blue-200 px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 hover:bg-blue-100 transition-colors ml-2">
+<span class="material-symbols-outlined text-[18px]">calculate</span>Recalculate CGPA
+</button>
+</div>
+</div>
+<!-- Verification Filter Tabs + Bulk Actions -->
+<div class="flex items-center gap-2 mb-4">
+  <button onclick="setVerifFilter('all')" id="tab-all" class="px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-on-surface text-white">All Students</button>
+  <button onclick="setVerifFilter('verified')" id="tab-verified" class="px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-surface-container-high text-slate-600 hover:bg-slate-200">Verified</button>
+  <button onclick="setVerifFilter('pending')" id="tab-pending" class="px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-surface-container-high text-slate-600 hover:bg-slate-200">Pending Verification</button>
+  <div id="bulk-actions" class="ml-auto hidden items-center gap-2">
+    <span id="selected-count" class="text-xs text-slate-500">0 selected</span>
+    <button onclick="verifySelected()" class="bg-green-600 text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-green-700 transition-colors flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-[14px]">verified_user</span>Verify Selected
+    </button>
+  </div>
+</div>
+<!-- Student Table Container -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-4 py-4 w-10"><input type="checkbox" id="select-all-cb" class="rounded text-primary border-slate-300 cursor-pointer"/></th>
+<th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Roll No</th>
+<th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Candidate Exhibit</th>
+<th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Academic CGPA</th>
+<th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Backlogs</th>
+<th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Curator Status</th>
+<th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Verification</th>
+<th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Shimmer State Row -->
+<tr>
+<td class="px-4 py-4"><div class="h-4 w-4 shimmer rounded"></div></td>
+<td class="px-6 py-4"><div class="h-4 w-16 shimmer rounded"></div></td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 shimmer rounded-full"></div>
+<div class="space-y-2">
+<div class="h-4 w-32 shimmer rounded"></div>
+<div class="h-3 w-20 shimmer rounded"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4"><div class="h-4 w-8 shimmer rounded"></div></td>
+<td class="px-6 py-4"><div class="h-4 w-4 shimmer rounded"></div></td>
+<td class="px-6 py-4"><div class="h-6 w-20 shimmer rounded-full"></div></td>
+<td class="px-6 py-4"><div class="h-6 w-20 shimmer rounded-full"></div></td>
+<td class="px-6 py-4"><div class="h-8 w-8 shimmer rounded-full ml-auto"></div></td>
+</tr>
+<!-- Data rows populated by JS -->
+</tbody>
+</table>
+</div>
+<!-- Pagination/Footer Stats -->
+<div class="mt-6 flex justify-between items-center text-xs text-slate-400 font-mono">
+<div>Showing 1-10 of 1,284 students</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded hover:bg-slate-100">Prev</button>
+<button class="px-3 py-1 bg-primary text-white rounded">1</button>
+<button class="px-3 py-1 rounded hover:bg-slate-100">2</button>
+<button class="px-3 py-1 rounded hover:bg-slate-100">3</button>
+<button class="px-3 py-1 rounded hover:bg-slate-100">Next</button>
+</div>
+</div>
+</div>
+<!-- Student Detail Slide-over (Hidden by default) -->
+<div class="fixed top-0 right-0 h-full w-[440px] bg-white shadow-[-20px_0_60px_-15px_rgba(0,0,0,0.1)] z-50 p-0 transform translate-x-full transition-transform flex flex-col">
+<div class="p-8 pb-4 flex items-center justify-between">
+<h3 class="text-xl font-extrabold font-headline tracking-tight">Exhibit Details</h3>
+<button class="w-10 h-10 rounded-full hover:bg-slate-100 flex items-center justify-center transition-colors" id="close-panel-btn">
+<span class="material-symbols-outlined text-slate-400" data-icon="close">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar px-8">
+<!-- Profile Header (populated by JS) -->
+<div class="bg-surface-container-low rounded-[24px] p-6 mb-8 text-center">
+<div class="w-24 h-24 rounded-3xl mx-auto mb-4 bg-surface-container-high flex items-center justify-center text-slate-300 text-2xl font-bold">--</div>
+<h4 class="text-2xl font-bold text-on-surface">Select a student</h4>
+<p class="text-primary font-mono text-sm font-bold uppercase tracking-widest mt-1"></p>
+<div class="flex items-center justify-center gap-6 mt-6">
+<div class="text-center">
+<span class="block text-xl font-extrabold">--</span>
+<span class="text-[10px] text-slate-400 uppercase font-bold">Current CGPA</span>
+</div>
+<div class="w-[1px] h-8 bg-slate-200"></div>
+<div class="text-center">
+<span class="block text-xl font-extrabold">--</span>
+<span class="text-[10px] text-slate-400 uppercase font-bold">Backlogs</span>
+</div>
+<div class="w-[1px] h-8 bg-slate-200"></div>
+<div class="text-center">
+<span class="block text-xl font-extrabold">--</span>
+<span class="text-[10px] text-slate-400 uppercase font-bold">Semesters</span>
+</div>
+</div>
+</div>
+<!-- Verification Section (populated by JS) -->
+<div id="verif-section" class="mb-6 bg-surface-container-low rounded-[20px] p-5"></div>
+<!-- Academic Patch Form -->
+<div class="mb-10">
+<div class="flex items-center justify-between mb-4">
+<h5 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Update Exhibit</h5>
+<span class="material-symbols-outlined text-slate-300 text-sm" data-icon="edit_note">edit_note</span>
+</div>
+<form class="space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">Academic Year</label>
+<input class="w-full bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" value=""/>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">Credits Earned</label>
+<input class="w-full bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="number" value=""/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">Curator Notes (Confidential)</label>
+<textarea class="w-full bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20 p-3" rows="3"></textarea>
+</div>
+<div class="flex items-center gap-2 py-2">
+<input class="rounded text-primary focus:ring-primary border-none bg-surface-container-high" type="checkbox"/>
+<label class="text-xs font-medium text-slate-600">Verification complete and cleared</label>
+</div>
+<div class="pt-4 flex gap-3">
+<button id="save-student-btn" class="flex-1 bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/20 text-sm" type="button">Save Changes</button>
+<button id="delete-student-btn" class="w-12 h-12 flex items-center justify-center rounded-xl bg-surface-container-high text-slate-600 hover:text-error transition-colors" type="button">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Academic Timeline (populated by JS) -->
+<div class="mb-8">
+<h5 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Academic Timeline</h5>
+<div class="space-y-6 relative ml-4 border-l border-slate-100 pl-8">
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Hidden as per requirement for Details/Transactional screens, but shown for Home/Dashboard context - we keep it for Student Creation) -->
+<button id="fab-add-btn" class="fixed bottom-10 right-10 w-14 h-14 bg-on-surface text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-[60]">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</button>
+<!-- Vantage API -->
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("admin")) { /* redirected */ }
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+let currentPage = 1;
+const perPage = 10;
+let selectedStudentId = null;
+let verificationFilter = 'all'; // 'all' | 'verified' | 'pending'
+let selectedStudents = new Set();
+
+// ── Verification filter tabs ─────────────────────────────────
+function setVerifFilter(filter) {
+    verificationFilter = filter;
+    ['all', 'verified', 'pending'].forEach(f => {
+        const btn = document.getElementById(`tab-${f}`);
+        if (!btn) return;
+        btn.className = f === filter
+            ? 'px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-on-surface text-white'
+            : 'px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-surface-container-high text-slate-600 hover:bg-slate-200';
+    });
+    selectedStudents.clear();
+    updateBulkBar();
+    currentPage = 1;
+    loadStudents();
+}
+
+function updateBulkBar() {
+    const bar = document.getElementById('bulk-actions');
+    const countEl = document.getElementById('selected-count');
+    if (!bar || !countEl) return;
+    if (selectedStudents.size > 0) {
+        bar.classList.remove('hidden');
+        bar.classList.add('flex');
+        countEl.textContent = `${selectedStudents.size} selected`;
+    } else {
+        bar.classList.add('hidden');
+        bar.classList.remove('flex');
+    }
+}
+
+function toggleSelect(id, checked) {
+    if (checked) selectedStudents.add(id);
+    else selectedStudents.delete(id);
+    updateBulkBar();
+}
+
+// Populate branch dropdown
+async function loadBranches() {
+    const branches = await apiFetch('/api/admin/branches');
+    if (!branches) return;
+    const sel = document.getElementById('filter-branch');
+    if (!sel) return;
+    branches.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b.short_name;
+        opt.textContent = b.short_name;
+        sel.appendChild(opt);
+    });
+}
+
+async function loadStudents() {
+    const search = document.getElementById('filter-search')?.value.trim() || '';
+    const branch = document.getElementById('filter-branch')?.value || '';
+    const year = document.getElementById('filter-year')?.value || '';
+    const minCgpa = document.getElementById('filter-min-cgpa')?.value || '';
+    const maxCgpa = document.getElementById('filter-max-cgpa')?.value || '';
+
+    const params = new URLSearchParams({ page: currentPage, per_page: perPage });
+    if (search) params.append('search', search);
+    if (branch) params.append('branch', branch);
+    if (year) params.append('graduation_year', year);
+    if (minCgpa) params.append('min_cgpa', minCgpa);
+    if (maxCgpa) params.append('max_cgpa', maxCgpa);
+    if (verificationFilter === 'verified') params.append('is_verified', 'true');
+    if (verificationFilter === 'pending') params.append('is_verified', 'false');
+
+    const data = await apiFetch(`/api/admin/students?${params.toString()}`);
+    if (!data) return;
+
+    // Update total count
+    const totalEl = document.querySelector('.font-mono.text-slate-400.uppercase');
+    if (totalEl) totalEl.textContent = `Total Records: ${(data.total || 0).toLocaleString()}`;
+
+    const tbody = document.querySelector('tbody');
+    tbody.innerHTML = '';
+    selectedStudents.clear();
+    updateBulkBar();
+
+    if (data.items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="px-6 py-12 text-center text-slate-400">No students found</td></tr>`;
+        return;
+    }
+
+    data.items.forEach(s => {
+        const statusColors = {
+            'VERIFIED': 'bg-green-100 text-green-700',
+            'PENDING': 'bg-blue-100 text-blue-700',
+            'INCOMPLETE': 'bg-tertiary-fixed text-tertiary',
+        };
+        const statusClass = statusColors[s.profile_status] || 'bg-slate-100 text-slate-500';
+        const initials = (s.full_name || 'U').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+
+        const verifBadge = s.is_verified
+            ? `<span class="inline-flex items-center gap-1 bg-green-100 text-green-700 text-[10px] font-bold px-2.5 py-1 rounded-full">
+                 <span class="material-symbols-outlined text-[11px]" style="font-variation-settings:'FILL' 1">verified</span>
+                 ${s.verification_source === 'tsheet' ? 'T-Sheet' : 'Admin'}
+               </span>`
+            : `<span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2.5 py-1 rounded-full">Pending</span>`;
+
+        tbody.innerHTML += `
+        <tr class="group hover:bg-slate-50 transition-colors" onclick="openStudent('${s.id}')">
+            <td class="px-4 py-5" onclick="event.stopPropagation()">
+                <input type="checkbox" class="student-cb rounded text-primary border-slate-300 cursor-pointer"
+                    data-id="${s.id}" onchange="toggleSelect('${s.id}', this.checked)"/>
+            </td>
+            <td class="px-6 py-5 font-mono text-sm text-slate-500 cursor-pointer">${s.roll_number || '—'}</td>
+            <td class="px-6 py-5 cursor-pointer">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-primary-fixed/30 flex items-center justify-center text-primary font-bold text-sm">${initials}</div>
+                    <div>
+                        <h4 class="font-bold text-on-surface">${s.full_name || 'Unknown'}</h4>
+                        <p class="text-xs text-slate-400">${s.branch || '—'}</p>
+                    </div>
+                </div>
+            </td>
+            <td class="px-6 py-5 font-bold text-primary cursor-pointer">${s.cgpa ? s.cgpa.toFixed(2) : '—'}</td>
+            <td class="px-6 py-5 font-mono cursor-pointer ${s.backlogs > 0 ? 'text-error' : 'text-slate-400'}">${s.backlogs || 0}</td>
+            <td class="px-6 py-5 cursor-pointer">
+                <span class="${statusClass} text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">${s.profile_status || 'UNKNOWN'}</span>
+            </td>
+            <td class="px-6 py-5 cursor-pointer">${verifBadge}</td>
+            <td class="px-6 py-5 text-right cursor-pointer">
+                <button class="text-slate-400 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </td>
+        </tr>`;
+    });
+
+    // Reset select-all checkbox
+    const selectAllCb = document.getElementById('select-all-cb');
+    if (selectAllCb) selectAllCb.checked = false;
+
+    // Update pagination
+    const pagInfo = document.querySelector('.mt-6 .font-mono');
+    if (pagInfo) {
+        const from = (data.page - 1) * data.per_page + 1;
+        const to = Math.min(data.page * data.per_page, data.total);
+        pagInfo.textContent = `Showing ${from}-${to} of ${data.total.toLocaleString()} students`;
+    }
+    renderPagination(data.page, data.pages);
+}
+
+function renderPagination(current, total) {
+    const container = document.querySelector('.mt-6 .flex.gap-2');
+    if (!container) return;
+    container.innerHTML = '';
+    container.innerHTML += `<button onclick="goPage(${current - 1})" class="px-3 py-1 rounded hover:bg-slate-100 ${current <= 1 ? 'opacity-30 pointer-events-none' : ''}">Prev</button>`;
+    const start = Math.max(1, current - 2);
+    const end = Math.min(total, current + 2);
+    for (let i = start; i <= end; i++) {
+        container.innerHTML += `<button onclick="goPage(${i})" class="px-3 py-1 rounded ${i === current ? 'bg-primary text-white' : 'hover:bg-slate-100'}">${i}</button>`;
+    }
+    container.innerHTML += `<button onclick="goPage(${current + 1})" class="px-3 py-1 rounded hover:bg-slate-100 ${current >= total ? 'opacity-30 pointer-events-none' : ''}">Next</button>`;
+}
+
+function goPage(p) { if (p >= 1) { currentPage = p; loadStudents(); } }
+
+// Select-all checkbox
+document.getElementById('select-all-cb')?.addEventListener('change', function () {
+    document.querySelectorAll('.student-cb').forEach(cb => {
+        cb.checked = this.checked;
+        toggleSelect(cb.dataset.id, this.checked);
+    });
+});
+
+async function openStudent(id) {
+    selectedStudentId = id;
+    const panel = document.querySelector('.fixed.top-0.right-0.w-\\[440px\\]');
+    if (panel) panel.classList.remove('translate-x-full');
+
+    const data = await apiFetch(`/api/admin/students/${id}`);
+    if (!data) return;
+
+    const profileHeader = panel.querySelector('.bg-surface-container-low');
+    if (profileHeader) {
+        const initials = (data.full_name || 'U').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+        profileHeader.innerHTML = `
+            <div class="w-24 h-24 rounded-3xl mx-auto mb-4 bg-primary-fixed/30 flex items-center justify-center text-primary text-2xl font-bold">${initials}</div>
+            <h4 class="text-2xl font-bold text-on-surface">${data.full_name || 'Unknown'}</h4>
+            <p class="text-primary font-mono text-sm font-bold uppercase tracking-widest mt-1">${data.branch || '—'}</p>
+            <div class="flex items-center justify-center gap-6 mt-6">
+                <div class="text-center"><span class="block text-xl font-extrabold">${data.cgpa ? data.cgpa.toFixed(2) : '—'}</span><span class="text-[10px] text-slate-400 uppercase font-bold">Current CGPA</span></div>
+                <div class="w-[1px] h-8 bg-slate-200"></div>
+                <div class="text-center"><span class="block text-xl font-extrabold">${data.backlogs || 0}</span><span class="text-[10px] text-slate-400 uppercase font-bold">Backlogs</span></div>
+                <div class="w-[1px] h-8 bg-slate-200"></div>
+                <div class="text-center"><span class="block text-xl font-extrabold">${data.semesters_completed || 0}</span><span class="text-[10px] text-slate-400 uppercase font-bold">Semesters</span></div>
+            </div>`;
+    }
+
+    // Verification section
+    const verifEl = document.getElementById('verif-section');
+    if (verifEl) {
+        const isVerified = data.is_verified;
+        const source = data.verification_source;
+        const verifiedAt = data.verified_at ? new Date(data.verified_at).toLocaleDateString('en-IN') : null;
+
+        let badgeHtml = '';
+        if (isVerified && source === 'tsheet') {
+            badgeHtml = `<span class="inline-flex items-center gap-1.5 bg-green-100 text-green-700 font-bold text-xs px-3 py-1.5 rounded-full">
+                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">verified</span>Verified via T-Sheet</span>`;
+        } else if (isVerified) {
+            badgeHtml = `<span class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-700 font-bold text-xs px-3 py-1.5 rounded-full">
+                <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">admin_panel_settings</span>Manually Verified</span>`;
+        } else {
+            badgeHtml = `<span class="inline-flex items-center gap-1.5 bg-red-50 text-red-600 font-bold text-xs px-3 py-1.5 rounded-full">
+                <span class="material-symbols-outlined text-[14px]">pending</span>Pending Verification</span>`;
+        }
+
+        verifEl.innerHTML = `
+            <div class="flex items-center justify-between mb-3">
+                <h5 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Verification</h5>
+                ${verifiedAt ? `<span class="text-[11px] text-slate-400">${verifiedAt}</span>` : ''}
+            </div>
+            <div class="mb-3">${badgeHtml}</div>
+            ${!isVerified
+                ? `<button id="btn-verify" onclick="verifyStudent('${data.id}')"
+                     class="w-full bg-green-600 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                     <span class="material-symbols-outlined text-[18px]">verified_user</span>Verify Student
+                   </button>`
+                : `<button id="btn-revoke" onclick="revokeVerification('${data.id}')"
+                     class="w-full bg-red-50 text-red-600 border border-red-200 py-2.5 rounded-xl text-sm font-bold hover:bg-red-100 transition-colors flex items-center justify-center gap-2">
+                     <span class="material-symbols-outlined text-[18px]">remove_moderator</span>Revoke Verification
+                   </button>`
+            }`;
+    }
+}
+
+async function verifyStudent(id) {
+    const res = await apiFetch(`/api/admin/students/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ is_verified: true, verification_source: 'admin' })
+    });
+    if (res) {
+        showToast('Student verified successfully', 'success');
+        loadStudents();
+        openStudent(id);
+    }
+}
+
+async function revokeVerification(id) {
+    if (!confirm('Revoke verification for this student? They will appear as Pending.')) return;
+    const res = await apiFetch(`/api/admin/students/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ is_verified: false })
+    });
+    if (res) {
+        showToast('Verification revoked', 'success');
+        loadStudents();
+        openStudent(id);
+    }
+}
+
+async function verifySelected() {
+    if (selectedStudents.size === 0) { showToast('No students selected', 'warning'); return; }
+    const ids = [...selectedStudents];
+    const res = await apiFetch('/api/admin/students/bulk-verify', {
+        method: 'PATCH',
+        body: JSON.stringify({ student_ids: ids, is_verified: true, verification_source: 'admin' })
+    });
+    if (res) {
+        showToast(`Verified ${res.updated || ids.length} students`, 'success');
+        selectedStudents.clear();
+        updateBulkBar();
+        loadStudents();
+    }
+}
+
+// Close panel
+document.getElementById('close-panel-btn')?.addEventListener('click', () => {
+    document.querySelector('.fixed.top-0.right-0.w-\\[440px\\]')?.classList.add('translate-x-full');
+});
+
+// Search on Enter
+document.getElementById('filter-search')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { currentPage = 1; loadStudents(); }
+});
+
+// Apply filters button
+document.getElementById('btn-apply-filters')?.addEventListener('click', () => {
+    currentPage = 1; loadStudents();
+});
+
+// Clear filters button
+document.getElementById('btn-clear-filters')?.addEventListener('click', () => {
+    document.getElementById('filter-search').value = '';
+    document.getElementById('filter-branch').value = '';
+    document.getElementById('filter-year').value = '';
+    document.getElementById('filter-min-cgpa').value = '';
+    document.getElementById('filter-max-cgpa').value = '';
+    currentPage = 1;
+    loadStudents();
+});
+
+// Recalculate CGPA button
+document.getElementById('btn-recalc-cgpa')?.addEventListener('click', async () => {
+    const btn = document.getElementById('btn-recalc-cgpa');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>Recalculating…';
+    try {
+        const res = await apiFetch('/api/admin/students/recalculate-cgpa', { method: 'POST' });
+        showToast(`Recalculated ${res.students_updated} students. Errors: ${res.errors || 0}`, 'success');
+        loadStudents();
+    } catch (e) {
+        showToast('Recalculation failed: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">calculate</span>Recalculate CGPA';
+    }
+});
+
+// Re-fetch on every filter change
+['filter-branch', 'filter-year'].forEach(id => {
+    document.getElementById(id)?.addEventListener('change', () => { currentPage = 1; loadStudents(); });
+});
+['filter-min-cgpa', 'filter-max-cgpa'].forEach(id => {
+    document.getElementById(id)?.addEventListener('change', () => { currentPage = 1; loadStudents(); });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadBranches();
+    initAdminHeader();
+
+    // Handle ?verified=false link from dashboard
+    const verifParam = getParam('verified');
+    if (verifParam === 'false') setVerifFilter('pending');
+    else if (verifParam === 'true') setVerifFilter('verified');
+    else loadStudents();
+
+    const openId = getParam('open');
+    if (openId) setTimeout(() => openStudent(openId), 500);
+
+    // Top-nav live search (students + drives + recruiters)
+    const topSearch = document.querySelector('input[placeholder="Search exhibits..."]');
+    initLiveSearch(topSearch, '/api/admin/search', (data) => {
+        const rows = [];
+        (data.students || []).forEach(s => rows.push({
+            icon: 'person',
+            primary: s.name || s.roll_number,
+            secondary: `${s.roll_number} · CGPA ${s.cgpa}`,
+            onClick: () => openStudent(s.id),
+        }));
+        (data.drives || []).forEach(d => rows.push({
+            icon: 'campaign',
+            primary: d.job_title,
+            secondary: `${d.company} · ${d.status}`,
+            onClick: () => window.location.href = `/admin/drives`,
+        }));
+        (data.recruiters || []).forEach(r => rows.push({
+            icon: 'business',
+            primary: r.company_name,
+            secondary: 'Recruiter',
+            onClick: () => window.location.href = `/admin/recruiters`,
+        }));
+        return rows;
+    });
+});
+
+// Save Changes — PATCH notes from panel form
+document.getElementById("save-student-btn")?.addEventListener("click", async () => {
+    if (!selectedStudentId) { showToast("Select a student first", "warning"); return; }
+    const panel = document.querySelector('.fixed.top-0.right-0.w-\\[440px\\]');
+    const notes = panel?.querySelector('textarea')?.value || '';
+    const res = await apiFetch(`/api/admin/students/${selectedStudentId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ verification_note: notes })
+    });
+    if (res) showToast("Student record updated", "success");
+});
+
+// Delete — no backend endpoint yet; inform admin
+document.getElementById("delete-student-btn")?.addEventListener("click", () => {
+    showToast("Student deletion is managed via the database. Contact a system owner.", "warning");
+});
+
+// FAB — students come from T-Sheet uploads, not manual creation
+document.getElementById("fab-add-btn")?.addEventListener("click", () => {
+    window.location.href = "/admin/tsheets";
+});
+</script>
+</body></html>

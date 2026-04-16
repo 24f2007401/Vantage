@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vantage OS - Candidate Curator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "outline": "#727784",
+                    "primary": "#004495",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#a43f02",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#021a3f",
+                    "on-secondary-container": "#445880",
+                    "secondary-container": "#bbcffd",
+                    "tertiary-fixed": "#ffdbcd",
+                    "surface-bright": "#f9f9fe",
+                    "inverse-primary": "#adc6ff",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#d8e2ff",
+                    "primary-container": "#005bc2",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#33466d",
+                    "secondary": "#4b5e87",
+                    "on-primary-fixed-variant": "#004494",
+                    "tertiary": "#7e2e00",
+                    "surface-variant": "#e2e2e7",
+                    "on-surface-variant": "#424753",
+                    "on-primary-fixed": "#001a41",
+                    "on-primary-container": "#cad9ff",
+                    "on-surface": "#1a1c1f",
+                    "surface-tint": "#005bc1",
+                    "surface-container-highest": "#e2e2e7",
+                    "surface-dim": "#d9dade",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "on-tertiary-container": "#ffd0bd",
+                    "surface-container-low": "#f3f3f8",
+                    "surface-container": "#ededf2",
+                    "surface": "#f9f9fe",
+                    "on-background": "#1a1c1f",
+                    "inverse-on-surface": "#f0f0f5",
+                    "outline-variant": "#c2c6d5",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#b3c6f5",
+                    "secondary-fixed": "#d8e2ff",
+                    "background": "#f9f9fe",
+                    "surface-container-high": "#e8e8ed",
+                    "on-tertiary-fixed": "#360f00",
+                    "inverse-surface": "#2e3034"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "18px",
+                    "xl": "24px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Inter"],
+                    "label": ["Inter"],
+                    "mono": ["JetBrains Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-nav { backdrop-filter: blur(25px); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<!-- Floating SideNavBar (Immutable Content from JSON) -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+<div class="mb-10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">dataset</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Vantage OS</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Digital Curator</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 p-3 rounded-xl transition-all duration-300 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50" href="/admin">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-xl transition-all duration-300 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50" href="/admin/analytics">
+<span class="material-symbols-outlined" data-icon="gallery_thumbnail">gallery_thumbnail</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-xl transition-all duration-300 text-blue-700 dark:text-blue-400 font-semibold border-r-4 border-blue-600 bg-slate-100/50" href="/admin/candidates">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="text-sm font-medium">Candidates</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-xl transition-all duration-300 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-sm font-medium">Archive</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-xl transition-all duration-300 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-xl transition-all duration-300 text-slate-500 dark:text-slate-400 hover:bg-slate-100/50 dark:hover:bg-slate-800/50" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<button class="mt-4 mb-8 w-full bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all">
+            New Exhibit
+        </button>
+<div class="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-2">
+<a class="flex items-center gap-3 p-3 text-slate-500 hover:text-slate-900 transition-colors" href="javascript:void(0)">
+<span class="material-symbols-outlined text-sm" data-icon="help_outline">help_outline</span>
+<span class="text-sm">Support</span>
+</a>
+<div class="flex items-center gap-3 p-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="portrait of a professional recruiter with a friendly smile and warm studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfFhhCyAFEem7d8TYxB_bvCWsM5zZcfLhulcAAGOI-NQtrvLwO7K3X66rfaph--brKqGhibbjlqlMK8tZ3DebyGYBDSI1St5cixjeGKQlYsBUVpgQBXGKZRWLrNCOWc34u0hR9jdfWlLOkop5hkPgwfxD5BgSQN9Cuw258oCu9TP69EXoh5nSc7wFYdq31dGqxOiDYbRlRq8KnpvmybuQ0VAmhsQGY2k65AmE6M_prTkcbOepNDD4H9WucRy4AeI1yj2xXShYzdv9V"/>
+</div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold truncate">Account</p>
+<p class="text-[10px] text-slate-400 truncate">Admin Access</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="pl-[250px] min-h-screen flex flex-col">
+<!-- TopNavBar (Immutable Content from JSON) -->
+<header class="fixed top-0 left-0 w-full pl-[250px] pr-8 h-[56px] z-30 flex justify-between items-center bg-white/70 dark:bg-slate-900/70 backdrop-blur-[25px]">
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-lg">search</span>
+<input class="bg-surface-container-high border-none rounded-full pl-10 pr-4 py-1.5 text-sm w-64 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all" placeholder="Search exhibits..." type="text"/>
+</div>
+<nav class="hidden md:flex items-center gap-4">
+<a class="text-slate-600 px-3 text-sm font-medium hover:text-blue-600 transition-all" href="javascript:void(0)">Pipeline</a>
+<a class="text-blue-700 font-bold border-b-2 border-blue-600 pb-1 text-sm" href="javascript:void(0)">Candidates</a>
+<a class="text-slate-600 px-3 text-sm font-medium hover:text-blue-600 transition-all" href="javascript:void(0)">Requisitions</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+<button class="bg-gradient-to-r from-primary to-primary-container text-white px-5 py-1.5 rounded-full text-sm font-bold shadow-md shadow-primary/10 hover:scale-105 active:scale-95 transition-all">
+                    Create New
+                </button>
+</div>
+</header>
+<!-- Content Area -->
+<section class="mt-14 p-8 flex gap-8 flex-1">
+<!-- Side Filter Bar (Asymmetric Component) -->
+<aside class="w-72 flex flex-col gap-8 sticky top-20 h-fit">
+<div class="p-6 bg-surface-container-low rounded-xl">
+<h3 class="font-headline font-bold text-lg mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">filter_list</span>
+                        Refine Gallery
+                    </h3>
+<!-- Branch Filter -->
+<div class="mb-8">
+<p class="text-xs font-mono text-slate-500 uppercase tracking-widest mb-3">Branch</p>
+<div class="space-y-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-4 h-4 rounded border-none bg-surface-container-highest text-primary focus:ring-0" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Computer Science</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-4 h-4 rounded border-none bg-surface-container-highest text-primary focus:ring-0" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Electronics &amp; Comm.</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-4 h-4 rounded border-none bg-surface-container-highest text-primary focus:ring-0" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Information Tech.</span>
+</label>
+</div>
+</div>
+<!-- CGPA Slider -->
+<div class="mb-8">
+<div class="flex justify-between items-center mb-3">
+<p class="text-xs font-mono text-slate-500 uppercase tracking-widest">Min. CGPA</p>
+<span class="text-xs font-bold text-primary px-2 py-1 bg-primary/10 rounded-md">7.5+</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-full appearance-none accent-primary cursor-pointer" max="10" min="0" step="0.5" type="range" value="7.5"/>
+</div>
+<!-- Backlogs -->
+<div class="mb-4">
+<p class="text-xs font-mono text-slate-500 uppercase tracking-widest mb-3">Backlog Status</p>
+<div class="flex gap-2">
+<button class="flex-1 py-2 text-xs font-bold rounded-lg bg-surface text-primary shadow-sm">None</button>
+<button class="flex-1 py-2 text-xs font-medium rounded-lg hover:bg-white/50 transition-colors">Allowed</button>
+</div>
+</div>
+</div>
+<!-- Stats Summary -->
+<div class="p-6 bg-primary text-white rounded-xl overflow-hidden relative">
+<div class="relative z-10">
+<p class="text-xs font-medium text-white/70 mb-1">Total Candidates</p>
+<h4 class="text-3xl font-headline font-extrabold mb-4">1,248</h4>
+<div class="flex items-center gap-2 text-xs font-medium bg-white/20 w-fit px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+                            +12% this week
+                        </div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-20">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'wght' 700;">groups</span>
+</div>
+</div>
+</aside>
+<!-- 3-Column Candidate Grid -->
+<div class="flex-1">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Candidate Browser</h2>
+<p class="text-slate-500 font-medium">Curation of top academic and technical talent</p>
+</div>
+<div class="flex gap-2 bg-surface-container-low p-1 rounded-xl">
+<button class="p-2 bg-white shadow-sm rounded-lg text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-slate-600 transition-colors">
+<span class="material-symbols-outlined">format_list_bulleted</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- Candidate Card 1 -->
+<div class="group relative bg-surface rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] hover:shadow-[0_12px_48px_0_rgba(26,28,31,0.08)] transition-all duration-500 flex flex-col">
+<div class="absolute top-4 right-4 z-10">
+<input class="w-5 h-5 rounded-full border-2 border-white/50 bg-transparent text-primary focus:ring-0 checked:bg-primary checked:border-primary transition-all" type="checkbox"/>
+</div>
+<div class="h-48 overflow-hidden bg-surface-container-low relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="portrait of a young computer science student in a modern urban campus setting with natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqdIAZp79dw-ZZovbtbLhs_VGUcfirlcHqKHw17hbJUCmtynySDLOQr4dpHJDtKk4BuItobBVzGT7xXJxO_VBzEjif7meXhDe67l5QcBXWkXQv4SZ9652dZGtWUVSvARAY0UcKvlOkvZT2K1et05oyqGSiSwGXJjT8nAfwpNUQnNDSsgevsvvcni519jxHirF59QwtRAdPBX6maB7dBbgARfn2VgM_9-YXrepqRpUh23Ad4DnLyqcAkeHwOHokTHOP10v_SHeJDP_L"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<button class="w-full py-2 bg-white/20 backdrop-blur-md text-white rounded-lg text-xs font-bold uppercase tracking-widest border border-white/30">View Portfolio</button>
+</div>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-lg font-headline font-bold text-on-surface leading-tight">Marcus Richardson</h3>
+<p class="text-xs font-mono text-slate-500">ID: #CS2024-001</p>
+</div>
+<div class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold">
+                                    9.2 CGPA
+                                </div>
+</div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-sm text-primary">school</span>
+<span class="text-sm font-medium text-slate-600">Computer Science Engineering</span>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">Python</span>
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">React</span>
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">AWS</span>
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">TensorFlow</span>
+</div>
+<div class="mt-auto flex justify-between items-center pt-4 border-t border-surface-container-low">
+<span class="text-[10px] font-mono text-slate-400">Applied 2 days ago</span>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[8px] font-bold">MR</div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[8px] font-bold">JD</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Candidate Card 2 (Anonymized View Example) -->
+<div class="group relative bg-surface rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] hover:shadow-[0_12px_48px_0_rgba(26,28,31,0.08)] transition-all duration-500 flex flex-col">
+<div class="absolute top-4 right-4 z-10">
+<input class="w-5 h-5 rounded-full border-2 border-white/50 bg-transparent text-primary focus:ring-0 checked:bg-primary checked:border-primary" type="checkbox"/>
+</div>
+<div class="h-48 overflow-hidden bg-surface-container-low relative flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-slate-200" style="font-variation-settings: 'wght' 200;">account_circle</span>
+<div class="absolute top-4 left-4">
+<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">lock</span> ANONYMIZED
+                                </span>
+</div>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-lg font-headline font-bold text-slate-400 leading-tight">Candidate #CS2024-842</h3>
+<p class="text-xs font-mono text-slate-500">Waitlist: Tier 1</p>
+</div>
+<div class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold">
+                                    8.8 CGPA
+                                </div>
+</div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-sm text-primary">school</span>
+<span class="text-sm font-medium text-slate-600">Information Technology</span>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">Go Lang</span>
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">Kubernetes</span>
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">Kafka</span>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-container-low">
+<button class="w-full py-2 bg-primary/5 hover:bg-primary/10 text-primary text-xs font-bold rounded-lg transition-colors">Request Unmasking</button>
+</div>
+</div>
+</div>
+<!-- Candidate Card 3 -->
+<div class="group relative bg-surface rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] hover:shadow-[0_12px_48px_0_rgba(26,28,31,0.08)] transition-all duration-500 flex flex-col">
+<div class="absolute top-4 right-4 z-10">
+<input checked="" class="w-5 h-5 rounded-full border-2 border-white/50 bg-transparent text-primary focus:ring-0 checked:bg-primary checked:border-primary" type="checkbox"/>
+</div>
+<div class="h-48 overflow-hidden bg-surface-container-low relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="professional portrait of a confident female engineer with soft cinematic lighting and minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK92FOg-bbt5m_ZiwgIjThhrsOiaqzZ_EDX8zvoXBV9LBuP2_DEMZcgNAIvfBooVylxqdBl-8lq2YrBuKlx82PYdurEHm_reWE_RtUhUnRyUtoOiYsnGFahG4qSbgVAhsptd07DHflgM1iwNEW00uGvrMViWznoTnx6mwJtQzJrm9Pn_FKDCzbAqegSemSZizBc6x08vXqTpciGRb7UMY2etvTA7AUjB1Mz2Udl6ZOdQVpC5Qc2xZgra57J0KNHG9IGR2Ff-fA6D4i"/>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-lg font-headline font-bold text-on-surface leading-tight">Sarah Jenkins</h3>
+<p class="text-xs font-mono text-slate-500">ID: #EC2024-119</p>
+</div>
+<div class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold">
+                                    9.5 CGPA
+                                </div>
+</div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-sm text-primary">school</span>
+<span class="text-sm font-medium text-slate-600">Electronics &amp; Communication</span>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">Embedded C</span>
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">MATLAB</span>
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">IoT</span>
+</div>
+<div class="mt-auto flex justify-between items-center pt-4 border-t border-surface-container-low">
+<span class="text-[10px] font-mono text-slate-400">Shortlisted today</span>
+<span class="material-symbols-outlined text-error text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Bottom Bar: Compare Selected -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-fit min-w-[500px] z-50">
+<div class="bg-on-surface text-surface py-3 px-6 rounded-full flex items-center justify-between shadow-2xl shadow-black/40 backdrop-blur-xl bg-opacity-95">
+<div class="flex items-center gap-4">
+<div class="flex -space-x-3">
+<img class="w-10 h-10 rounded-full border-2 border-on-surface object-cover" data-alt="small circular avatar of student" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDLEhfop8unA6Way2pMJodRSQjIARf5y9onhmjZ8gLOGL8WE1FCSHm1SG0N72pEa-AombZVwEWlJYVagWRvg9U-lb5ZFPG7H3lntfkw1sVHidoi_CcC7iCLL38RDqwCmC7OxpCuSlwjiN4CY6r2YkCYvGWhBslQDKoRR49k0R8KGQu8SkJLmEBno4ZcNhEItbbfRQGNnN5FTbUTE6yT-_aAq3AjOGp5dbVOoaHu78WE80beD4WICVByujoL6SkK2hEc7uRYiqmDzRA"/>
+<img class="w-10 h-10 rounded-full border-2 border-on-surface object-cover" data-alt="small circular avatar of female engineer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCnoQ9eUNaL81z0BDJzpPGb1T2ppYFIIvFLBUesjD5789cCkXgKsyevzrqXCuSyktQEdpxX69q50ZEL18W3CRRse6IfHg8A_e_Z6ThegALKP01IIoY9x33JrBfYo42NOCrq4KXpiQiOhTocDFGcnw7HtkdASimP6iaE5bziB9FQ2jShDWO2nFMN8sFjiCutnjllXZCEO67eSqaMOaAEaxmSWYgtwdA6oFooCR3yErWHNIahoEipEqFYRIMAfmQrgS9vUU1ZvYE66wd"/>
+<div class="w-10 h-10 rounded-full border-2 border-on-surface bg-surface-container-highest flex items-center justify-center text-on-surface font-bold text-xs">+1</div>
+</div>
+<div class="h-6 w-[1px] bg-white/20 mx-2"></div>
+<div>
+<p class="text-sm font-bold">Compare Selected</p>
+<p class="text-[10px] text-white/60">3 candidates curated for review</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 text-sm font-bold text-white/70 hover:text-white transition-colors">Clear</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full text-sm font-bold hover:bg-white hover:text-primary transition-all flex items-center gap-2">
+                    Start Matrix View
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Vantage API -->
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("admin")) { /* redirected */ }
+
+// Wire logout — replace Account section
+const accountSection = document.querySelector('.flex.items-center.gap-3.p-3:last-child');
+if (accountSection && accountSection.textContent.includes('Account')) {
+    accountSection.outerHTML = `<button id="logout-btn" class="flex items-center gap-3 p-3 text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors w-full rounded-lg"><span class="material-symbols-outlined text-sm">logout</span><span class="text-sm">Logout</span></button>`;
+}
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+// Fix sidebar links
+document.querySelectorAll('aside a[href="javascript:void(0)"]').forEach(el => {
+    const text = el.textContent.trim();
+    if (text === 'Archive') el.href = '/admin/tsheets';
+    else if (text === 'Analytics') el.href = '/admin/analytics';
+    else if (text === 'Settings') el.href = '/admin';
+});
+
+let selectedIds = [];
+
+async function loadCandidates() {
+    const data = await apiFetch("/api/admin/students");
+    if (!data) return;
+
+    const students = data.items || data;
+    
+    // Update total count
+    const totalEl = document.querySelector('.text-3xl.font-headline.font-extrabold:last-of-type');
+    if (totalEl) totalEl.textContent = (data.total || students.length).toLocaleString();
+
+    const grid = document.querySelector('.grid.grid-cols-1.xl\\:grid-cols-3');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    if (!students.length) {
+        grid.innerHTML = `<div class="col-span-3 text-center py-20 text-slate-400"><span class="material-symbols-outlined text-4xl block mb-4">person_search</span><p class="font-medium">No candidates found.</p></div>`;
+        return;
+    }
+
+    students.forEach(s => {
+        const initials = (s.full_name || 'U').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+        const bgColors = ['from-blue-100 to-blue-50', 'from-green-100 to-green-50', 'from-purple-100 to-purple-50', 'from-amber-100 to-amber-50'];
+        const bgColor = bgColors[Math.abs(hashStr(s.full_name || '')) % bgColors.length];
+        
+        grid.innerHTML += `
+        <div class="group relative bg-surface rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] hover:shadow-[0_12px_48px_0_rgba(26,28,31,0.08)] transition-all duration-500 flex flex-col">
+            <div class="absolute top-4 right-4 z-10">
+                <input class="compare-check w-5 h-5 rounded-full border-2 border-white/50 bg-transparent text-primary focus:ring-0" type="checkbox" data-id="${s.id}" onchange="toggleCompare(this)" />
+            </div>
+            <div class="h-48 overflow-hidden bg-gradient-to-br ${bgColor} relative flex items-center justify-center">
+                <span class="text-6xl font-headline font-bold text-primary/20">${initials}</span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-lg font-headline font-bold text-on-surface leading-tight">${s.full_name || 'Unknown'}</h3>
+                        <p class="text-xs font-mono text-slate-500">ID: ${s.roll_number || '#' + s.id}</p>
+                    </div>
+                    <div class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold">
+                        ${s.cgpa ? s.cgpa.toFixed(1) : '—'} CGPA
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined text-sm text-primary">school</span>
+                    <span class="text-sm font-medium text-slate-600">${s.branch || '—'}</span>
+                </div>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">${s.backlogs || 0} Backlogs</span>
+                    <span class="px-3 py-1 bg-surface-container-low rounded-full text-[10px] font-bold text-on-surface-variant">${s.profile_status || 'Active'}</span>
+                </div>
+                <div class="mt-auto flex justify-between items-center pt-4 border-t border-surface-container-low">
+                    <span class="text-[10px] font-mono text-slate-400">${s.is_verified ? 'Verified' : 'Pending'}</span>
+                    <button onclick="window.location.href='/admin/students?open=${s.id}'" class="text-primary text-xs font-bold hover:underline">View Profile</button>
+                </div>
+            </div>
+        </div>`;
+    });
+}
+
+function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = ((h << 5) - h) + s.charCodeAt(i); return h; }
+
+function toggleCompare(checkbox) {
+    const id = checkbox.dataset.id;
+    if (checkbox.checked) {
+        if (!selectedIds.includes(id)) selectedIds.push(id);
+    } else {
+        selectedIds = selectedIds.filter(x => x !== id);
+    }
+    
+    // Update floating bar
+    const bar = document.querySelector('.fixed.bottom-8');
+    if (bar) {
+        if (selectedIds.length > 0) {
+            bar.style.display = '';
+            const countEl = bar.querySelector('.text-\\[10px\\]');
+            if (countEl) countEl.textContent = `${selectedIds.length} candidates curated for review`;
+        } else {
+            bar.style.display = 'none';
+        }
+    }
+}
+
+// Start Matrix View button
+document.querySelector('.fixed.bottom-8 button:last-child')?.addEventListener('click', () => {
+    if (selectedIds.length >= 2) {
+        window.location.href = `/admin/candidates/compare?ids=${selectedIds.join(',')}`;
+    }
+});
+
+// Clear button
+document.querySelector('.fixed.bottom-8 button:first-child')?.addEventListener('click', () => {
+    selectedIds = [];
+    document.querySelectorAll('.compare-check').forEach(cb => cb.checked = false);
+    const bar = document.querySelector('.fixed.bottom-8');
+    if (bar) bar.style.display = 'none';
+});
+
+document.addEventListener('DOMContentLoaded', loadCandidates);
+</script>
+</body></html>

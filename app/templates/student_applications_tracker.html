@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Applications | Vantage OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#004495",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "secondary-fixed-dim": "#b3c6f5",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#a43f02",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface": "#f9f9fe",
+                    "on-secondary-container": "#445880",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-primary-fixed": "#001a41",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#f9f9fe",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2e3034",
+                    "on-primary-container": "#cad9ff",
+                    "on-secondary-fixed-variant": "#33466d",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#360f00",
+                    "tertiary": "#7e2e00",
+                    "inverse-primary": "#adc6ff",
+                    "surface-container-low": "#f3f3f8",
+                    "surface-container": "#ededf2",
+                    "outline-variant": "#c2c6d5",
+                    "secondary-container": "#bbcffd",
+                    "outline": "#727784",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-dim": "#d9dade",
+                    "secondary": "#4b5e87",
+                    "inverse-on-surface": "#f0f0f5",
+                    "secondary-fixed": "#d8e2ff",
+                    "on-surface": "#1a1c1f",
+                    "surface-tint": "#005bc1",
+                    "primary-fixed-dim": "#adc6ff",
+                    "primary-container": "#005bc2",
+                    "on-tertiary-container": "#ffd0bd",
+                    "surface-container-highest": "#e2e2e7",
+                    "surface-container-high": "#e8e8ed",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-variant": "#e2e2e7",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#424753",
+                    "on-background": "#1a1c1f",
+                    "background": "#f9f9fe",
+                    "on-secondary-fixed": "#021a3f",
+                    "on-primary-fixed-variant": "#004494"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "18px",
+                    "xl": "24px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Inter"],
+                    "label": ["Inter"],
+                    "mono": ["JetBrains Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pipeline-line {
+            height: 2px;
+            flex-grow: 1;
+            margin: 0 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-3 top-3 bottom-3 w-64 bg-white dark:bg-slate-950 rounded-[18px] z-50 flex flex-col p-4 space-y-2 shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] font-['Inter'] text-sm tracking-tight">
+<div class="px-2 py-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white font-bold text-lg">V</div>
+<div>
+<h1 class="text-lg font-extrabold text-slate-900 dark:text-slate-100 leading-none">Student Portal</h1>
+<p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Career Track</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all scale-95 active:scale-90 duration-200" href="/student">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all scale-95 active:scale-90 duration-200" href="/student/profile">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span>Profile</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all scale-95 active:scale-90 duration-200" href="/student/drives">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span>Drives</span>
+</a>
+<!-- Active Tab: Applications -->
+<a class="flex items-center gap-3 px-4 py-3 bg-slate-100 dark:bg-slate-800 text-blue-700 dark:text-blue-400 font-bold rounded-xl transition-all scale-95 active:scale-90 duration-200" href="/student/applications">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Applications</span>
+</a>
+</nav>
+<div class="pt-4 mt-auto space-y-1 border-t border-slate-100 dark:border-slate-800">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-all" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help</span>
+</a>
+<button id="logout-btn" class="w-full text-left flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-all">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</button>
+</div>
+</aside>
+<!-- Top Bar Shell -->
+<header class="fixed top-0 left-0 right-0 h-14 z-40 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md px-6 flex justify-between items-center shadow-sm shadow-blue-900/5 ml-72">
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm" data-icon="search">search</span>
+<input class="bg-surface-container-high border-none rounded-full pl-9 pr-4 py-1.5 text-sm w-64 focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Search applications..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button id="student-bell-btn" class="relative p-2 text-slate-500 hover:bg-slate-100/50 rounded-full cursor-pointer transition-colors" onclick="openStudentNotificationsPanel()">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span id="student-notif-badge" style="display:none;" class="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center;"></span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-slate-200"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p id="header-name" class="text-xs font-bold text-on-surface leading-none">Student</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-primary text-sm" id="header-avatar">S</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-72 pt-20 px-8 pb-12">
+<!-- Page Header -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">My Applications</h2>
+<p class="text-slate-500 mt-2 font-body">Manage your journey with top global organizations.</p>
+</div>
+<!-- Filter Pills -->
+<div class="flex gap-2 p-1 bg-surface-container-low rounded-xl">
+<button id="filter-all" onclick="applyFilter('all')" class="px-6 py-2 bg-white text-primary font-semibold rounded-lg shadow-sm text-sm">All</button>
+<button id="filter-active" onclick="applyFilter('active')" class="px-6 py-2 text-slate-600 hover:bg-white/50 rounded-lg text-sm transition-all">Active</button>
+<button id="filter-selected" onclick="applyFilter('selected')" class="px-6 py-2 text-slate-600 hover:bg-white/50 rounded-lg text-sm transition-all">Selected</button>
+<button id="filter-rejected" onclick="applyFilter('rejected')" class="px-6 py-2 text-slate-600 hover:bg-white/50 rounded-lg text-sm transition-all">Rejected</button>
+</div>
+</div>
+<!-- Applications Grid -->
+<div id="apps-container" class="space-y-6 max-w-6xl">
+<!-- Application Card 1: Selected -->
+<section class="group bg-surface-container-lowest rounded-xl p-6 transition-all hover:shadow-[0_8px_32px_0_rgba(0,68,149,0.06)] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+<div class="flex flex-col md:flex-row justify-between gap-6 relative z-10">
+<div class="flex items-start gap-4">
+<div class="w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center shadow-inner overflow-hidden">
+<img alt="Salesforce Logo" class="w-10 h-10 object-contain" data-alt="minimalist clean corporate logo of salesforce featuring a cloud icon in sky blue" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApSxfswtFjWkoaGjAHkDW1H5qIDF_ow06DgoyyDdJx1kGmbCPmYWMrEUxWZRBDkuMw5PfhiIPsZ-kJtDIA0gVbTrQOLo8X6kYw96L0PQgNbKd7OqC1eajMRhQWVR3NTPGSyV-zHTzRfUl2Wbk4juCrE5M8MgSMuAC4UbsyT43rz3ircbux5yJbJmDMtnjIQrv4xm6kstLG46HC0iVOoPvvH25oO2zBFY9Gw6FOaNTKJOBYn8Jx12Xhsg9rl3IAFVm5l-kwRQJ4RG6U"/>
+</div>
+<div>
+<h3 class="text-xl font-headline font-bold text-on-surface">Salesforce</h3>
+<p class="text-slate-600 font-medium">Software Engineer (Intern)</p>
+<p class="text-xs font-mono text-slate-400 mt-1 uppercase tracking-tighter">Applied 12 Oct 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-4 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-bold flex items-center gap-1.5 ring-1 ring-green-200">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            OFFER EXTENDED
+                        </div>
+<button class="flex items-center gap-2 text-primary font-semibold text-sm hover:underline">
+                            View Details
+                            <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Pipeline -->
+<div class="mt-10 mb-2">
+<div class="flex items-center w-full">
+<!-- Step 1: Applied -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Applied</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<!-- Step 2: Written Test -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Written</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<!-- Step 3: Shortlisted -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Shortlist</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<!-- Step 4: GD -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">GD</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<!-- Step 5: Technical -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Technical</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<!-- Step 6: HR -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">HR</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<!-- Step 7: Selected -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center ring-4 ring-green-100">
+<span class="material-symbols-outlined text-sm" data-icon="celebration" style="font-variation-settings: 'FILL' 1;">celebration</span>
+</div>
+<span class="text-[10px] font-bold text-green-600 uppercase">Selected</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Application Card 2: In Technical -->
+<section class="group bg-surface-container-lowest rounded-xl p-6 transition-all hover:shadow-[0_8px_32px_0_rgba(0,68,149,0.06)] relative overflow-hidden">
+<div class="flex flex-col md:flex-row justify-between gap-6 relative z-10">
+<div class="flex items-start gap-4">
+<div class="w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center shadow-inner overflow-hidden">
+<img alt="Google Logo" class="w-10 h-10 object-contain" data-alt="clean google logo multicolored on white background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3WmXP3uSDTOxfPIGeRbClqjX8Ryy5dKyYHPggblndUcEWJjxybyZjic8GFfhNrEPLZk9pqXQ2lSKopReregd_f7EW5SXgM5fAla8x3RUrMiCxufa8aFlE9Um48rMf2flEjBZ92Rn5zH7fAqYHRc81eBUQKqFKwREuZ8TMjqthbjz6-Z4M-WU2fq2SW874lq-edJbxc_nc8GZ3cy7bTQO5uVmc4XjCipsQl3nhAITMvT2TGV98g6P4R8ULWsFcMkwAeqEEH6zsp4rs"/>
+</div>
+<div>
+<h3 class="text-xl font-headline font-bold text-on-surface">Google</h3>
+<p class="text-slate-600 font-medium">Cloud Reliability Engineer</p>
+<p class="text-xs font-mono text-slate-400 mt-1 uppercase tracking-tighter">Applied 28 Oct 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-bold flex items-center gap-1.5 ring-1 ring-blue-200">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            IN TECHNICAL ROUND
+                        </div>
+<button class="flex items-center gap-2 text-primary font-semibold text-sm hover:underline">
+                            View Details
+                            <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Pipeline -->
+<div class="mt-10 mb-2">
+<div class="flex items-center w-full">
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Applied</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Written</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Shortlist</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">GD</span>
+</div>
+<div class="pipeline-line bg-primary"></div>
+<!-- Current Step -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full border-2 border-primary bg-white flex items-center justify-center ring-4 ring-primary/20 animate-pulse">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Technical</span>
+</div>
+<div class="pipeline-line bg-surface-container-highest"></div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">HR</span>
+</div>
+<div class="pipeline-line bg-surface-container-highest"></div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Select</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Application Card 3: Just Applied -->
+<section class="group bg-surface-container-lowest rounded-xl p-6 transition-all hover:shadow-[0_8px_32px_0_rgba(0,68,149,0.06)] relative overflow-hidden">
+<div class="flex flex-col md:flex-row justify-between gap-6 relative z-10">
+<div class="flex items-start gap-4">
+<div class="w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center shadow-inner overflow-hidden">
+<img alt="Meta Logo" class="w-10 h-10 object-contain" data-alt="Meta tech logo infinity symbol in blue gradient" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1yLMwGmsMoI-Lbv0auFAwqaFrJ8QHx_7GaolF2xYfbJ-arBddGhR5UXEPkQNPuCMnQsKTxcoNFhHehfmUbGsr-9a93MgclCU8iADq1AYqX00kWdCYz8S6dGyfLkFX6JPjDT9-UQAp6MY4nn4oXguVKLf191YvGtejQ7X2RNVLt_viKOo7kCnhPrQ1Wa6WQDoGRncOkBRO0D0ig86yEaMx-KHorAEpitWKV1cf2yKFYKUfV_jGhKalOZyko3XLHjfiQE3A_Dtd03HQ"/>
+</div>
+<div>
+<h3 class="text-xl font-headline font-bold text-on-surface">Meta</h3>
+<p class="text-slate-600 font-medium">UX Research Engineer</p>
+<p class="text-xs font-mono text-slate-400 mt-1 uppercase tracking-tighter">Applied 01 Nov 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-full text-xs font-bold flex items-center gap-1.5 ring-1 ring-slate-200">
+<span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                            PENDING REVIEW
+                        </div>
+<button class="flex items-center gap-2 text-primary font-semibold text-sm hover:underline">
+                            View Details
+                            <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Pipeline -->
+<div class="mt-10 mb-2">
+<div class="flex items-center w-full">
+<!-- Current Step -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full border-2 border-primary bg-white flex items-center justify-center ring-4 ring-primary/20 animate-pulse">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Applied</span>
+</div>
+<div class="pipeline-line bg-surface-container-highest"></div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Written</span>
+</div>
+<div class="pipeline-line bg-surface-container-highest"></div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Shortlist</span>
+</div>
+<div class="pipeline-line bg-surface-container-highest"></div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">GD</span>
+</div>
+<div class="pipeline-line bg-surface-container-highest"></div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Technical</span>
+</div>
+<div class="pipeline-line bg-surface-container-highest"></div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">HR</span>
+</div>
+<div class="pipeline-line bg-surface-container-highest"></div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Select</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Vantage API -->
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("student")) { /* redirected */ }
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+// Populate header with session user
+(function() {
+    const u = getUser();
+    if (u) {
+        const name = u.full_name || u.username || 'Student';
+        const el = document.getElementById("header-name");
+        const av = document.getElementById("header-avatar");
+        if (el) el.textContent = name;
+        if (av) av.textContent = name[0].toUpperCase();
+    }
+})();
+
+const STATUS_MAP = {
+    'APPLIED':     { cls: 'bg-slate-100 text-slate-600 ring-slate-200', label: 'PENDING REVIEW', dot: 'bg-slate-400' },
+    'SHORTLISTED': { cls: 'bg-blue-50 text-blue-700 ring-blue-200',     label: 'SHORTLISTED',    dot: 'bg-blue-500' },
+    'SELECTED':    { cls: 'bg-green-50 text-green-700 ring-green-200',  label: 'OFFER EXTENDED', dot: 'bg-green-500 animate-pulse' },
+    'REJECTED':    { cls: 'bg-red-50 text-red-700 ring-red-200',        label: 'REJECTED',       dot: 'bg-red-500' },
+    'WITHDRAWN':   { cls: 'bg-slate-100 text-slate-500 ring-slate-200', label: 'WITHDRAWN',      dot: 'bg-slate-400' },
+};
+
+// Map status → pipeline stage index (1-based)
+const STATUS_STAGE = {
+    'APPLIED': 1, 'SHORTLISTED': 3, 'SELECTED': 7,
+    'REJECTED': 2, 'WITHDRAWN': 1,
+};
+
+const stages = ['Applied', 'Written', 'Shortlist', 'GD', 'Technical', 'HR', 'Selected'];
+
+let allApps = [];
+let activeFilter = 'all';
+
+function renderCard(app) {
+    const driveTitle = app.drive?.drive_title || 'Drive';
+    const roleTitle  = app.drive?.role_title  || '';
+    const driveId    = app.drive?.id          || '';
+    const st = STATUS_MAP[app.status] || STATUS_MAP['APPLIED'];
+    const currentStage = STATUS_STAGE[app.status] || 1;
+    const isSelected = app.status === 'SELECTED';
+
+    const pipeline = stages.map((stage, i) => {
+        const completed = i < currentStage;
+        const current   = i === currentStage - 1 && !isSelected;
+        const final     = isSelected && i === stages.length - 1;
+        let dot;
+        if (final)     dot = `<div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center ring-4 ring-green-100"><span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">celebration</span></div>`;
+        else if (completed) dot = `<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-primary/10"><span class="material-symbols-outlined text-sm">check</span></div>`;
+        else if (current)   dot = `<div class="w-8 h-8 rounded-full border-2 border-primary bg-white flex items-center justify-center ring-4 ring-primary/20 animate-pulse"><div class="w-2 h-2 bg-primary rounded-full"></div></div>`;
+        else dot = `<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center"></div>`;
+        const tc = completed || current ? 'text-primary' : 'text-slate-400';
+        const op = !completed && !current ? 'opacity-40' : '';
+        const line = i < stages.length - 1 ? `<div class="pipeline-line ${completed ? 'bg-primary' : 'bg-surface-container-highest'}"></div>` : '';
+        return `<div class="flex flex-col items-center gap-2 ${op}">${dot}<span class="text-[10px] font-bold ${tc} uppercase">${stage}</span></div>${line}`;
+    }).join('');
+
+    return `
+    <section class="group bg-surface-container-lowest rounded-xl p-6 transition-all hover:shadow-[0_8px_32px_0_rgba(0,68,149,0.06)] relative overflow-hidden">
+        <div class="flex flex-col md:flex-row justify-between gap-6 relative z-10">
+            <div class="flex items-start gap-4">
+                <div class="w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center shadow-inner text-2xl font-bold text-primary">${driveTitle[0]}</div>
+                <div>
+                    <h3 class="text-xl font-headline font-bold text-on-surface">${driveTitle}</h3>
+                    <p class="text-slate-600 font-medium">${roleTitle}</p>
+                    <p class="text-xs font-mono text-slate-400 mt-1 uppercase tracking-tighter">Applied ${app.applied_at ? new Date(app.applied_at).toLocaleDateString() : '—'}</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="px-4 py-1.5 ${st.cls} rounded-full text-xs font-bold flex items-center gap-1.5 ring-1">
+                    <span class="w-2 h-2 rounded-full ${st.dot}"></span>
+                    ${st.label}
+                </div>
+                ${driveId ? `<button onclick="window.location.href='/student/drives/${driveId}'" class="flex items-center gap-2 text-primary font-semibold text-sm hover:underline">View Details <span class="material-symbols-outlined text-sm">arrow_forward</span></button>` : ''}
+            </div>
+        </div>
+        <div class="mt-10 mb-2">
+            <div class="flex items-center w-full">${pipeline}</div>
+        </div>
+    </section>`;
+}
+
+function applyFilter(filter) {
+    activeFilter = filter;
+    // Update pill styles
+    ['all','active','selected','rejected'].forEach(f => {
+        const btn = document.getElementById(`filter-${f}`);
+        if (!btn) return;
+        if (f === filter) {
+            btn.className = 'px-6 py-2 bg-white text-primary font-semibold rounded-lg shadow-sm text-sm';
+        } else {
+            btn.className = 'px-6 py-2 text-slate-600 hover:bg-white/50 rounded-lg text-sm transition-all';
+        }
+    });
+
+    const ACTIVE_STATUSES = ['APPLIED', 'SHORTLISTED'];
+    let filtered = allApps;
+    if (filter === 'active')   filtered = allApps.filter(a => ACTIVE_STATUSES.includes(a.status));
+    if (filter === 'selected') filtered = allApps.filter(a => a.status === 'SELECTED');
+    if (filter === 'rejected') filtered = allApps.filter(a => a.status === 'REJECTED');
+
+    const container = document.getElementById("apps-container");
+    if (!container) return;
+    if (!filtered.length) {
+        container.innerHTML = `<div class="text-center py-20 text-slate-400"><span class="material-symbols-outlined text-4xl block mb-4">inbox</span><p class="font-medium">No applications match this filter.</p></div>`;
+        return;
+    }
+    container.innerHTML = filtered.map(renderCard).join('');
+}
+
+async function loadApplications() {
+    const data = await apiFetch("/api/student/applications");
+    const container = document.getElementById("apps-container");
+    if (!container) return;
+
+    if (!data || !data.length) {
+        container.innerHTML = `<div class="text-center py-20 text-slate-400"><span class="material-symbols-outlined text-4xl block mb-4">inbox</span><p class="font-medium">No applications yet. Browse drives to get started!</p></div>`;
+        return;
+    }
+    allApps = data;
+    applyFilter('all');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initStudentHeader();
+    connectStudentSSE();
+    loadApplications();
+});
+</script>
+</body></html>

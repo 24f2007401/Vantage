@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vantage OS | Candidates</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{ extend:{
+      colors:{"primary":"#004495","primary-container":"#005bc2","primary-fixed":"#d8e2ff","primary-fixed-dim":"#adc6ff","on-primary":"#ffffff","on-primary-container":"#cad9ff","secondary":"#4b5e87","secondary-container":"#bbcffd","on-secondary":"#ffffff","on-secondary-container":"#445880","tertiary":"#7e2e00","tertiary-container":"#a43f02","on-tertiary":"#ffffff","on-tertiary-container":"#ffd0bd","tertiary-fixed":"#ffdbcd","error":"#ba1a1a","error-container":"#ffdad6","on-error":"#ffffff","background":"#f9f9fe","surface":"#f9f9fe","surface-dim":"#d9dade","surface-bright":"#f9f9fe","surface-container-lowest":"#ffffff","surface-container-low":"#f3f3f8","surface-container":"#ededf2","surface-container-high":"#e8e8ed","surface-container-highest":"#e2e2e7","on-surface":"#1a1c1f","on-surface-variant":"#424753","outline":"#727784","outline-variant":"#c2c6d5","inverse-surface":"#2e3034","inverse-on-surface":"#f0f0f5","inverse-primary":"#adc6ff","surface-tint":"#005bc1"},
+      borderRadius:{"DEFAULT":"0.25rem","lg":"18px","xl":"24px","full":"9999px"},
+      fontFamily:{"headline":["Plus Jakarta Sans"],"body":["Inter"],"mono":["JetBrains Mono"]}
+    }}
+  }
+</script>
+<style>
+  body{font-family:'Inter',sans-serif;background:#f9f9fe;color:#1a1c1f}
+  .font-headline{font-family:'Plus Jakarta Sans',sans-serif}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+  .glass-nav{backdrop-filter:blur(25px);background:rgba(255,255,255,0.7)}
+  .slide-panel{position:fixed;right:0;top:0;height:100vh;width:420px;background:#fff;z-index:60;box-shadow:-8px 0 40px rgba(26,28,31,0.12);transform:translateX(100%);transition:transform 0.28s ease}
+  .slide-panel.open{transform:translateX(0)}
+</style>
+</head>
+<body class="bg-background">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+  <div class="flex items-center gap-3 mb-6">
+    <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">rocket_launch</span>
+    </div>
+    <div>
+      <h1 class="text-xl font-bold tracking-tight text-slate-900 font-headline">Vantage OS</h1>
+      <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-0.5">Recruiter Portal</p>
+    </div>
+  </div>
+  <div id="sidebar-recruiter-info" class="mb-6 px-3 py-3 bg-surface-container-low rounded-xl">
+    <p id="sidebar-company" class="text-sm font-bold text-on-surface">Loading…</p>
+    <p id="sidebar-name" class="text-[10px] text-slate-500 mt-0.5">…</p>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a href="/recruiter/drives" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">work</span>
+      <span class="text-sm font-medium">Drives</span>
+    </a>
+    <a href="/recruiter/candidates" class="flex items-center gap-3 px-3 py-2 rounded-xl bg-primary/10 text-primary font-semibold">
+      <span class="material-symbols-outlined text-[20px]">group</span>
+      <span class="text-sm font-medium">Candidates</span>
+    </a>
+    <a href="/recruiter/analytics" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">analytics</span>
+      <span class="text-sm font-medium">Analytics</span>
+    </a>
+  </nav>
+  <div class="mt-auto pt-4 border-t border-slate-100">
+    <button id="logout-btn" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors w-full">
+      <span class="material-symbols-outlined text-[20px]">logout</span>
+      <span class="text-sm font-medium">Logout</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="pl-[244px] pt-[56px] min-h-screen">
+  <header class="fixed top-0 left-0 w-full h-[56px] glass-nav flex justify-between items-center pl-[250px] pr-8 z-30">
+    <h2 class="text-lg font-headline font-bold text-on-surface">Candidates</h2>
+    <div class="flex items-center gap-3">
+      <button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors relative">
+        <span class="material-symbols-outlined text-[20px] text-slate-600">notifications</span>
+        <span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+      </button>
+      <button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer select-none border-2 border-white shadow-sm">--</button>
+    </div>
+  </header>
+
+  <div class="p-8 max-w-[1200px] mx-auto">
+    <!-- Page Header -->
+    <div class="flex items-start justify-between mb-6">
+      <div>
+        <h2 class="text-4xl font-extrabold font-headline tracking-tight">Candidates</h2>
+        <p class="text-slate-500 mt-1">Review applicants for your drives.</p>
+      </div>
+      <div class="flex gap-3">
+        <button id="btn-bulk-alert" disabled class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-outline-variant text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          <span class="material-symbols-outlined text-[18px]">send</span>
+          Alert Selected
+        </button>
+        <button id="btn-export" disabled class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          <span class="material-symbols-outlined text-[18px]">download</span>
+          Export Shortlist
+        </button>
+      </div>
+    </div>
+
+    <!-- Drive Selector + Filters Row -->
+    <div class="bg-surface-container-lowest rounded-xl p-4 shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] mb-5">
+      <div class="grid grid-cols-1 md:grid-cols-6 gap-3">
+        <div class="md:col-span-2">
+          <label class="block text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Drive</label>
+          <select id="filter-drive" class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30">
+            <option value="">Select a drive…</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Branch</label>
+          <input id="filter-branch" type="text" placeholder="e.g. CSE"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Min CGPA</label>
+          <input id="filter-min-cgpa" type="number" step="0.1" min="0" max="10" placeholder="0.0"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Status</label>
+          <select id="filter-status" class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+            <option value="">All</option>
+            <option value="APPLIED">Applied</option>
+            <option value="WRITTEN_TEST">Written Test</option>
+            <option value="SHORTLISTED">Shortlisted</option>
+            <option value="GROUP_DISCUSSION">GD</option>
+            <option value="TECHNICAL_INTERVIEW">Technical</option>
+            <option value="HR_INTERVIEW">HR Interview</option>
+            <option value="SELECTED">Offered</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <div class="flex gap-2 w-full">
+            <button id="btn-apply-filters" class="flex-1 px-3 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-colors">Apply</button>
+            <button id="btn-clear-filters" class="px-3 py-2 rounded-xl border border-outline-variant text-sm text-slate-600 hover:bg-slate-100">Clear</button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3">
+        <label class="block text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1">Search</label>
+        <input id="filter-search" type="text" placeholder="Search by name or roll number…"
+          class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+      </div>
+    </div>
+
+    <!-- Results Count + Select All -->
+    <div id="results-bar" class="hidden flex items-center justify-between mb-3 px-1">
+      <p id="results-count" class="text-sm text-slate-500"></p>
+      <label class="flex items-center gap-2 text-sm font-medium text-slate-600 cursor-pointer">
+        <input type="checkbox" id="select-all-cb" class="w-4 h-4 accent-primary"/> Select all
+      </label>
+    </div>
+
+    <!-- Candidates Table -->
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-outline-variant">
+            <th class="px-4 py-3 w-8"></th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Candidate</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Branch</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">CGPA</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Backlogs</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Yr</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Status</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="candidates-tbody">
+          <tr><td colspan="8" class="px-5 py-14 text-center text-slate-400">
+            <span class="material-symbols-outlined text-3xl mb-2 block">work</span>
+            <p class="text-sm">Select a drive to view applicants.</p>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- Bulk Alert Modal -->
+<div id="alert-modal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+    <div class="flex items-center justify-between p-5 border-b border-outline-variant">
+      <h3 class="text-lg font-headline font-bold">Send Bulk Alert</h3>
+      <button onclick="document.getElementById('alert-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="p-5 space-y-4">
+      <p id="alert-target-info" class="text-sm text-slate-500"></p>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">Message</label>
+        <textarea id="alert-message" rows="4" placeholder="Type your message to the selected candidates…"
+          class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"></textarea>
+      </div>
+      <div class="flex justify-end gap-3">
+        <button onclick="document.getElementById('alert-modal').classList.add('hidden')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">Cancel</button>
+        <button id="btn-send-alert" class="px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-colors">Send Alert</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Message Single Candidate Modal -->
+<div id="msg-modal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+    <div class="flex items-center justify-between p-5 border-b border-outline-variant">
+      <h3 class="text-lg font-headline font-bold">Message Candidate</h3>
+      <button onclick="document.getElementById('msg-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="p-5 space-y-4">
+      <p id="msg-target-info" class="text-sm font-semibold text-on-surface"></p>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">Message</label>
+        <textarea id="msg-message" rows="4" placeholder="Type your message…"
+          class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"></textarea>
+      </div>
+      <div class="flex justify-end gap-3">
+        <button onclick="document.getElementById('msg-modal').classList.add('hidden')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">Cancel</button>
+        <button id="btn-send-msg" class="px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-colors">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("recruiter")) {}
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+let allApplicants = [];
+let selectedAppIds = new Set();
+let currentDriveId = null;
+let msgTargetStudentId = null;
+let msgTargetDriveId = null;
+
+const appStatusMap = {
+  APPLIED:              { label: "Applied",     cls: "bg-blue-50 text-blue-700" },
+  WRITTEN_TEST:         { label: "Written Test",cls: "bg-indigo-50 text-indigo-700" },
+  SHORTLISTED:          { label: "Shortlisted", cls: "bg-amber-50 text-amber-700" },
+  GROUP_DISCUSSION:     { label: "GD",          cls: "bg-purple-50 text-purple-700" },
+  TECHNICAL_INTERVIEW:  { label: "Technical",   cls: "bg-teal-50 text-teal-700" },
+  HR_INTERVIEW:         { label: "HR",          cls: "bg-cyan-50 text-cyan-700" },
+  SELECTED:             { label: "Offered",     cls: "bg-green-100 text-green-700" },
+  REJECTED:             { label: "Rejected",    cls: "bg-red-100 text-red-700" },
+};
+
+const statusOptions = [
+  { v: "APPLIED",             l: "Applied" },
+  { v: "WRITTEN_TEST",        l: "Written Test" },
+  { v: "SHORTLISTED",         l: "Shortlisted" },
+  { v: "GROUP_DISCUSSION",    l: "Group Discussion" },
+  { v: "TECHNICAL_INTERVIEW", l: "Technical Interview" },
+  { v: "HR_INTERVIEW",        l: "HR Interview" },
+  { v: "SELECTED",            l: "Offered/Selected" },
+  { v: "REJECTED",            l: "Rejected" },
+];
+
+// ── Load Drives into selector ──────────────────────────────────────
+async function loadDriveOptions() {
+  const data = await apiFetch("/api/recruiter/drives");
+  const sel = document.getElementById("filter-drive");
+  if (!data || !data.length) return;
+
+  const user = getUser();
+  if (user) {
+    document.getElementById("sidebar-company").textContent = user.company || user.full_name || "Your Company";
+    document.getElementById("sidebar-name").textContent = user.email || "";
+  }
+
+  data.forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d.id;
+    opt.textContent = `${d.role_title} (${d.status === 'DRAFT' ? 'Pending Approval' : d.status})`;
+    sel.appendChild(opt);
+  });
+
+  // Auto-select first drive
+  if (data.length) {
+    sel.value = data[0].id;
+    currentDriveId = data[0].id;
+    loadApplicants();
+  }
+}
+
+// ── Load Applicants ────────────────────────────────────────────────
+async function loadApplicants() {
+  currentDriveId = document.getElementById("filter-drive").value;
+  if (!currentDriveId) {
+    document.getElementById("candidates-tbody").innerHTML = `<tr><td colspan="8" class="px-5 py-14 text-center text-slate-400">
+      <span class="material-symbols-outlined text-3xl mb-2 block">work</span>
+      <p class="text-sm">Select a drive to view applicants.</p>
+    </td></tr>`;
+    document.getElementById("btn-export").disabled = true;
+    return;
+  }
+
+  const branch = document.getElementById("filter-branch").value.trim();
+  const minCgpa = document.getElementById("filter-min-cgpa").value;
+  const status = document.getElementById("filter-status").value;
+  const search = document.getElementById("filter-search").value.trim();
+
+  const params = new URLSearchParams();
+  if (branch) params.append("branch", branch);
+  if (minCgpa) params.append("min_cgpa", minCgpa);
+  if (status) params.append("status", status);
+  if (search) params.append("search", search);
+
+  document.getElementById("candidates-tbody").innerHTML = `<tr><td colspan="8" class="px-5 py-10 text-center text-slate-400">
+    <div class="animate-pulse inline-flex flex-col items-center gap-2"><div class="h-4 bg-slate-100 rounded w-48"></div></div>
+  </td></tr>`;
+
+  const data = await apiFetch(`/api/recruiter/drives/${currentDriveId}/applicants?${params.toString()}`);
+  if (!data) return;
+
+  allApplicants = data;
+  selectedAppIds.clear();
+  renderApplicants();
+  document.getElementById("btn-export").disabled = false;
+  msgTargetDriveId = currentDriveId;
+}
+
+function renderApplicants() {
+  const tbody = document.getElementById("candidates-tbody");
+  const bar = document.getElementById("results-bar");
+
+  if (!allApplicants.length) {
+    tbody.innerHTML = `<tr><td colspan="8" class="px-5 py-12 text-center text-slate-400">
+      <span class="material-symbols-outlined text-3xl mb-2 block">person_off</span>
+      <p class="text-sm">No applicants match these filters.</p>
+    </td></tr>`;
+    bar.classList.add("hidden");
+    updateBulkBtn();
+    return;
+  }
+
+  bar.classList.remove("hidden");
+  document.getElementById("results-count").textContent = `${allApplicants.length} applicant(s)`;
+
+  tbody.innerHTML = allApplicants.map(a => {
+    const c = a.candidate;
+    const st = appStatusMap[a.status] || { label: a.status, cls: "bg-slate-100 text-slate-500" };
+    const checked = selectedAppIds.has(a.application_id) ? "checked" : "";
+    return `<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors" data-app-id="${a.application_id}" data-student-id="${c.id}">
+      <td class="px-4 py-3">
+        <input type="checkbox" ${checked} class="row-cb w-4 h-4 accent-primary" data-app-id="${a.application_id}" onchange="toggleRowSelect(this)"/>
+      </td>
+      <td class="px-4 py-3">
+        <p class="font-semibold text-on-surface text-sm">${c.full_name}</p>
+        <p class="text-xs text-slate-400">${c.roll_number}</p>
+      </td>
+      <td class="px-4 py-3 text-slate-600">${c.branch || '—'}</td>
+      <td class="px-4 py-3 font-mono font-semibold">${c.cgpa?.toFixed(2) ?? '—'}</td>
+      <td class="px-4 py-3 font-mono text-slate-600">${c.backlogs ?? '—'}</td>
+      <td class="px-4 py-3 text-slate-500">${c.graduation_year || '—'}</td>
+      <td class="px-4 py-3">
+        <select class="status-select text-xs px-2 py-1 rounded-full border-none outline-none font-semibold cursor-pointer ${st.cls}"
+          data-app-id="${a.application_id}" onchange="updateStatus(this, '${a.application_id}')">
+          ${statusOptions.map(o => `<option value="${o.v}" ${o.v === a.status ? 'selected' : ''}>${o.l}</option>`).join('')}
+        </select>
+      </td>
+      <td class="px-4 py-3">
+        <button onclick="openMsgModal('${c.id}', '${c.full_name}')" class="p-1.5 rounded-lg hover:bg-primary/10 text-slate-400 hover:text-primary transition-colors" title="Message">
+          <span class="material-symbols-outlined text-[18px]">mail</span>
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleRowSelect(cb) {
+  if (cb.checked) selectedAppIds.add(cb.dataset.appId);
+  else selectedAppIds.delete(cb.dataset.appId);
+  updateBulkBtn();
+}
+
+document.getElementById("select-all-cb")?.addEventListener("change", (e) => {
+  selectedAppIds.clear();
+  document.querySelectorAll(".row-cb").forEach(cb => {
+    cb.checked = e.target.checked;
+    if (e.target.checked) selectedAppIds.add(cb.dataset.appId);
+  });
+  updateBulkBtn();
+});
+
+function updateBulkBtn() {
+  const btn = document.getElementById("btn-bulk-alert");
+  btn.disabled = selectedAppIds.size === 0;
+}
+
+// ── Status Update ──────────────────────────────────────────────────
+async function updateStatus(selectEl, appId) {
+  const newStatus = selectEl.value;
+  const res = await apiFetch(`/api/recruiter/applications/${appId}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ status: newStatus }),
+  });
+  if (res && !res.error) {
+    showToast("Status updated.", "success");
+    // Update local data
+    const item = allApplicants.find(a => a.application_id === appId);
+    if (item) item.status = newStatus;
+    const st = appStatusMap[newStatus] || { cls: "bg-slate-100 text-slate-500" };
+    selectEl.className = `status-select text-xs px-2 py-1 rounded-full border-none outline-none font-semibold cursor-pointer ${st.cls}`;
+  } else {
+    showToast(res?.error || "Failed to update status.", "error");
+    // Revert UI
+    const item = allApplicants.find(a => a.application_id === appId);
+    if (item) selectEl.value = item.status;
+  }
+}
+
+// ── Message Single Candidate ───────────────────────────────────────
+function openMsgModal(studentId, name) {
+  msgTargetStudentId = studentId;
+  document.getElementById("msg-target-info").textContent = `To: ${name}`;
+  document.getElementById("msg-message").value = "";
+  document.getElementById("msg-modal").classList.remove("hidden");
+}
+
+document.getElementById("btn-send-msg").addEventListener("click", async () => {
+  const message = document.getElementById("msg-message").value.trim();
+  if (!message) { showToast("Message cannot be empty.", "error"); return; }
+  const payload = { message, drive_id: currentDriveId };
+  const res = await apiFetch(`/api/recruiter/candidates/${msgTargetStudentId}/message`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  if (res && !res.error) {
+    showToast("Message sent.", "success");
+    document.getElementById("msg-modal").classList.add("hidden");
+  } else {
+    showToast(res?.error || "Failed to send message.", "error");
+  }
+});
+
+// ── Bulk Alert ─────────────────────────────────────────────────────
+document.getElementById("btn-bulk-alert").addEventListener("click", () => {
+  if (!selectedAppIds.size) return;
+  // Map app IDs → student IDs
+  const studentIds = allApplicants
+    .filter(a => selectedAppIds.has(a.application_id))
+    .map(a => a.candidate.id);
+  document.getElementById("alert-target-info").textContent = `Sending to ${studentIds.length} candidate(s).`;
+  document.getElementById("alert-message").value = "";
+  document.getElementById("alert-modal").classList.remove("hidden");
+  document.getElementById("btn-send-alert").dataset.studentIds = JSON.stringify(studentIds);
+});
+
+document.getElementById("btn-send-alert").addEventListener("click", async (e) => {
+  const studentIds = JSON.parse(e.currentTarget.dataset.studentIds || "[]");
+  const message = document.getElementById("alert-message").value.trim();
+  if (!message) { showToast("Message cannot be empty.", "error"); return; }
+  const res = await apiFetch(`/api/recruiter/drives/${currentDriveId}/alert`, {
+    method: "POST",
+    body: JSON.stringify({ candidate_ids: studentIds, message }),
+  });
+  if (res && !res.error) {
+    showToast(res.message || "Alert sent.", "success");
+    document.getElementById("alert-modal").classList.add("hidden");
+  } else {
+    showToast(res?.error || "Failed to send alert.", "error");
+  }
+});
+
+// ── Export Shortlist ───────────────────────────────────────────────
+document.getElementById("btn-export").addEventListener("click", () => {
+  if (!currentDriveId) return;
+  window.location.href = `/api/recruiter/drives/${currentDriveId}/shortlist/export`;
+});
+
+// ── Filters ────────────────────────────────────────────────────────
+document.getElementById("btn-apply-filters").addEventListener("click", loadApplicants);
+document.getElementById("filter-drive").addEventListener("change", loadApplicants);
+document.getElementById("btn-clear-filters").addEventListener("click", () => {
+  document.getElementById("filter-branch").value = "";
+  document.getElementById("filter-min-cgpa").value = "";
+  document.getElementById("filter-status").value = "";
+  document.getElementById("filter-search").value = "";
+  loadApplicants();
+});
+document.getElementById("filter-search").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") loadApplicants();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadDriveOptions();
+  initRecruiterHeader();
+
+  // Live search — candidates & drives
+  const searchInput = document.getElementById('filter-search');
+  initLiveSearch(searchInput, '/api/recruiter/search', (data) => {
+    const rows = [];
+    (data.candidates || []).forEach(c => rows.push({
+      icon: 'person',
+      primary: c.name || c.roll_number,
+      secondary: `${c.roll_number} · CGPA ${c.cgpa}`,
+      onClick: () => {
+        if (searchInput) { searchInput.value = c.roll_number; loadCandidates(); }
+      },
+    }));
+    (data.drives || []).forEach(d => rows.push({
+      icon: 'campaign',
+      primary: d.job_title,
+      secondary: d.status,
+      onClick: () => window.location.href = `/recruiter/drives/${d.id}`,
+    }));
+    return rows;
+  });
+});
+</script>
+</body>
+</html>

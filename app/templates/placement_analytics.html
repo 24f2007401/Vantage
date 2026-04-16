@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Placement Analytics | Vantage OS</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#bbcffd",
+                    "surface": "#f9f9fe",
+                    "inverse-surface": "#2e3034",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#ffd0bd",
+                    "on-tertiary-fixed": "#360f00",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface-variant": "#e2e2e7",
+                    "on-secondary-fixed-variant": "#33466d",
+                    "primary-fixed": "#d8e2ff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#445880",
+                    "primary-container": "#005bc2",
+                    "inverse-primary": "#adc6ff",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "tertiary": "#7e2e00",
+                    "on-surface": "#1a1c1f",
+                    "tertiary-container": "#a43f02",
+                    "outline": "#727784",
+                    "surface-container-highest": "#e2e2e7",
+                    "outline-variant": "#c2c6d5",
+                    "surface-bright": "#f9f9fe",
+                    "on-primary-container": "#cad9ff",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#adc6ff",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d9dade",
+                    "secondary-fixed-dim": "#b3c6f5",
+                    "background": "#f9f9fe",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#021a3f",
+                    "on-background": "#1a1c1f",
+                    "inverse-on-surface": "#f0f0f5",
+                    "surface-tint": "#005bc1",
+                    "primary": "#004495",
+                    "on-surface-variant": "#424753",
+                    "on-primary-fixed": "#001a41",
+                    "surface-container": "#ededf2",
+                    "surface-container-low": "#f3f3f8",
+                    "secondary": "#4b5e87",
+                    "on-primary-fixed-variant": "#004494",
+                    "surface-container-high": "#e8e8ed",
+                    "secondary-fixed": "#d8e2ff",
+                    "tertiary-fixed": "#ffdbcd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "18px",
+                    "xl": "24px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Inter"],
+                    "label": ["Inter"],
+                    "mono": ["JetBrains Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9fe; }
+        .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-header { background: rgba(249, 249, 254, 0.7); backdrop-filter: blur(25px); }
+        .primary-gradient { background: linear-gradient(135deg, #004495 0%, #005bc2 100%); }
+    </style>
+</head>
+<body class="text-on-surface selection:bg-primary-fixed">
+<!-- Floating Sidebar -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+<div class="mb-10">
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50 font-headline">Vantage OS</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-mono mt-1">Digital Curator</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 py-2 px-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/students">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+<span class="text-sm font-medium">Students</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/drives">
+<span class="material-symbols-outlined text-[20px]">work</span>
+<span class="text-sm font-medium">Drives</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/recruiters">
+<span class="material-symbols-outlined text-[20px]">business</span>
+<span class="text-sm font-medium">Recruiters</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-3 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/tsheets">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="text-sm font-medium">T-Sheets</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-3 rounded-lg text-blue-700 dark:text-blue-400 font-semibold border-r-4 border-blue-600 bg-slate-100/50 transition-colors duration-300" href="/admin/analytics">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span class="text-sm">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 space-y-1">
+<a class="flex items-center gap-3 py-2 px-3 rounded-lg text-slate-500 hover:text-slate-900 transition-all" href="javascript:void(0)">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+<span class="text-sm font-medium">Support</span>
+</a>
+<button id="logout-btn" class="flex items-center gap-3 py-2 px-3 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all w-full">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[250px] min-h-screen">
+<!-- Glassmorphic Top Bar -->
+<header class="fixed top-0 right-0 left-[250px] h-[56px] glass-header z-30 flex justify-between items-center px-8">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-headline font-bold text-on-surface tracking-tight">Placement Analytics</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-[18px]">search</span>
+<input class="bg-surface-container-high border-none rounded-full py-1.5 pl-9 pr-4 text-xs w-64 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search data points..." type="text"/>
+</div>
+<button id="btn-export-csv" class="text-sm font-medium text-primary px-4 py-1.5 rounded-full hover:bg-primary/5 transition-all">Export CSV</button>
+<div class="flex items-center gap-3">
+<button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors relative">
+<span class="material-symbols-outlined text-[20px] text-slate-600">notifications</span>
+<span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+</button>
+<button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer select-none border-2 border-white shadow-sm">--</button>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<section class="pt-24 pb-12 px-8">
+<!-- KPI Row -->
+<div class="grid grid-cols-4 gap-6 mb-8">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<p class="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Total Placed</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-headline font-extrabold text-on-surface">--</h3>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div id="kpi-placed-bar" class="h-full bg-primary w-[0%] rounded-full transition-all"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<p class="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Avg CTC</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-headline font-extrabold text-on-surface">--</h3>
+<span class="text-xs font-mono text-slate-400">LPA</span>
+</div>
+<p class="text-[10px] text-slate-400 mt-4 italic">Awaiting data</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<p class="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Highest CTC</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-headline font-extrabold text-on-surface">--</h3>
+<span class="text-xs font-mono text-slate-400">LPA</span>
+</div>
+<div class="flex items-center mt-4 gap-2">
+<div class="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center border border-white">
+<span class="material-symbols-outlined text-[12px] text-amber-600" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<span id="kpi-highest-ctc-company" class="text-[10px] font-medium text-slate-500">No data yet</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<p class="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">Placement Rate</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-headline font-extrabold text-on-surface">94.2%</h3>
+<span class="text-xs font-medium text-emerald-600">Optimal</span>
+</div>
+<div class="mt-4 flex gap-1">
+<div class="h-1 flex-1 bg-emerald-500 rounded-full"></div>
+<div class="h-1 flex-1 bg-emerald-500 rounded-full"></div>
+<div class="h-1 flex-1 bg-emerald-500 rounded-full"></div>
+<div class="h-1 flex-1 bg-surface-container-high rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Charts Row 1 -->
+<div class="grid grid-cols-5 gap-8 mb-8">
+<!-- Placement Trend -->
+<div class="col-span-3 bg-surface-container-lowest rounded-xl p-8 shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h4 class="text-lg font-headline font-bold text-on-surface">Placement Trend</h4>
+<p class="text-xs text-slate-400">Monthly breakdown of successful hires</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-surface-container-low text-[10px] font-bold text-slate-500">2023 - 2024</span>
+</div>
+</div>
+<div id="placement-trend-chart" class="h-[280px] w-full relative overflow-hidden flex items-center justify-center">
+<p class="text-slate-400 text-sm">Loading…</p>
+</div>
+</div>
+<!-- Sector Distribution -->
+<div class="col-span-2 bg-surface-container-lowest rounded-xl p-8 shadow-[0_8_32px_0_rgba(26,28,31,0.04)] flex flex-col">
+<h4 class="text-lg font-headline font-bold text-on-surface mb-2">Sector Distribution</h4>
+<p class="text-xs text-slate-400 mb-8">Hires across various industries</p>
+<div class="flex-1 flex items-center justify-center relative">
+<div class="w-48 h-48 rounded-full border-[20px] border-surface-container flex items-center justify-center relative">
+<div class="text-center">
+<span id="sector-count" class="text-2xl font-headline font-bold">--</span>
+<p class="text-[9px] uppercase font-mono text-slate-400">Companies</p>
+</div>
+</div>
+</div>
+<div id="sector-legend" class="mt-8 space-y-3">
+<p class="text-xs text-slate-400 text-center">Loading…</p>
+</div>
+</div>
+</div>
+<!-- Charts Row 2 -->
+<div class="grid grid-cols-2 gap-8 mb-8">
+<!-- CGPA vs CTC Scatter -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<div class="flex items-start justify-between mb-2">
+<div>
+<h4 class="text-lg font-headline font-bold text-on-surface">CGPA vs. CTC Correlation</h4>
+<p class="text-xs text-slate-400">Data mapping academic performance to offers</p>
+</div>
+<span id="scatter-corr-badge" class="hidden text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-primary/10 text-primary"></span>
+</div>
+<div id="scatter-legend" class="flex flex-wrap gap-3 mt-2 mb-4 min-h-[20px]"></div>
+<div id="scatter-container" class="h-[280px] relative border-l border-b border-outline-variant/20 mt-2">
+<div id="scatter-empty" class="absolute inset-0 flex items-center justify-center text-slate-400 text-sm">No placement data yet</div>
+</div>
+<div class="flex justify-between mt-6 px-1 text-[9px] font-mono text-slate-400">
+<span id="scatter-x-min">CGPA 5.0</span><span>7.0</span><span>8.0</span><span>9.0</span><span id="scatter-x-max">10.0</span>
+</div>
+</div>
+<!-- Branch-wise Placement -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<h4 class="text-lg font-headline font-bold text-on-surface mb-2">Branch-wise Placement</h4>
+<p class="text-xs text-slate-400 mb-10">Comparative analysis of department success</p>
+<div id="branch-bars" class="space-y-6"></div>
+</div>
+</div>
+<!-- Company Leaderboard -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] overflow-hidden">
+<div class="p-8 pb-4 flex justify-between items-center">
+<div>
+<h4 class="text-lg font-headline font-bold text-on-surface">Top Recruiting Partners</h4>
+<p class="text-xs text-slate-400">Companies with highest engagement this season</p>
+</div>
+<button class="text-xs font-semibold text-slate-500 hover:text-primary transition-all underline decoration-slate-200 underline-offset-4">View Full Registry</button>
+</div>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-8 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Rank</th>
+<th class="px-8 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Partner</th>
+<th class="px-8 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Avg Package</th>
+<th class="px-8 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Offers</th>
+<th class="px-8 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Satisfaction</th>
+</tr>
+</thead>
+<tbody id="company-tbody" class="divide-y divide-surface-container-high"></tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Floating UI Decorative Element (Asymmetric Grid Break) -->
+<div class="fixed bottom-12 right-12 w-32 h-32 opacity-10 pointer-events-none">
+<svg viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<path d="M44.7,-76.4C58.1,-69.2,69.2,-58.1,77.4,-44.7C85.5,-31.3,90.8,-15.7,90.2,-0.4C89.5,14.9,82.9,29.8,74.1,43.2C65.3,56.6,54.3,68.4,41,76.5C27.7,84.6,12.1,89,-2.4,93.2C-16.9,97.3,-30.3,101.3,-43,96C-55.7,90.7,-67.6,76.1,-76.1,60.6C-84.5,45,-89.4,28.5,-91.2,12.1C-93.1,-4.4,-91.7,-20.8,-84.9,-34.5C-78.1,-48.2,-65.8,-59.1,-52.1,-66.1C-38.4,-73.1,-23.3,-76.2,-8,-74.8C7.3,-73.4,22.7,-77.5,37.3,-81.2L44.7,-76.4Z" fill="#004495" transform="translate(100 100)"></path>
+</svg>
+</div>
+<!-- Vantage API -->
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("admin")) { /* redirected */ }
+
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+async function loadAnalytics() {
+    const data = await apiFetch("/api/admin/analytics/overview");
+    if (!data) return;
+
+    const kpis = document.querySelectorAll('.text-3xl.font-headline.font-extrabold');
+    if (kpis[0]) kpis[0].textContent = (data.placed_students || 0).toLocaleString();
+    if (kpis[1]) kpis[1].textContent = data.avg_ctc_lpa ? data.avg_ctc_lpa.toFixed(1) : '—';
+    if (kpis[2]) kpis[2].textContent = data.highest_ctc_lpa ? data.highest_ctc_lpa.toFixed(1) : '—';
+    if (kpis[3]) kpis[3].textContent = data.placement_percentage != null ? `${data.placement_percentage}%` : '—';
+
+    // Update highest CTC company (was hardcoded as "Amazon India")
+    const companyEl = document.getElementById('kpi-highest-ctc-company');
+    if (companyEl) {
+        companyEl.textContent = data.highest_ctc_company || 'No data yet';
+    }
+
+    const placedBar = document.getElementById("kpi-placed-bar");
+    if (placedBar && data.placement_percentage != null) {
+        placedBar.style.width = `${Math.min(data.placement_percentage, 100)}%`;
+    }
+}
+
+async function loadPlacementTrend() {
+    const container = document.getElementById('placement-trend-chart');
+    if (!container) return;
+
+    const data = await apiFetch('/api/admin/analytics/placements');
+    if (!data || !data.length) {
+        container.innerHTML = '<p class="text-slate-400 text-sm">No placement data yet</p>';
+        return;
+    }
+
+    const maxCount = Math.max(...data.map(d => d.count), 1);
+    const colors = ['#d8e2ff','#adc6ff','#6699ff','#3377ee','#1155cc','#004495','#00297a'];
+    container.innerHTML = `
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;width:100%;height:100%;padding:0 8px 24px;gap:4px;position:relative;">
+            ${data.map((d, i) => {
+                const pct = Math.round((d.count / maxCount) * 100);
+                const color = colors[Math.min(i, colors.length - 1)];
+                return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;" title="${d.month}: ${d.count} placements">
+                    <div style="position:relative;width:100%;display:flex;flex-direction:column;align-items:center;">
+                        <span style="font-size:9px;font-weight:700;color:#004495;margin-bottom:4px;">${d.count}</span>
+                        <div style="width:100%;height:${Math.max(pct * 2.4, 4)}px;background:${color};border-radius:6px 6px 0 0;"></div>
+                    </div>
+                    <span style="font-size:9px;color:#727784;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;margin-top:2px;">${d.month}</span>
+                </div>`;
+            }).join('')}
+        </div>`;
+}
+
+async function loadBranchStats() {
+    const rows = await apiFetch("/api/admin/analytics/by-branch");
+    if (!rows) return;
+    const container = document.getElementById("branch-bars");
+    if (!container) return;
+    container.innerHTML = rows.map(r => `
+        <div>
+            <div class="flex justify-between text-xs mb-2">
+                <span class="font-medium">${r.branch}</span>
+                <span class="font-mono text-primary">${r.placement_rate}%</span>
+            </div>
+            <div class="h-2 w-full bg-surface-container-high rounded-full">
+                <div class="h-full bg-primary rounded-full transition-all" style="width:${Math.min(r.placement_rate, 100)}%"></div>
+            </div>
+        </div>`).join('');
+}
+
+async function loadCompanyLeaderboard() {
+    const rows = await apiFetch("/api/admin/analytics/by-company");
+    if (!rows) return;
+
+    // Update sector distribution panel
+    const sectorCount = document.getElementById('sector-count');
+    const sectorLegend = document.getElementById('sector-legend');
+    if (sectorCount) sectorCount.textContent = rows.length || '0';
+    if (sectorLegend) {
+        if (!rows.length) {
+            sectorLegend.innerHTML = '<p class="text-xs text-slate-400 text-center">No placement data yet</p>';
+        } else {
+            const total = rows.reduce((s, r) => s + r.offers, 0);
+            const dotColors = ['#004495','#4b5e87','#adc6ff','#7e2e00','#a43f02','#727784'];
+            sectorLegend.innerHTML = rows.slice(0, 5).map((r, i) => {
+                const pct = total ? Math.round(r.offers / total * 100) : 0;
+                return `<div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full" style="background:${dotColors[i % dotColors.length]}"></div>
+                        <span class="text-xs text-slate-600">${r.company}</span>
+                    </div>
+                    <span class="text-xs font-mono font-bold">${pct}%</span>
+                </div>`;
+            }).join('');
+        }
+    }
+
+    const tbody = document.getElementById("company-tbody");
+    if (!tbody) return;
+    if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-8 py-8 text-center text-slate-400 text-sm">No placement data yet</td></tr>`;
+        return;
+    }
+    const goldBadge = `<div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-bold text-sm shadow-sm"><span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span></div>`;
+    tbody.innerHTML = rows.map((r, i) => `
+        <tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-8 py-5">
+                ${i === 0 ? goldBadge : `<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-sm">${i + 1}</div>`}
+            </td>
+            <td class="px-8 py-5">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">${r.company.charAt(0).toUpperCase()}</div>
+                    <span class="font-bold text-sm">${r.company}</span>
+                </div>
+            </td>
+            <td class="px-8 py-5 text-sm font-mono">${r.avg_ctc_lpa} LPA</td>
+            <td class="px-8 py-5 text-sm font-medium">${r.offers}</td>
+            <td class="px-8 py-5"><span class="text-xs font-mono text-slate-500">${r.offers} offer${r.offers !== 1 ? 's' : ''}</span></td>
+        </tr>`).join('');
+}
+
+document.getElementById("btn-export-csv")?.addEventListener("click", () => {
+    const a = document.createElement("a");
+    a.href = "/api/admin/analytics/export";
+    a.download = "placement_data.csv";
+    const headers = {};
+    const token = sessionStorage.getItem("vantage_token");
+    if (token) {
+        fetch("/api/admin/analytics/export", { headers: { "Authorization": `Bearer ${token}` } })
+            .then(r => r.blob())
+            .then(blob => {
+                a.href = URL.createObjectURL(blob);
+                a.click();
+            });
+    }
+});
+
+async function loadCgpaCtcScatter() {
+    const container = document.getElementById('scatter-container');
+    const emptyEl = document.getElementById('scatter-empty');
+    const badge = document.getElementById('scatter-corr-badge');
+    const legend = document.getElementById('scatter-legend');
+    if (!container) return;
+
+    const data = await apiFetch('/api/admin/analytics/cgpa-ctc-correlation');
+    if (!data || !data.data_points || !data.data_points.length) {
+        emptyEl && (emptyEl.style.display = 'flex');
+        return;
+    }
+    emptyEl && (emptyEl.style.display = 'none');
+
+    const pts = data.data_points;
+    const cgpas = pts.map(p => p.cgpa);
+    const ctcs = pts.map(p => p.ctc_lpa);
+    const minCgpa = Math.max(5, Math.min(...cgpas) - 0.5);
+    const maxCgpa = Math.min(10, Math.max(...cgpas) + 0.5);
+    const maxCtc = Math.max(...ctcs) * 1.1 || 1;
+
+    // Branch colours
+    const branches = [...new Set(pts.map(p => p.branch))];
+    const palette = ['#004495','#a43f02','#4b5e87','#7e2e00','#6699ff','#d97706','#059669'];
+    const branchColor = {};
+    branches.forEach((b, i) => branchColor[b] = palette[i % palette.length]);
+
+    // Render points
+    const pointsHtml = pts.map(p => {
+        const x = ((p.cgpa - minCgpa) / (maxCgpa - minCgpa)) * 100;
+        const y = (p.ctc_lpa / maxCtc) * 100;
+        const color = branchColor[p.branch] || '#004495';
+        return `<div title="${p.branch}: CGPA ${p.cgpa.toFixed(2)}, ${p.ctc_lpa.toFixed(1)} LPA"
+            style="position:absolute;left:calc(${x}% - 5px);bottom:calc(${y}% - 5px);
+            width:10px;height:10px;border-radius:50%;background:${color};opacity:0.75;cursor:pointer;"></div>`;
+    }).join('');
+    container.innerHTML = pointsHtml;
+
+    // Y-axis labels
+    for (let i = 0; i <= 4; i++) {
+        const val = (maxCtc * i / 4).toFixed(0);
+        const el = document.createElement('div');
+        el.style.cssText = `position:absolute;right:calc(100% + 4px);bottom:calc(${i * 25}% - 7px);font-size:9px;color:#727784;font-family:monospace;white-space:nowrap;`;
+        el.textContent = `${val}L`;
+        container.appendChild(el);
+    }
+
+    // Correlation badge
+    if (data.correlation_coefficient !== null && data.correlation_coefficient !== undefined) {
+        const r = data.correlation_coefficient;
+        const absR = Math.abs(r);
+        let label = absR >= 0.7 ? 'Strong' : absR >= 0.4 ? 'Moderate' : 'Weak';
+        const dir = r >= 0 ? 'positive' : 'negative';
+        badge.textContent = `r = ${r.toFixed(2)} (${label} ${dir})`;
+        badge.classList.remove('hidden');
+    }
+
+    // Legend
+    legend.innerHTML = branches.map(b =>
+        `<div class="flex items-center gap-1.5"><div style="width:8px;height:8px;border-radius:50%;background:${branchColor[b]}"></div><span class="text-[10px] text-slate-500">${b}</span></div>`
+    ).join('');
+
+    // Update x-axis labels
+    const xMin = document.getElementById('scatter-x-min');
+    const xMax = document.getElementById('scatter-x-max');
+    if (xMin) xMin.textContent = `CGPA ${minCgpa.toFixed(1)}`;
+    if (xMax) xMax.textContent = maxCgpa.toFixed(1);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadAnalytics();
+    loadBranchStats();
+    loadCompanyLeaderboard();
+    loadPlacementTrend();
+    loadCgpaCtcScatter();
+    initAdminHeader();
+});
+</script>
+</body></html>

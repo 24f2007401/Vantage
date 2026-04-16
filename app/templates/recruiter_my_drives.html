@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vantage OS | My Drives</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{ extend:{
+      colors:{"primary":"#004495","primary-container":"#005bc2","primary-fixed":"#d8e2ff","primary-fixed-dim":"#adc6ff","on-primary":"#ffffff","on-primary-container":"#cad9ff","secondary":"#4b5e87","secondary-container":"#bbcffd","on-secondary":"#ffffff","on-secondary-container":"#445880","tertiary":"#7e2e00","tertiary-container":"#a43f02","on-tertiary":"#ffffff","on-tertiary-container":"#ffd0bd","tertiary-fixed":"#ffdbcd","error":"#ba1a1a","error-container":"#ffdad6","on-error":"#ffffff","background":"#f9f9fe","surface":"#f9f9fe","surface-dim":"#d9dade","surface-bright":"#f9f9fe","surface-container-lowest":"#ffffff","surface-container-low":"#f3f3f8","surface-container":"#ededf2","surface-container-high":"#e8e8ed","surface-container-highest":"#e2e2e7","on-surface":"#1a1c1f","on-surface-variant":"#424753","outline":"#727784","outline-variant":"#c2c6d5","inverse-surface":"#2e3034","inverse-on-surface":"#f0f0f5","inverse-primary":"#adc6ff","surface-tint":"#005bc1"},
+      borderRadius:{"DEFAULT":"0.25rem","lg":"18px","xl":"24px","full":"9999px"},
+      fontFamily:{"headline":["Plus Jakarta Sans"],"body":["Inter"],"mono":["JetBrains Mono"]}
+    }}
+  }
+</script>
+<style>
+  body{font-family:'Inter',sans-serif;background:#f9f9fe;color:#1a1c1f}
+  .font-headline{font-family:'Plus Jakarta Sans',sans-serif}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+  .glass-nav{backdrop-filter:blur(25px);background:rgba(255,255,255,0.7)}
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:50;display:flex;align-items:center;justify-content:center}
+  .slide-panel{position:fixed;right:0;top:0;height:100vh;width:520px;background:#fff;z-index:60;box-shadow:-8px 0 40px rgba(26,28,31,0.12);transform:translateX(100%);transition:transform 0.28s ease}
+  .slide-panel.open{transform:translateX(0)}
+</style>
+</head>
+<body class="bg-background">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+  <div class="flex items-center gap-3 mb-6">
+    <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">rocket_launch</span>
+    </div>
+    <div>
+      <h1 class="text-xl font-bold tracking-tight text-slate-900 font-headline">Vantage OS</h1>
+      <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-0.5">Recruiter Portal</p>
+    </div>
+  </div>
+  <div id="sidebar-recruiter-info" class="mb-6 px-3 py-3 bg-surface-container-low rounded-xl">
+    <p id="sidebar-company" class="text-sm font-bold text-on-surface">Loading…</p>
+    <p id="sidebar-name" class="text-[10px] text-slate-500 mt-0.5">…</p>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a href="/recruiter/drives" class="flex items-center gap-3 px-3 py-2 rounded-xl bg-primary/10 text-primary font-semibold">
+      <span class="material-symbols-outlined text-[20px]">work</span>
+      <span class="text-sm font-medium">Drives</span>
+    </a>
+    <a href="/recruiter/candidates" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">group</span>
+      <span class="text-sm font-medium">Candidates</span>
+    </a>
+    <a href="/recruiter/analytics" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">analytics</span>
+      <span class="text-sm font-medium">Analytics</span>
+    </a>
+  </nav>
+  <div class="mt-auto pt-4 border-t border-slate-100">
+    <button id="logout-btn" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors w-full">
+      <span class="material-symbols-outlined text-[20px]">logout</span>
+      <span class="text-sm font-medium">Logout</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="pl-[244px] pt-[56px] min-h-screen">
+  <header class="fixed top-0 left-0 w-full h-[56px] glass-nav flex justify-between items-center pl-[250px] pr-8 z-30">
+    <h2 class="text-lg font-headline font-bold text-on-surface">My Drives</h2>
+    <div class="flex items-center gap-3">
+      <button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors relative">
+        <span class="material-symbols-outlined text-[20px] text-slate-600">notifications</span>
+        <span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+      </button>
+      <button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer select-none border-2 border-white shadow-sm">--</button>
+    </div>
+  </header>
+
+  <div class="p-8 max-w-[1200px] mx-auto">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-4xl font-extrabold font-headline tracking-tight">My Drives</h2>
+        <p class="text-slate-500 mt-1">Manage your recruitment campaigns.</p>
+      </div>
+      <button id="btn-new-drive" class="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-semibold text-sm hover:bg-primary-container transition-colors shadow-sm">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        New Drive
+      </button>
+    </div>
+
+    <!-- Status Filter Tabs -->
+    <div class="flex gap-2 mb-6">
+      <button onclick="filterByStatus('')" id="tab-all" class="status-tab px-4 py-1.5 rounded-full text-sm font-semibold bg-primary text-white">All</button>
+      <button onclick="filterByStatus('OPEN')" id="tab-open" class="status-tab px-4 py-1.5 rounded-full text-sm font-semibold bg-surface-container-high text-slate-600 hover:bg-slate-200">Open</button>
+      <button onclick="filterByStatus('DRAFT')" id="tab-draft" class="status-tab px-4 py-1.5 rounded-full text-sm font-semibold bg-surface-container-high text-slate-600 hover:bg-slate-200">Pending Approval</button>
+      <button onclick="filterByStatus('CLOSED')" id="tab-closed" class="status-tab px-4 py-1.5 rounded-full text-sm font-semibold bg-surface-container-high text-slate-600 hover:bg-slate-200">Closed</button>
+    </div>
+
+    <!-- Drives Table -->
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-outline-variant">
+            <th class="text-left px-5 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Drive / Role</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Type</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">CTC</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Applicants</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Deadline</th>
+            <th class="text-left px-4 py-3 text-xs font-mono text-slate-400 uppercase tracking-widest">Status</th>
+            <th class="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody id="drives-tbody">
+          <tr><td colspan="7" class="px-5 py-10 text-center text-slate-400">
+            <div class="animate-pulse flex flex-col items-center gap-2">
+              <div class="h-4 bg-slate-100 rounded w-48"></div>
+              <div class="h-4 bg-slate-100 rounded w-32"></div>
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- ── Drive Detail Slide-over Panel ── -->
+<div id="drive-panel" class="slide-panel overflow-y-auto">
+  <div class="flex items-center justify-between p-5 border-b border-outline-variant">
+    <h3 class="text-lg font-headline font-bold text-on-surface">Drive Details</h3>
+    <button onclick="closeDrivePanel()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100">
+      <span class="material-symbols-outlined text-[20px]">close</span>
+    </button>
+  </div>
+  <div id="drive-panel-body" class="p-5 space-y-5">
+    <div class="animate-pulse space-y-3">
+      <div class="h-6 bg-slate-100 rounded w-3/4"></div>
+      <div class="h-4 bg-slate-100 rounded w-1/2"></div>
+    </div>
+  </div>
+</div>
+<div id="drive-panel-overlay" onclick="closeDrivePanel()" class="hidden fixed inset-0 bg-black/20 z-50"></div>
+
+<!-- ── New Drive Modal ── -->
+<div id="new-drive-modal" class="hidden modal-backdrop" style="z-index:70">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto m-4">
+    <div class="flex items-center justify-between p-6 border-b border-outline-variant">
+      <h3 class="text-xl font-headline font-bold">Submit New Drive Request</h3>
+      <button onclick="closeNewDriveModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form id="new-drive-form" class="p-6 space-y-5">
+      <!-- Section: Basic Info -->
+      <p class="text-xs font-mono text-slate-400 uppercase tracking-widest">Basic Information</p>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="col-span-2">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Drive Title <span class="text-error">*</span></label>
+          <input id="f-drive-title" type="text" placeholder="e.g. SDE Campus Drive 2025" required
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Role Title <span class="text-error">*</span></label>
+          <input id="f-role-title" type="text" placeholder="e.g. Software Engineer" required
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Job Type <span class="text-error">*</span></label>
+          <select id="f-job-type" required
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+            <option value="">Select…</option>
+            <option value="FULL_TIME">Full Time</option>
+            <option value="INTERNSHIP">Internship</option>
+            <option value="CONTRACT">Contract</option>
+            <option value="PART_TIME">Part Time</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Job Location</label>
+          <input id="f-location" type="text" placeholder="e.g. Bangalore / Remote"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">CTC (LPA)</label>
+          <input id="f-ctc" type="number" step="0.01" min="0" placeholder="e.g. 12.5"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Applications Open</label>
+          <input id="f-open-date" type="datetime-local"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Application Deadline</label>
+          <input id="f-close-date" type="datetime-local"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div class="col-span-2">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Job Description</label>
+          <textarea id="f-description" rows="3" placeholder="Role overview, responsibilities, perks…"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Section: Eligibility -->
+      <p class="text-xs font-mono text-slate-400 uppercase tracking-widest pt-2">Eligibility Criteria</p>
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Min CGPA</label>
+          <input id="f-min-cgpa" type="number" step="0.01" min="0" max="10" placeholder="e.g. 7.0"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Max Backlogs</label>
+          <input id="f-max-backlogs" type="number" min="0" placeholder="e.g. 0"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Min Semesters</label>
+          <input id="f-min-semesters" type="number" min="1" max="8" placeholder="e.g. 6"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-2">Allowed Branches</label>
+        <div id="branch-checkboxes" class="flex flex-wrap gap-2">
+          <p class="text-xs text-slate-400">Loading branches…</p>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">Graduation Year(s) <span class="text-slate-400 font-normal">(comma-separated)</span></label>
+        <input id="f-grad-years" type="text" placeholder="e.g. 2025, 2026"
+          class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+      </div>
+
+      <!-- Section: Optional Details -->
+      <p class="text-xs font-mono text-slate-400 uppercase tracking-widest pt-2">Optional Details</p>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Openings</label>
+          <input id="f-openings" type="number" min="1" placeholder="Number of positions"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Interview Rounds</label>
+          <input id="f-interview-rounds" type="number" min="1" placeholder="e.g. 3"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div class="col-span-2">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Required Skills <span class="text-slate-400 font-normal">(comma-separated)</span></label>
+          <input id="f-skills" type="text" placeholder="e.g. Python, SQL, Machine Learning"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div class="col-span-2">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Preferred Certifications <span class="text-slate-400 font-normal">(for prioritisation only, comma-separated)</span></label>
+          <input id="f-certifications" type="text" placeholder="e.g. AWS Solutions Architect, PMP"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Bond Period</label>
+          <input id="f-bond" type="text" placeholder="e.g. 2 years / None"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"/>
+        </div>
+        <div class="col-span-2">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Additional Notes</label>
+          <textarea id="f-notes" rows="2" placeholder="Any other requirements or notes for admin…"
+            class="w-full px-3 py-2 rounded-xl border border-outline-variant text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"></textarea>
+        </div>
+      </div>
+
+      <div id="form-error" class="hidden text-xs text-error bg-error-container px-3 py-2 rounded-xl"></div>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button type="button" onclick="closeNewDriveModal()" class="px-5 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100">Cancel</button>
+        <button type="submit" id="btn-submit-drive" class="px-5 py-2 rounded-xl text-sm font-semibold bg-primary text-white hover:bg-primary-container transition-colors">
+          Submit for Approval
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("recruiter")) {}
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+let allDrives = [];
+let currentStatusFilter = '';
+
+const statusMap = {
+  OPEN:      { label: "Open",             cls: "bg-green-100 text-green-700" },
+  DRAFT:     { label: "Pending Approval", cls: "bg-amber-100 text-amber-700" },
+  CLOSED:    { label: "Closed",           cls: "bg-red-100 text-red-700" },
+  COMPLETED: { label: "Completed",        cls: "bg-slate-100 text-slate-500" },
+};
+const typeMap = {
+  FULL_TIME:  "Full Time",
+  INTERNSHIP: "Internship",
+  CONTRACT:   "Contract",
+  PART_TIME:  "Part Time",
+};
+
+// ── Load Drives ────────────────────────────────────────────────────
+async function loadDrives() {
+  const data = await apiFetch("/api/recruiter/drives");
+  if (!data) return;
+  allDrives = data;
+
+  const user = getUser();
+  if (user) {
+    document.getElementById("sidebar-company").textContent = user.company || user.full_name || "Your Company";
+    document.getElementById("sidebar-name").textContent = user.email || "";
+  }
+
+  renderDrives();
+}
+
+function renderDrives() {
+  const list = currentStatusFilter ? allDrives.filter(d => d.status === currentStatusFilter) : allDrives;
+  const tbody = document.getElementById("drives-tbody");
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="px-5 py-12 text-center text-slate-400">
+      <span class="material-symbols-outlined text-3xl mb-2 block">work_off</span>
+      <p class="text-sm">No drives found. <button onclick="openNewDriveModal()" class="text-primary font-semibold">Create one</button></p>
+    </td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(d => {
+    const st = statusMap[d.status] || { label: d.status, cls: "bg-slate-100 text-slate-500" };
+    const deadline = d.application_close_at ? new Date(d.application_close_at).toLocaleDateString() : "—";
+    return `<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors cursor-pointer" onclick="openDrivePanel('${d.id}')">
+      <td class="px-5 py-4">
+        <p class="font-semibold text-on-surface">${d.role_title}</p>
+        <p class="text-xs text-slate-400">${d.drive_title}</p>
+      </td>
+      <td class="px-4 py-4 text-slate-600">${typeMap[d.job_type] || d.job_type}</td>
+      <td class="px-4 py-4 text-slate-600">${d.ctc_lpa ? d.ctc_lpa + ' LPA' : '—'}</td>
+      <td class="px-4 py-4 font-mono text-slate-700">${d.applicants_count ?? 0}</td>
+      <td class="px-4 py-4 text-slate-500 text-xs">${deadline}</td>
+      <td class="px-4 py-4">
+        <span class="${st.cls} text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">${st.label}</span>
+      </td>
+      <td class="px-4 py-4 text-right">
+        <button class="text-primary text-xs font-semibold hover:underline">View →</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filterByStatus(status) {
+  currentStatusFilter = status;
+  document.querySelectorAll('.status-tab').forEach(t => {
+    t.className = t.className.replace(/bg-primary text-white/, 'bg-surface-container-high text-slate-600 hover:bg-slate-200');
+  });
+  const activeTab = status === '' ? 'tab-all' : `tab-${status.toLowerCase()}`;
+  const el = document.getElementById(activeTab);
+  if (el) el.className = el.className.replace(/bg-surface-container-high text-slate-600 hover:bg-slate-200/, 'bg-primary text-white');
+  renderDrives();
+}
+
+// ── Drive Detail Panel ─────────────────────────────────────────────
+async function openDrivePanel(driveId) {
+  const panel = document.getElementById("drive-panel");
+  const overlay = document.getElementById("drive-panel-overlay");
+  const body = document.getElementById("drive-panel-body");
+  body.innerHTML = `<div class="animate-pulse space-y-3">
+    <div class="h-6 bg-slate-100 rounded w-3/4"></div>
+    <div class="h-4 bg-slate-100 rounded w-1/2"></div>
+    <div class="h-4 bg-slate-100 rounded w-2/3"></div>
+  </div>`;
+  panel.classList.add("open");
+  overlay.classList.remove("hidden");
+
+  const d = await apiFetch(`/api/recruiter/drives/${driveId}`);
+  if (!d) { body.innerHTML = '<p class="text-slate-400 text-sm">Failed to load drive details.</p>'; return; }
+
+  const st = statusMap[d.status] || { label: d.status, cls: "bg-slate-100 text-slate-500" };
+  const branches = (d.eligibility?.allowed_branches || []).join(', ') || 'Any';
+  const certsBadges = (d.preferred_certifications || []).length
+    ? (d.preferred_certifications).map(c => `<span class="inline-block bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200">${c}</span>`).join(' ')
+    : '<span class="text-slate-400 text-xs">None specified</span>';
+
+  const skillsBadges = (d.skills || []).length
+    ? (d.skills).map(s => `<span class="inline-block bg-primary/5 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary/20">${s}</span>`).join(' ')
+    : '<span class="text-slate-400 text-xs">None specified</span>';
+
+  const statusCounts = d.status_counts || {};
+
+  body.innerHTML = `
+    <div class="space-y-1 mb-4">
+      <div class="flex items-center gap-3">
+        <h4 class="text-xl font-headline font-bold text-on-surface">${d.role_title}</h4>
+        <span class="${st.cls} text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">${st.label}</span>
+      </div>
+      <p class="text-sm text-slate-500">${d.drive_title}${d.company_name ? ' · ' + d.company_name : ''}</p>
+    </div>
+
+    <!-- Applicant pipeline counts -->
+    <div class="grid grid-cols-4 gap-3 bg-surface-container-low rounded-xl p-4 mb-4">
+      ${[['APPLIED','Applied'],['SHORTLISTED','Shortlisted'],['SELECTED','Offered'],['REJECTED','Rejected']].map(([k,label]) => `
+        <div class="text-center">
+          <p class="text-2xl font-extrabold font-headline text-on-surface">${statusCounts[k] ?? 0}</p>
+          <p class="text-[10px] text-slate-400 font-mono uppercase">${label}</p>
+        </div>`).join('')}
+    </div>
+
+    <!-- Core Details -->
+    <div class="space-y-3 text-sm">
+      ${[
+        ['location_on', 'Location', d.job_location || '—'],
+        ['payments', 'CTC', d.ctc_lpa ? d.ctc_lpa + ' LPA' : '—'],
+        ['work', 'Type', typeMap[d.job_type] || d.job_type],
+        ['calendar_today', 'Deadline', d.application_close_at ? new Date(d.application_close_at).toLocaleDateString() : '—'],
+        ['school', 'Min CGPA', d.eligibility?.min_cgpa ? d.eligibility.min_cgpa.toFixed(2) : '—'],
+        ['block', 'Max Backlogs', d.eligibility?.max_backlogs ?? '—'],
+        ['account_tree', 'Branches', branches],
+        ['groups', 'Openings', d.openings ?? '—'],
+        ['quiz', 'Interview Rounds', d.interview_rounds ?? '—'],
+        ['policy', 'Bond', d.bond || '—'],
+      ].map(([icon,label,val]) => `
+        <div class="flex items-start gap-3">
+          <span class="material-symbols-outlined text-[16px] text-slate-400 mt-0.5">${icon}</span>
+          <span class="text-slate-500 w-28 shrink-0">${label}</span>
+          <span class="text-on-surface font-medium">${val}</span>
+        </div>`).join('')}
+    </div>
+
+    ${d.description ? `<div class="mt-4 p-3 bg-surface-container-low rounded-xl text-xs text-slate-600 leading-relaxed">${d.description}</div>` : ''}
+
+    <div class="mt-4 space-y-2">
+      <p class="text-xs font-semibold text-slate-500">Required Skills</p>
+      <div class="flex flex-wrap gap-1">${skillsBadges}</div>
+    </div>
+    <div class="mt-4 space-y-2">
+      <p class="text-xs font-semibold text-slate-500">Preferred Certifications <span class="font-normal text-slate-400">(for prioritisation)</span></p>
+      <div class="flex flex-wrap gap-1">${certsBadges}</div>
+    </div>
+
+    ${d.notes ? `<div class="mt-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-800">${d.notes}</div>` : ''}
+
+    ${d.status === 'OPEN' ? `
+    <div class="mt-6 flex gap-3">
+      <a href="/recruiter/candidates" class="flex-1 text-center py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-container transition-colors">
+        View Applicants
+      </a>
+      <button onclick="closeDriveNow('${d.id}')" class="px-4 py-2.5 rounded-xl border border-red-300 text-red-600 text-sm font-semibold hover:bg-red-50 transition-colors">
+        Close Drive
+      </button>
+    </div>` : ''}
+  `;
+}
+
+function closeDrivePanel() {
+  document.getElementById("drive-panel").classList.remove("open");
+  document.getElementById("drive-panel-overlay").classList.add("hidden");
+}
+
+async function closeDriveNow(driveId) {
+  if (!confirm("Are you sure you want to close this drive?")) return;
+  const res = await apiFetch(`/api/recruiter/drives/${driveId}/close`, { method: "PATCH" });
+  if (res) {
+    showToast("Drive closed successfully.", "success");
+    closeDrivePanel();
+    loadDrives();
+  }
+}
+
+// ── New Drive Modal ────────────────────────────────────────────────
+async function openNewDriveModal() {
+  document.getElementById("new-drive-modal").classList.remove("hidden");
+  document.getElementById("new-drive-form").reset();
+  document.getElementById("form-error").classList.add("hidden");
+  await loadBranchCheckboxes();
+}
+
+function closeNewDriveModal() {
+  document.getElementById("new-drive-modal").classList.add("hidden");
+}
+
+async function loadBranchCheckboxes() {
+  const container = document.getElementById("branch-checkboxes");
+  const data = await apiFetch("/api/recruiter/branches");
+  if (!data || !data.length) {
+    container.innerHTML = '<p class="text-xs text-slate-400">No branches available.</p>';
+    return;
+  }
+  container.innerHTML = data.map(b => `
+    <label class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low text-xs font-medium text-slate-600 cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors">
+      <input type="checkbox" name="branch" value="${b.short_name}" class="w-3 h-3 accent-primary"/>
+      ${b.short_name}
+    </label>`).join('');
+}
+
+document.getElementById("new-drive-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const errEl = document.getElementById("form-error");
+  errEl.classList.add("hidden");
+  const btn = document.getElementById("btn-submit-drive");
+  btn.disabled = true;
+  btn.textContent = "Submitting…";
+
+  const allowedBranches = Array.from(document.querySelectorAll('input[name="branch"]:checked')).map(i => i.value);
+  const gradYearsRaw = document.getElementById("f-grad-years").value.trim();
+  const gradYears = gradYearsRaw ? gradYearsRaw.split(',').map(y => parseInt(y.trim())).filter(Boolean) : [];
+  const skillsRaw = document.getElementById("f-skills").value.trim();
+  const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+  const certsRaw = document.getElementById("f-certifications").value.trim();
+  const certs = certsRaw ? certsRaw.split(',').map(c => c.trim()).filter(Boolean) : [];
+
+  const payload = {
+    drive_title: document.getElementById("f-drive-title").value.trim(),
+    role_title: document.getElementById("f-role-title").value.trim(),
+    job_type: document.getElementById("f-job-type").value,
+    job_location: document.getElementById("f-location").value.trim() || undefined,
+    ctc_lpa: parseFloat(document.getElementById("f-ctc").value) || undefined,
+    description: document.getElementById("f-description").value.trim() || undefined,
+    application_open_at: document.getElementById("f-open-date").value || undefined,
+    application_close_at: document.getElementById("f-close-date").value || undefined,
+    min_cgpa: parseFloat(document.getElementById("f-min-cgpa").value) || undefined,
+    max_backlogs: parseInt(document.getElementById("f-max-backlogs").value) ?? undefined,
+    min_semesters_completed: parseInt(document.getElementById("f-min-semesters").value) || undefined,
+    allowed_branches: allowedBranches,
+    graduation_years: gradYears.length ? gradYears : undefined,
+    openings: parseInt(document.getElementById("f-openings").value) || undefined,
+    interview_rounds: parseInt(document.getElementById("f-interview-rounds").value) || undefined,
+    skills: skills.length ? skills : undefined,
+    preferred_certifications: certs.length ? certs : undefined,
+    bond: document.getElementById("f-bond").value.trim() || undefined,
+    notes: document.getElementById("f-notes").value.trim() || undefined,
+  };
+
+  // Remove undefined keys
+  Object.keys(payload).forEach(k => payload[k] === undefined && delete payload[k]);
+
+  const res = await apiFetch("/api/recruiter/drives", { method: "POST", body: JSON.stringify(payload) });
+  btn.disabled = false;
+  btn.textContent = "Submit for Approval";
+
+  if (res && res.id) {
+    showToast("Drive submitted for admin approval!", "success");
+    closeNewDriveModal();
+    loadDrives();
+  } else if (res && res.error) {
+    errEl.textContent = res.error;
+    errEl.classList.remove("hidden");
+  }
+});
+
+document.getElementById("btn-new-drive").addEventListener("click", openNewDriveModal);
+document.getElementById("new-drive-modal").addEventListener("click", (e) => {
+  if (e.target === e.currentTarget) closeNewDriveModal();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadDrives();
+  initRecruiterHeader();
+  connectRecruiterSSE();
+});
+</script>
+</body>
+</html>

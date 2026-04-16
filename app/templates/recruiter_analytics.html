@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vantage OS | Recruiter Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{ extend:{
+      colors:{"primary":"#004495","primary-container":"#005bc2","primary-fixed":"#d8e2ff","primary-fixed-dim":"#adc6ff","on-primary":"#ffffff","on-primary-container":"#cad9ff","secondary":"#4b5e87","secondary-container":"#bbcffd","on-secondary":"#ffffff","on-secondary-container":"#445880","tertiary":"#7e2e00","tertiary-container":"#a43f02","on-tertiary":"#ffffff","on-tertiary-container":"#ffd0bd","tertiary-fixed":"#ffdbcd","error":"#ba1a1a","error-container":"#ffdad6","on-error":"#ffffff","background":"#f9f9fe","surface":"#f9f9fe","surface-dim":"#d9dade","surface-bright":"#f9f9fe","surface-container-lowest":"#ffffff","surface-container-low":"#f3f3f8","surface-container":"#ededf2","surface-container-high":"#e8e8ed","surface-container-highest":"#e2e2e7","on-surface":"#1a1c1f","on-surface-variant":"#424753","outline":"#727784","outline-variant":"#c2c6d5","inverse-surface":"#2e3034","inverse-on-surface":"#f0f0f5","inverse-primary":"#adc6ff","surface-tint":"#005bc1"},
+      borderRadius:{"DEFAULT":"0.25rem","lg":"18px","xl":"24px","full":"9999px"},
+      fontFamily:{"headline":["Plus Jakarta Sans"],"body":["Inter"],"mono":["JetBrains Mono"]}
+    }}
+  }
+</script>
+<style>
+  body{font-family:'Inter',sans-serif;background:#f9f9fe;color:#1a1c1f}
+  .font-headline{font-family:'Plus Jakarta Sans',sans-serif}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+  .glass-nav{backdrop-filter:blur(25px);background:rgba(255,255,255,0.7)}
+</style>
+</head>
+<body class="bg-background">
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+  <div class="flex items-center gap-3 mb-6">
+    <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">rocket_launch</span>
+    </div>
+    <div>
+      <h1 class="text-xl font-bold tracking-tight text-slate-900 font-headline">Vantage OS</h1>
+      <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-0.5">Recruiter Portal</p>
+    </div>
+  </div>
+  <div id="sidebar-recruiter-info" class="mb-6 px-3 py-3 bg-surface-container-low rounded-xl">
+    <p id="sidebar-company" class="text-sm font-bold text-on-surface">Loading…</p>
+    <p id="sidebar-name" class="text-[10px] text-slate-500 mt-0.5">…</p>
+  </div>
+  <nav class="flex-1 space-y-1">
+    <a href="/recruiter/drives" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">work</span>
+      <span class="text-sm font-medium">Drives</span>
+    </a>
+    <a href="/recruiter/candidates" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-slate-100/50 transition-colors">
+      <span class="material-symbols-outlined text-[20px]">group</span>
+      <span class="text-sm font-medium">Candidates</span>
+    </a>
+    <a href="/recruiter/analytics" class="flex items-center gap-3 px-3 py-2 rounded-xl bg-primary/10 text-primary font-semibold">
+      <span class="material-symbols-outlined text-[20px]">analytics</span>
+      <span class="text-sm font-medium">Analytics</span>
+    </a>
+  </nav>
+  <div class="mt-auto pt-4 border-t border-slate-100">
+    <button id="logout-btn" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors w-full">
+      <span class="material-symbols-outlined text-[20px]">logout</span>
+      <span class="text-sm font-medium">Logout</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="pl-[244px] pt-[56px] min-h-screen">
+  <header class="fixed top-0 left-0 w-full h-[56px] glass-nav flex justify-between items-center pl-[250px] pr-8 z-30">
+    <h2 class="text-lg font-headline font-bold text-on-surface">Analytics</h2>
+    <div class="flex items-center gap-3">
+      <button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors relative">
+        <span class="material-symbols-outlined text-[20px] text-slate-600">notifications</span>
+        <span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+      </button>
+      <button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer select-none border-2 border-white shadow-sm">--</button>
+    </div>
+  </header>
+
+  <div class="p-8 max-w-[1200px] mx-auto">
+    <!-- Page Header -->
+    <div class="mb-8">
+      <h2 class="text-4xl font-extrabold font-headline tracking-tight">Analytics</h2>
+      <p class="text-slate-500 mt-1">Pipeline insights across all your drives.</p>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
+      <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] hover:scale-[1.02] transition-transform">
+        <p class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1">Active Drives</p>
+        <h3 id="kpi-drives" class="text-3xl font-headline font-extrabold text-primary">--</h3>
+      </div>
+      <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] hover:scale-[1.02] transition-transform">
+        <p class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1">Total Applicants</p>
+        <h3 id="kpi-applicants" class="text-3xl font-headline font-extrabold text-on-surface">--</h3>
+      </div>
+      <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] hover:scale-[1.02] transition-transform">
+        <p class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1">Shortlisted</p>
+        <h3 id="kpi-shortlisted" class="text-3xl font-headline font-extrabold text-on-surface">--</h3>
+      </div>
+      <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] hover:scale-[1.02] transition-transform">
+        <p class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-1">Offers Made</p>
+        <h3 id="kpi-selected" class="text-3xl font-headline font-extrabold text-primary">--</h3>
+      </div>
+    </div>
+
+    <!-- Charts Row 1: Funnel + Branch Distribution -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+
+      <!-- Application Funnel -->
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] p-6">
+        <h3 class="text-lg font-headline font-bold mb-1">Application Funnel</h3>
+        <p class="text-xs text-slate-400 mb-6">Candidate progression across stages.</p>
+        <div id="funnel-chart" class="space-y-3">
+          <p class="text-slate-400 text-sm animate-pulse">Loading…</p>
+        </div>
+      </div>
+
+      <!-- Branch Distribution -->
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] p-6">
+        <h3 class="text-lg font-headline font-bold mb-1">Branch Distribution</h3>
+        <p class="text-xs text-slate-400 mb-6">Applicants by branch across all drives.</p>
+        <div id="branch-chart" class="space-y-3">
+          <p class="text-slate-400 text-sm animate-pulse">Loading…</p>
+        </div>
+        <div id="branch-legend" class="mt-5 flex flex-wrap gap-2"></div>
+      </div>
+    </div>
+
+    <!-- Charts Row 2: CGPA Distribution -->
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] p-6">
+      <h3 class="text-lg font-headline font-bold mb-1">CGPA Distribution</h3>
+      <p class="text-xs text-slate-400 mb-6">CGPA spread of applicants across your drives.</p>
+      <div id="cgpa-chart" class="flex items-end gap-3 h-[180px]">
+        <p class="text-slate-400 text-sm animate-pulse self-center">Loading…</p>
+      </div>
+      <div id="cgpa-labels" class="flex gap-3 mt-2 pl-0"></div>
+    </div>
+  </div>
+</main>
+
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("recruiter")) {}
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+const BRANCH_COLORS = [
+  "#004495","#4b5e87","#7e2e00","#0d6efd","#198754","#6f42c1","#fd7e14","#20c997","#e83e8c","#6c757d"
+];
+
+// ── KPI + Funnel ───────────────────────────────────────────────────
+async function loadKpisAndFunnel() {
+  const data = await apiFetch("/api/recruiter/dashboard");
+  if (!data) return;
+
+  const user = getUser();
+  if (user) {
+    document.getElementById("sidebar-company").textContent = user.company || user.full_name || "Your Company";
+    document.getElementById("sidebar-name").textContent = user.email || "";
+  }
+
+  document.getElementById("kpi-drives").textContent = data.active_drives ?? 0;
+  document.getElementById("kpi-applicants").textContent = (data.total_applicants ?? 0).toLocaleString();
+  document.getElementById("kpi-shortlisted").textContent = (data.shortlisted ?? 0).toLocaleString();
+  document.getElementById("kpi-selected").textContent = (data.selected ?? 0).toLocaleString();
+
+  // Build funnel from dashboard KPIs + drive applicant counts
+  const funnelData = [
+    { label: "Total Applicants",  count: data.total_applicants ?? 0, color: "#004495" },
+    { label: "Shortlisted",       count: data.shortlisted ?? 0,      color: "#4b5e87" },
+    { label: "Offers Made",       count: data.selected ?? 0,         color: "#198754" },
+  ];
+
+  const maxCount = Math.max(...funnelData.map(f => f.count), 1);
+  const funnelEl = document.getElementById("funnel-chart");
+
+  if (maxCount === 0) {
+    funnelEl.innerHTML = '<p class="text-slate-400 text-sm">No data yet. Create and open drives to see funnel data.</p>';
+    return;
+  }
+
+  funnelEl.innerHTML = funnelData.map(f => {
+    const pct = Math.round((f.count / maxCount) * 100);
+    const pctLabel = maxCount > 0 && f.count > 0
+      ? ` (${Math.round((f.count / funnelData[0].count) * 100)}%)`
+      : '';
+    return `<div class="space-y-1">
+      <div class="flex justify-between text-xs text-slate-500">
+        <span class="font-medium">${f.label}</span>
+        <span class="font-mono font-bold text-on-surface">${f.count.toLocaleString()}${pctLabel}</span>
+      </div>
+      <div class="h-8 bg-surface-container-high rounded-lg overflow-hidden">
+        <div class="h-full rounded-lg transition-all duration-500" style="width:${pct}%;background:${f.color}"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Branch Distribution ────────────────────────────────────────────
+async function loadBranchChart() {
+  const data = await apiFetch("/api/recruiter/analytics/by-branch");
+  const container = document.getElementById("branch-chart");
+  const legend = document.getElementById("branch-legend");
+
+  if (!data || !data.length) {
+    container.innerHTML = '<p class="text-slate-400 text-sm">No branch data yet.</p>';
+    return;
+  }
+
+  const total = data.reduce((s, d) => s + d.count, 0);
+  const maxCount = Math.max(...data.map(d => d.count), 1);
+
+  container.innerHTML = data.map((d, i) => {
+    const pct = Math.round((d.count / maxCount) * 100);
+    const share = total > 0 ? Math.round((d.count / total) * 100) : 0;
+    const color = BRANCH_COLORS[i % BRANCH_COLORS.length];
+    return `<div class="space-y-1">
+      <div class="flex justify-between text-xs text-slate-500">
+        <span class="font-medium flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full inline-block" style="background:${color}"></span>
+          ${d.branch}
+        </span>
+        <span class="font-mono font-bold text-on-surface">${d.count} <span class="text-slate-400 font-normal">(${share}%)</span></span>
+      </div>
+      <div class="h-3 bg-surface-container-high rounded-full overflow-hidden">
+        <div class="h-full rounded-full transition-all duration-500" style="width:${pct}%;background:${color}"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  legend.innerHTML = data.slice(0, 6).map((d, i) => {
+    const color = BRANCH_COLORS[i % BRANCH_COLORS.length];
+    return `<span class="flex items-center gap-1 text-[10px] font-mono text-slate-500">
+      <span class="w-2 h-2 rounded-full inline-block" style="background:${color}"></span>${d.branch}
+    </span>`;
+  }).join('');
+}
+
+// ── CGPA Distribution ──────────────────────────────────────────────
+async function loadCgpaChart() {
+  const data = await apiFetch("/api/recruiter/analytics/cgpa-distribution");
+  const container = document.getElementById("cgpa-chart");
+  const labelsEl = document.getElementById("cgpa-labels");
+
+  if (!data || !data.length || data.every(d => d.count === 0)) {
+    container.innerHTML = '<p class="text-slate-400 text-sm self-center">No CGPA data yet.</p>';
+    return;
+  }
+
+  const maxCount = Math.max(...data.map(d => d.count), 1);
+
+  container.innerHTML = data.map((d, i) => {
+    const pct = Math.round((d.count / maxCount) * 100);
+    const color = pct > 70 ? "#004495" : pct > 40 ? "#4b5e87" : "#c2c6d5";
+    return `<div class="flex-1 flex flex-col items-center justify-end gap-1 h-full">
+      <span class="text-[10px] font-mono font-bold text-on-surface">${d.count > 0 ? d.count : ''}</span>
+      <div class="w-full rounded-t-lg transition-all duration-500" style="height:${Math.max(pct, 4)}%;background:${color}"></div>
+    </div>`;
+  }).join('');
+
+  labelsEl.innerHTML = data.map(d => `
+    <div class="flex-1 text-center text-[9px] font-mono text-slate-400 leading-tight">${d.range}</div>
+  `).join('');
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadKpisAndFunnel();
+  loadBranchChart();
+  loadCgpaChart();
+  initRecruiterHeader();
+});
+</script>
+</body>
+</html>

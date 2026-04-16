@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>T-Sheet Portal | Vantage OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "primary-container": "#005bc2",
+                "tertiary-fixed": "#ffdbcd",
+                "on-primary-fixed-variant": "#004494",
+                "on-primary-fixed": "#001a41",
+                "on-secondary": "#ffffff",
+                "secondary-fixed": "#d8e2ff",
+                "surface-container-low": "#f3f3f8",
+                "primary-fixed": "#d8e2ff",
+                "tertiary-fixed-dim": "#ffb596",
+                "surface-container": "#ededf2",
+                "on-surface": "#1a1c1f",
+                "error-container": "#ffdad6",
+                "tertiary-container": "#a43f02",
+                "inverse-primary": "#adc6ff",
+                "surface": "#f9f9fe",
+                "surface-container-highest": "#e2e2e7",
+                "tertiary": "#7e2e00",
+                "on-secondary-fixed": "#021a3f",
+                "on-primary-container": "#cad9ff",
+                "on-secondary-container": "#445880",
+                "on-error": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "surface-dim": "#d9dade",
+                "on-secondary-fixed-variant": "#33466d",
+                "secondary-container": "#bbcffd",
+                "on-primary": "#ffffff",
+                "secondary-fixed-dim": "#b3c6f5",
+                "inverse-surface": "#2e3034",
+                "surface-variant": "#e2e2e7",
+                "on-tertiary-fixed-variant": "#7d2d00",
+                "secondary": "#4b5e87",
+                "on-tertiary": "#ffffff",
+                "primary": "#004495",
+                "inverse-on-surface": "#f0f0f5",
+                "outline": "#727784",
+                "surface-container-high": "#e8e8ed",
+                "primary-fixed-dim": "#adc6ff",
+                "outline-variant": "#c2c6d5",
+                "on-tertiary-fixed": "#360f00",
+                "on-tertiary-container": "#ffd0bd",
+                "surface-tint": "#005bc1",
+                "on-surface-variant": "#424753",
+                "on-error-container": "#93000a",
+                "on-background": "#1a1c1f",
+                "background": "#f9f9fe",
+                "surface-bright": "#f9f9fe",
+                "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "18px",
+                "xl": "24px",
+                "full": "9999px"
+              },
+              "fontFamily": {
+                "headline": ["Plus Jakarta Sans"],
+                "body": ["Inter"],
+                "label": ["Inter"],
+                "mono": ["JetBrains Mono"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9fe; color: #1a1c1f; }
+        .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-top { backdrop-filter: blur(25px); background: rgba(255, 255, 255, 0.7); }
+        .primary-gradient { background: linear-gradient(135deg, #004495 0%, #005bc2 100%); }
+    </style>
+</head>
+<body class="antialiased">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+<div class="mb-8">
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50 font-headline">Vantage OS</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-mono">Digital Curator</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors duration-300 rounded-lg group" href="/admin">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors duration-300 rounded-lg" href="/admin/students">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-sm">Students</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors duration-300 rounded-lg" href="/admin/drives">
+<span class="material-symbols-outlined">work</span>
+<span class="text-sm">Drives</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors duration-300 rounded-lg" href="/admin/recruiters">
+<span class="material-symbols-outlined">business</span>
+<span class="text-sm">Recruiters</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-blue-700 dark:text-blue-400 font-semibold border-r-4 border-blue-600 bg-slate-100/50 dark:bg-slate-800/50 rounded-lg" href="/admin/tsheets">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-sm">T-Sheets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors duration-300 rounded-lg" href="/admin/analytics">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto space-y-2 pt-6">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 text-sm" href="javascript:void(0)">
+<span class="material-symbols-outlined">help_outline</span> Support
+</a>
+<button id="logout-btn" class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors rounded-lg w-full text-sm">
+<span class="material-symbols-outlined">logout</span> Logout
+</button>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 left-0 right-0 h-[56px] flex justify-between items-center w-full pl-[250px] pr-8 z-30 glass-top">
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-sm">search</span>
+<input class="bg-surface-container-high border-none rounded-full pl-10 pr-4 py-1.5 text-xs w-[240px] focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search pipeline..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors relative">
+<span class="material-symbols-outlined text-[20px] text-slate-600">notifications</span>
+<span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+</button>
+<button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer select-none border-2 border-white shadow-sm">--</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[232px] pt-24 px-8 pb-12 min-h-screen">
+<!-- Header Section -->
+<header class="mb-12">
+<h1 class="text-5xl font-extrabold tracking-tight text-on-surface font-headline mb-2">T-Sheet Portal</h1>
+<p class="text-on-surface-variant text-lg">Ingest and reconcile academic data.</p>
+</header>
+<div class="grid grid-cols-12 gap-8">
+<!-- Ingestion Pipeline Visualization (Bento Top) -->
+<section class="col-span-12 bg-surface-container-low p-8 rounded-xl">
+<div class="flex justify-between items-center mb-8">
+  <h3 class="text-xs font-mono font-semibold text-primary uppercase tracking-widest">Active Ingestion Pipeline</h3>
+  <div id="pipeline-counters" class="hidden flex gap-6 text-xs font-mono">
+    <span class="text-primary">Ingested: <span id="stat-ingested" class="font-bold">0</span></span>
+    <span class="text-amber-500">Conflicts: <span id="stat-conflicts" class="font-bold">0</span></span>
+  </div>
+</div>
+<div class="flex items-center justify-between relative">
+<!-- Progress Connection Background -->
+<div class="absolute top-[18px] left-0 w-full h-[2px] bg-outline-variant/30 -z-0"></div>
+<div id="pipeline-progress-line" class="absolute top-[18px] left-0 w-0 h-[2px] bg-primary -z-0 transition-all duration-700"></div>
+<!-- Step 1: File Received -->
+<div id="step-uploaded" class="relative flex flex-col items-center gap-3 z-10">
+<div class="step-dot w-10 h-10 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center text-outline opacity-40">
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<span class="step-label text-[11px] font-bold font-mono text-on-surface-variant/40 uppercase">Uploaded</span>
+</div>
+<!-- Step 2: Parsing -->
+<div id="step-parsing" class="relative flex flex-col items-center gap-3 z-10">
+<div class="step-dot w-10 h-10 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center text-outline opacity-40">
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<span class="step-label text-[11px] font-bold font-mono text-on-surface-variant/40 uppercase">Parsing</span>
+</div>
+<!-- Step 3: Normalizing -->
+<div id="step-normalizing" class="relative flex flex-col items-center gap-3 z-10">
+<div class="step-dot w-10 h-10 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center text-outline opacity-40">
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<span class="step-label text-[11px] font-bold font-mono text-on-surface-variant/40 uppercase">Normalizing</span>
+</div>
+<!-- Step 4: Ingesting -->
+<div id="step-ingesting" class="relative flex flex-col items-center gap-3 z-10">
+<div class="step-dot w-10 h-10 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center text-outline opacity-40">
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<span class="step-label text-[11px] font-bold font-mono text-on-surface-variant/40 uppercase">Ingesting</span>
+</div>
+<!-- Step 5: Done -->
+<div id="step-done" class="relative flex flex-col items-center gap-3 z-10">
+<div class="step-dot w-10 h-10 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center text-outline opacity-40">
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<span class="step-label text-[11px] font-bold font-mono text-on-surface-variant/40 uppercase">Done</span>
+</div>
+</div>
+</section>
+<!-- Left Column: Upload Zone -->
+<div class="col-span-12 lg:col-span-5 space-y-8">
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] h-full">
+<!-- Upload Metadata — must be filled before selecting file -->
+<div class="mb-6 grid grid-cols-2 gap-3">
+    <div class="col-span-2">
+        <label class="text-[10px] font-mono font-bold text-on-surface-variant uppercase tracking-widest mb-1 block">Branch</label>
+        <select id="upload-branch-select" class="w-full bg-surface-container-high border-none rounded-lg px-3 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary/20">
+            <option value="">— select branch —</option>
+        </select>
+    </div>
+    <div>
+        <label class="text-[10px] font-mono font-bold text-on-surface-variant uppercase tracking-widest mb-1 block">Semester</label>
+        <select id="upload-semester-select" class="w-full bg-surface-container-high border-none rounded-lg px-3 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary/20">
+            <option value="">Select Semester</option>
+            <option value="1">Semester 1</option><option value="2">Semester 2</option>
+            <option value="3">Semester 3</option><option value="4">Semester 4</option>
+            <option value="5">Semester 5</option><option value="6">Semester 6</option>
+            <option value="7">Semester 7</option><option value="8">Semester 8</option>
+        </select>
+    </div>
+    <div>
+        <label class="text-[10px] font-mono font-bold text-on-surface-variant uppercase tracking-widest mb-1 block">Exam Type</label>
+        <select id="upload-type-select" class="w-full bg-surface-container-high border-none rounded-lg px-3 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary/20">
+            <option value="REGULAR">Regular</option>
+            <option value="SUPPLEMENTARY">Supplementary</option>
+            <option value="IMPROVEMENT">Improvement</option>
+        </select>
+    </div>
+    <div>
+        <label class="text-[10px] font-mono font-bold text-on-surface-variant uppercase tracking-widest mb-1 block">Exam Month (1–12)</label>
+        <input id="upload-month-input" type="number" min="1" max="12" placeholder="e.g. 11"
+            class="w-full bg-surface-container-high border-none rounded-lg px-3 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary/20" />
+    </div>
+    <div>
+        <label class="text-[10px] font-mono font-bold text-on-surface-variant uppercase tracking-widest mb-1 block">Academic Year</label>
+        <input id="upload-year-input" type="text" placeholder="e.g. 2024-25"
+            class="w-full bg-surface-container-high border-none rounded-lg px-3 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary/20" />
+    </div>
+</div>
+<form id="tsheet-upload-form" class="border-2 border-dashed border-outline-variant rounded-xl p-12 flex flex-col items-center justify-center text-center hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="document.getElementById('tsheet-file-input').click()">
+    <input type="file" id="tsheet-file-input" name="file" class="hidden" accept=".xlsx,.csv" />
+    <div class="w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+        <span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+    </div>
+    <h4 class="font-headline font-bold text-xl text-on-surface mb-2">Drop T-Sheet here or click to browse</h4>
+    <p class="text-sm text-on-surface-variant max-w-[240px] mb-8">Support for .xlsx, .csv, and legacy .tsync formats up to 50MB.</p>
+    <div id="upload-progress-container" class="w-full hidden">
+        <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden mb-2">
+            <div id="upload-progress-bar" class="w-[0%] h-full primary-gradient rounded-full transition-all duration-300"></div>
+        </div>
+        <div class="flex justify-between w-full text-[10px] font-mono font-bold text-on-surface-variant uppercase tracking-tighter">
+            <span id="upload-filename">Uploading...</span>
+            <span id="upload-percent">0%</span>
+        </div>
+    </div>
+</form>
+</section>
+</div>
+<!-- Right Column: Conflict Resolution Engine (Conceptual) -->
+<div class="col-span-12 lg:col-span-7">
+<section class="bg-white p-8 rounded-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="font-headline font-bold text-xl text-on-surface">Conflict Resolution</h3>
+<p id="conflict-count" class="text-xs font-mono text-primary font-bold">-- UNRESOLVED ENTRIES</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container-low text-xs font-bold rounded-lg hover:bg-surface-container-high transition-colors">Ignore All</button>
+<button class="px-4 py-2 primary-gradient text-white text-xs font-bold rounded-lg shadow-lg">Resolve Batch</button>
+</div>
+</div>
+<div id="conflict-cards" class="space-y-4">
+<!-- Conflict cards loaded dynamically -->
+<div class="text-center py-8 text-slate-400 text-sm">Loading conflicts...</div>
+</div>
+</section>
+</div>
+<!-- Full Width: Batch History List -->
+<section class="col-span-12">
+<div class="bg-surface-container-lowest rounded-xl p-8">
+<div class="flex justify-between items-center mb-10">
+<h3 class="font-headline font-bold text-2xl text-on-surface">Ingestion History</h3>
+<div class="flex gap-4">
+<button class="text-sm font-medium text-primary hover:underline">Download Audit Logs</button>
+<button class="text-sm font-medium text-primary hover:underline">Archive Processed</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-4 text-[11px] font-mono font-bold text-on-surface-variant uppercase tracking-wider">Batch ID</th>
+<th class="px-6 py-4 text-[11px] font-mono font-bold text-on-surface-variant uppercase tracking-wider">File Name</th>
+<th class="px-6 py-4 text-[11px] font-mono font-bold text-on-surface-variant uppercase tracking-wider">Upload Date</th>
+<th class="px-6 py-4 text-[11px] font-mono font-bold text-on-surface-variant uppercase tracking-wider text-center">Parsed</th>
+<th class="px-6 py-4 text-[11px] font-mono font-bold text-on-surface-variant uppercase tracking-wider text-center">Conflicts</th>
+<th class="px-6 py-4 text-[11px] font-mono font-bold text-on-surface-variant uppercase tracking-wider">Stage</th>
+<th class="px-6 py-4 text-[11px] font-mono font-bold text-on-surface-variant uppercase tracking-wider">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Batch rows loaded dynamically by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action Button (SUPPRESSED based on page intent - archival/admin) -->
+<!-- The FAB is suppressed because this is a deep admin/transactional screen -->
+<!-- Vantage API -->
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("admin")) { /* redirected */ }
+
+// Wire logout
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+// ── Pipeline Stepper ─────────────────────────────────────────────
+const STAGE_ORDER = ['uploading', 'parsing', 'normalizing', 'ingesting', 'completed'];
+const STEP_IDS    = ['step-uploaded', 'step-parsing', 'step-normalizing', 'step-ingesting', 'step-done'];
+const PROGRESS_PCT = { uploading: 10, parsing: 30, normalizing: 55, ingesting: 80, completed: 100, failed: 0 };
+
+function updatePipelineSteps(stage, isError) {
+    // Normalise: 'partial' and 'processing' are aliases
+    const normalized = stage === 'partial' ? 'completed'
+                     : stage === 'processing' ? 'ingesting'
+                     : stage;
+    let idx = STAGE_ORDER.indexOf(normalized);
+    // Unknown stage → treat as ingesting (shows progress rather than all-grey)
+    if (idx === -1) idx = STAGE_ORDER.indexOf('ingesting');
+
+    const progressLine = document.getElementById('pipeline-progress-line');
+    if (progressLine) progressLine.style.width = (PROGRESS_PCT[normalized] || PROGRESS_PCT[stage] || 50) + '%';
+
+    STEP_IDS.forEach((id, i) => {
+        const el  = document.getElementById(id);
+        if (!el) return;
+        const dot = el.querySelector('.step-dot');
+        const lbl = el.querySelector('.step-label');
+
+        if (i < idx || (normalized === 'completed' && i <= idx)) {
+            // done
+            dot.className = 'step-dot w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20';
+            dot.innerHTML = '<span class="material-symbols-outlined text-sm">check</span>';
+            lbl.className = 'step-label text-[11px] font-bold font-mono text-on-surface uppercase';
+        } else if (i === idx && !isError) {
+            // active
+            dot.className = 'step-dot w-10 h-10 rounded-full bg-white border-2 border-primary flex items-center justify-center text-primary shadow-xl';
+            dot.innerHTML = '<div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>';
+            lbl.className = 'step-label text-[11px] font-bold font-mono text-primary uppercase';
+        } else if (i === idx && isError) {
+            dot.className = 'step-dot w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white';
+            dot.innerHTML = '<span class="material-symbols-outlined text-sm">close</span>';
+            lbl.className = 'step-label text-[11px] font-bold font-mono text-error uppercase';
+        } else {
+            // future
+            dot.className = 'step-dot w-10 h-10 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center text-outline opacity-40';
+            dot.innerHTML = '<span class="material-symbols-outlined text-sm">lock</span>';
+            lbl.className = 'step-label text-[11px] font-bold font-mono text-on-surface-variant/40 uppercase';
+        }
+    });
+}
+
+// ── Batch progress SSE ───────────────────────────────────────────
+let activeBatchSSE = null;
+
+function startBatchProgressSSE(batchId) {
+    if (activeBatchSSE) { activeBatchSSE.close(); activeBatchSSE = null; }
+
+    document.getElementById('pipeline-counters')?.classList.remove('hidden');
+    updatePipelineSteps('uploading', false);
+
+    activeBatchSSE = new EventSource(`${API_BASE}/api/admin/tsheets/batches/${batchId}/stream?token=${authToken}`);
+
+    activeBatchSSE.onmessage = (e) => {
+        const d = JSON.parse(e.data);
+        updatePipelineSteps(d.stage, !!d.error);
+
+        const ingEl = document.getElementById('stat-ingested');
+        const cfEl  = document.getElementById('stat-conflicts');
+        if (ingEl) ingEl.textContent = d.records_ingested ?? 0;
+        if (cfEl)  cfEl.textContent  = d.records_conflict ?? 0;
+
+        if (d.stage === 'completed' || d.stage === 'failed') {
+            activeBatchSSE.close(); activeBatchSSE = null;
+            if (d.stage === 'failed') {
+                showToast(d.error || 'Pipeline failed', 'error');
+            } else {
+                showToast('T-Sheet ingested successfully', 'success');
+            }
+        }
+    };
+
+    activeBatchSSE.onerror = () => {
+        activeBatchSSE.close(); activeBatchSSE = null;
+    };
+}
+
+// ── Batch list SSE (live table) ──────────────────────────────────
+let batchListSSE = null;
+
+function renderBatchTable(batches) {
+    const tbody = document.querySelector('table tbody');
+    if (!tbody) return;
+
+    const statusMap = {
+        'COMPLETED': { icon: 'verified',      cls: 'text-primary',      label: 'Completed' },
+        'PARTIAL':   { icon: 'warning',        cls: 'text-amber-600',    label: 'Partial'   },
+        'PROCESSING':{ icon: 'hourglass_top',  cls: 'text-amber-500',    label: 'Processing'},
+        'FAILED':    { icon: 'error',           cls: 'text-red-500',      label: 'Failed'    },
+        'PENDING':   { icon: 'pending',         cls: 'text-slate-400',    label: 'Pending'   },
+    };
+
+    tbody.innerHTML = batches.map(b => {
+        const st   = statusMap[b.status] || statusMap['PENDING'];
+        const date = b.uploaded_at ? new Date(b.uploaded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+        const stage = (b.current_stage || '').replace(/_/g, ' ');
+        return `
+        <tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-6 py-5 font-mono text-xs text-primary font-bold">${b.id.slice(0,8)}…</td>
+            <td class="px-6 py-5 text-sm font-medium">${b.filename || '—'}</td>
+            <td class="px-6 py-5 text-xs text-on-surface-variant">${date}</td>
+            <td class="px-6 py-5 text-sm text-center font-semibold">${b.stats?.parsed ?? 0}</td>
+            <td class="px-6 py-5 text-sm text-center">
+                <span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded-full font-mono font-bold text-[10px]">${b.stats?.conflicts ?? 0}</span>
+            </td>
+            <td class="px-6 py-5 font-mono text-[10px] text-on-surface-variant uppercase">${stage}</td>
+            <td class="px-6 py-5">
+                <div class="flex items-center gap-2 ${st.cls} font-bold text-[11px] uppercase tracking-tighter">
+                    <span class="material-symbols-outlined text-sm">${st.icon}</span>${st.label}
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function initBatchListSSE() {
+    if (batchListSSE) { batchListSSE.close(); batchListSSE = null; }
+    batchListSSE = new EventSource(`${API_BASE}/api/admin/tsheets/batches/stream?token=${authToken}`);
+
+    batchListSSE.addEventListener('batches_updated', (e) => {
+        const d = JSON.parse(e.data);
+        renderBatchTable(d.batches || []);
+    });
+
+    batchListSSE.onerror = () => {
+        batchListSSE.close(); batchListSSE = null;
+        setTimeout(initBatchListSSE, 5000); // reconnect
+    };
+}
+
+// ── Branch loader ────────────────────────────────────────────────
+async function loadBranches() {
+    const sel = document.getElementById("upload-branch-select");
+    sel.disabled = true;
+    sel.options[0].textContent = "Loading…";
+
+    let data = await apiFetch("/api/admin/branches");
+
+    if (data && data.length === 0) {
+        data = await apiFetch("/api/admin/branches/seed", { method: "POST" });
+    }
+
+    sel.disabled = false;
+    sel.options[0].textContent = "— select branch —";
+
+    if (!data || data.length === 0) {
+        sel.options[0].textContent = "No branches found";
+        return;
+    }
+
+    data.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.id;
+        opt.textContent = b.short_name + (b.name && b.name !== b.short_name ? ` — ${b.name}` : "");
+        sel.appendChild(opt);
+    });
+}
+
+// ── Upload listener ──────────────────────────────────────────────
+document.getElementById("tsheet-file-input").addEventListener("change", async (e) => {
+    const fileInput     = e.target;
+    const file          = fileInput.files[0];
+    if (!file) return;
+
+    const branchSelect   = document.getElementById("upload-branch-select");
+    const semesterSelect = document.getElementById("upload-semester-select");
+    const typeSelect     = document.getElementById("upload-type-select");
+    const monthInput     = document.getElementById("upload-month-input");
+    const yearInput      = document.getElementById("upload-year-input");
+
+    if (!branchSelect.value || !semesterSelect.value || !yearInput.value) {
+        showToast("Fill in Branch, Semester, and Academic Year before uploading.", "warning");
+        fileInput.value = "";
+        return;
+    }
+
+    const progressContainer = document.getElementById("upload-progress-container");
+    progressContainer.classList.remove("hidden");
+    document.getElementById("upload-filename").textContent = `Uploading ${file.name}`;
+    document.getElementById("upload-percent").textContent = "0%";
+    document.getElementById("upload-progress-bar").style.width = "0%";
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("semester", semesterSelect.value);
+    formData.append("academic_year", yearInput.value);
+    formData.append("branch_id", branchSelect.value);
+    formData.append("exam_type", typeSelect.value);
+    if (monthInput.value) formData.append("exam_month", monthInput.value);
+
+    try {
+        const raw = await fetch(API_BASE + "/api/admin/tsheets/upload", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${authToken}` },
+            body: formData,
+        });
+
+        if (raw.status === 202) {
+            const res = await raw.json();
+            document.getElementById("upload-percent").textContent = "100%";
+            document.getElementById("upload-progress-bar").style.width = "100%";
+            showToast("File accepted — pipeline running", "success");
+            fileInput.value = "";
+            // Subscribe to live progress
+            startBatchProgressSSE(res.upload_id);
+        } else {
+            const err = await raw.json().catch(() => ({}));
+            showToast(err.error || `Upload failed (${raw.status})`, "error");
+            progressContainer.classList.add("hidden");
+            fileInput.value = "";
+        }
+    } catch {
+        showToast("Upload failed — check your network.", "error");
+        progressContainer.classList.add("hidden");
+        fileInput.value = "";
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadBranches();
+    initBatchListSSE();   // live table — replaces one-shot loadBatchHistory
+    initAdminHeader();
+});
+</script>
+</body></html>

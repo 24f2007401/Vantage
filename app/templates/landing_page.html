@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vantage OS - The Placement OS for Modern Colleges</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#7e2e00",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "background": "#f9f9fe",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f9f9fe",
+                        "on-surface-variant": "#424753",
+                        "secondary": "#4b5e87",
+                        "surface-container-highest": "#e2e2e7",
+                        "inverse-surface": "#2e3034",
+                        "inverse-on-surface": "#f0f0f5",
+                        "inverse-primary": "#adc6ff",
+                        "tertiary-fixed": "#ffdbcd",
+                        "tertiary-container": "#a43f02",
+                        "on-primary-container": "#cad9ff",
+                        "on-tertiary-fixed": "#360f00",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e2e2e7",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#ffd0bd",
+                        "surface-container-high": "#e8e8ed",
+                        "primary-container": "#005bc2",
+                        "surface-container": "#ededf2",
+                        "primary": "#004495",
+                        "outline-variant": "#c2c6d5",
+                        "on-primary-fixed": "#001a41",
+                        "surface-tint": "#005bc1",
+                        "outline": "#727784",
+                        "secondary-container": "#bbcffd",
+                        "on-background": "#1a1c1f",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#33466d",
+                        "surface-container-low": "#f3f3f8",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-surface": "#1a1c1f",
+                        "surface-bright": "#f9f9fe",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-dim": "#d9dade",
+                        "primary-fixed-dim": "#adc6ff",
+                        "secondary-fixed-dim": "#b3c6f5",
+                        "on-secondary-container": "#445880",
+                        "on-primary-fixed-variant": "#004494",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#021a3f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "18px",
+                        "xl": "24px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"],
+                        "mono": ["JetBrains Mono"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pipeline-dot {
+            width: 8px;
+            height: 8px;
+            background: #005bc2;
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 0 12px #005bc2;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #004495 0%, #005bc2 100%);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(25px);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<nav class="fixed top-0 left-0 right-0 h-[64px] glass-nav z-50 flex items-center justify-between px-8 md:px-12">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">view_quilt</span>
+</div>
+<span class="font-headline font-extrabold text-xl tracking-tight text-on-surface">Vantage OS</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors" href="javascript:void(0)">Features</a>
+<a class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors" href="javascript:void(0)">Solutions</a>
+<a class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors" href="javascript:void(0)">Testimonials</a>
+<button onclick="window.location.href='/login'" class="hero-gradient text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow-lg hover:opacity-90 transition-all">
+                Get Started
+            </button>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-24 overflow-hidden px-6">
+<div class="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
+<div class="mb-6 px-4 py-1.5 bg-secondary-container/30 rounded-full inline-flex items-center gap-2">
+<span class="font-mono text-[10px] uppercase tracking-widest text-on-secondary-container font-bold">New v4.0 Release</span>
+</div>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-on-surface mb-8 leading-[1.1]">
+                    The Placement OS for <br/>
+<span class="text-primary">Modern Colleges</span>
+</h1>
+<p class="text-on-surface-variant text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
+                    Automate manual T-Sheets, filter candidates with smart eligibility engines, and track every career milestone with editorial precision.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 mb-20">
+<button onclick="window.location.href='/login'" class="hero-gradient text-on-primary px-8 py-4 rounded-xl text-lg font-bold shadow-[0_8px_32px_0_rgba(0,68,149,0.2)] hover:scale-[1.02] transition-transform">
+                        Schedule a Demo
+                    </button>
+<button onclick="window.location.href='/login'" class="bg-surface-container-high text-on-surface px-8 py-4 rounded-xl text-lg font-bold hover:bg-surface-container-highest transition-colors">
+                        Explore Platform
+                    </button>
+</div>
+<!-- Animated Pipeline Illustration (Placeholder Container) -->
+<div class="w-full max-w-5xl aspect-[21/9] bg-surface-container-low rounded-[32px] p-4 relative overflow-hidden group">
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#004495 1px, transparent 1px); background-size: 32px 32px;"></div>
+<!-- Schematic UI Blocks -->
+<div class="relative w-full h-full flex items-center justify-between px-12 md:px-24">
+<!-- Node 1 -->
+<div class="z-20 bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center gap-3">
+<div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+<span class="font-mono text-[10px] font-bold text-outline">SOURCE</span>
+</div>
+<!-- Connector Lines (Visual) -->
+<div class="absolute inset-x-0 top-1/2 h-[2px] bg-gradient-to-r from-transparent via-primary/20 to-transparent -translate-y-1/2"></div>
+<!-- Flowing Dots (Simplified for static HTML structure) -->
+<div class="absolute top-1/2 left-1/4 pipeline-dot translate-x-12"></div>
+<div class="absolute top-1/2 left-1/2 pipeline-dot"></div>
+<div class="absolute top-1/2 right-1/4 pipeline-dot -translate-x-12"></div>
+<!-- Node 2 (Middle) -->
+<div class="z-20 bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center gap-3 ring-4 ring-primary/5">
+<div class="w-12 h-12 bg-secondary-fixed rounded-full flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<span class="font-mono text-[10px] font-bold text-outline">ENGINE</span>
+</div>
+<!-- Node 3 -->
+<div class="z-20 bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center gap-3">
+<div class="w-12 h-12 bg-tertiary-fixed rounded-full flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<span class="font-mono text-[10px] font-bold text-outline">SUCCESS</span>
+</div>
+</div>
+<img alt="" class="absolute inset-0 w-full h-full object-cover opacity-5 mix-blend-overlay" data-alt="Abstract data visualization dashboard with glowing blue lines and network nodes on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwy3Nx2_9H6VtNqjxrbPLV3qIn51o3A6sq0PZTxrLR2FAd8wwCcbGGgxi0t8kxsw84eKsQsccz_WD-xkztPDlgzP01OLHileo-i8ybLdqUy0KKPcrVn-2vhsSPGZYJLVXI-GoHvJeaibLPqXp8Lcs1J5UqESeI6EDbYwaIFL-C22KWE7UHfzZwX5qpV6HohcfxhZTjPLt0v1VgjKYnxMFU0H76AJs4_CM6_lPH2ptq-iaK6jFrKtnUE41S62A37pV2D8Z7B-51EInL"/>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="py-20 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="flex flex-col items-center text-center p-8">
+<span class="font-headline text-5xl font-extrabold text-on-surface mb-2">500+</span>
+<span class="text-on-surface-variant font-medium">Students Tracked</span>
+</div>
+<div class="flex flex-col items-center text-center p-8 bg-surface-container-lowest rounded-3xl shadow-sm">
+<span class="font-headline text-5xl font-extrabold text-primary mb-2">98%</span>
+<span class="text-on-surface-variant font-medium">Match Accuracy</span>
+</div>
+<div class="flex flex-col items-center text-center p-8">
+<span class="font-headline text-5xl font-extrabold text-on-surface mb-2">40+</span>
+<span class="text-on-surface-variant font-medium">Hiring Drives/Year</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-24 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline text-4xl font-extrabold mb-4">Curated for Excellence</h2>
+<p class="text-on-surface-variant max-w-xl mx-auto">Every feature is designed to reduce friction for placement officers while empowering student careers.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="bg-white p-10 rounded-[28px] shadow-[0_8px_32px_0_rgba(26,28,31,0.03)] hover:shadow-lg transition-shadow border-none flex flex-col">
+<div class="w-14 h-14 bg-primary-fixed rounded-2xl flex items-center justify-center text-primary mb-8">
+<span class="material-symbols-outlined text-3xl">table_rows</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-4">T-Sheet Automation</h3>
+<p class="text-on-surface-variant leading-relaxed">Ditch the spreadsheets. Generate professional, error-free placement T-sheets automatically from live student data profiles.</p>
+<div class="mt-auto pt-8">
+<span class="text-primary font-bold inline-flex items-center gap-2 group cursor-pointer">
+                                Learn More 
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="bg-white p-10 rounded-[28px] shadow-[0_8px_32px_0_rgba(26,28,31,0.03)] hover:shadow-lg transition-shadow border-none flex flex-col">
+<div class="w-14 h-14 bg-secondary-fixed rounded-2xl flex items-center justify-center text-secondary mb-8">
+<span class="material-symbols-outlined text-3xl">bolt</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-4">Smart Eligibility</h3>
+<p class="text-on-surface-variant leading-relaxed">Complex eligibility criteria handled instantly. Cross-reference backlogs, CGPA, and specific skill sets with one click.</p>
+<div class="mt-auto pt-8">
+<span class="text-primary font-bold inline-flex items-center gap-2 group cursor-pointer">
+                                Learn More 
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="bg-white p-10 rounded-[28px] shadow-[0_8px_32px_0_rgba(26,28,31,0.03)] hover:shadow-lg transition-shadow border-none flex flex-col">
+<div class="w-14 h-14 bg-tertiary-fixed rounded-2xl flex items-center justify-center text-tertiary mb-8">
+<span class="material-symbols-outlined text-3xl">insights</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-4">Editorial Analytics</h3>
+<p class="text-on-surface-variant leading-relaxed">Visual data storytelling. Beautiful dashboards that highlight department performance and hiring trends for board reviews.</p>
+<div class="mt-auto pt-8">
+<span class="text-primary font-bold inline-flex items-center gap-2 group cursor-pointer">
+                                Learn More 
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-24 px-6">
+<div class="max-w-5xl mx-auto rounded-[40px] hero-gradient p-12 md:p-20 text-center relative overflow-hidden">
+<div class="absolute top-0 right-0 p-12 opacity-10">
+<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<h2 class="font-headline text-3xl md:text-5xl font-extrabold text-white mb-6 relative z-10">Ready to transform your <br/> campus placements?</h2>
+<p class="text-primary-fixed text-lg mb-10 max-w-xl mx-auto relative z-10">Join forward-thinking universities streamlining their digital hiring ecosystem with Vantage OS.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+<button onclick="window.location.href='/login'" class="bg-white text-primary px-10 py-4 rounded-xl text-lg font-bold shadow-xl hover:bg-primary-fixed transition-colors">
+                        Book Your Free Pilot
+                    </button>
+<button class="bg-transparent border-2 border-white/20 text-white px-10 py-4 rounded-xl text-lg font-bold hover:bg-white/10 transition-colors">
+                        View Pricing
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-surface-container-low py-16 px-6">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">view_quilt</span>
+</div>
+<span class="font-headline font-extrabold text-xl tracking-tight text-on-surface">Vantage OS</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">The premier placement operating system for higher education institutions globally.</p>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer">
+<span class="material-symbols-outlined text-lg">share</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer">
+<span class="material-symbols-outlined text-lg">public</span>
+</div>
+</div>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface mb-6">Product</h4>
+<ul class="space-y-4 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="javascript:void(0)">Feature Set</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">Integrations</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">Enterprise</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">Updates</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface mb-6">Resources</h4>
+<ul class="space-y-4 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="javascript:void(0)">Documentation</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">API Reference</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">Success Stories</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">Case Studies</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface mb-6">Company</h4>
+<ul class="space-y-4 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="javascript:void(0)">About Us</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">Contact</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">Privacy Policy</a></li>
+<li><a class="hover:text-primary" href="javascript:void(0)">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="text-sm font-mono text-outline">© 2024 VANTAGE DIGITAL CURATOR. ALL RIGHTS RESERVED.</span>
+<div class="flex gap-6 items-center">
+<span class="text-xs text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                    System Status: Operational
+                </span>
+</div>
+</div>
+</footer>
+</body></html>

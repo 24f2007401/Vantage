@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vantage OS | Login Portal</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#7e2e00",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "background": "#f9f9fe",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#f9f9fe",
+                    "on-surface-variant": "#424753",
+                    "secondary": "#4b5e87",
+                    "surface-container-highest": "#e2e2e7",
+                    "inverse-surface": "#2e3034",
+                    "inverse-on-surface": "#f0f0f5",
+                    "inverse-primary": "#adc6ff",
+                    "tertiary-fixed": "#ffdbcd",
+                    "tertiary-container": "#a43f02",
+                    "on-primary-container": "#cad9ff",
+                    "on-tertiary-fixed": "#360f00",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e2e2e7",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#ffd0bd",
+                    "surface-container-high": "#e8e8ed",
+                    "primary-container": "#005bc2",
+                    "surface-container": "#ededf2",
+                    "primary": "#004495",
+                    "outline-variant": "#c2c6d5",
+                    "on-primary-fixed": "#001a41",
+                    "surface-tint": "#005bc1",
+                    "outline": "#727784",
+                    "secondary-container": "#bbcffd",
+                    "on-background": "#1a1c1f",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#33466d",
+                    "surface-container-low": "#f3f3f8",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "on-surface": "#1a1c1f",
+                    "surface-bright": "#f9f9fe",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-dim": "#d9dade",
+                    "primary-fixed-dim": "#adc6ff",
+                    "secondary-fixed-dim": "#b3c6f5",
+                    "on-secondary-container": "#445880",
+                    "on-primary-fixed-variant": "#004494",
+                    "secondary-fixed": "#d8e2ff",
+                    "on-secondary-fixed": "#021a3f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ios-segment-pill {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex items-center justify-center relative overflow-hidden">
+<!-- Subtle Radial Gradient Background -->
+<div class="absolute inset-0 z-0 overflow-hidden">
+<div class="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] rounded-full opacity-20 blur-[120px]" style="background: radial-gradient(circle, #004495 0%, transparent 70%);"></div>
+<div class="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] rounded-full opacity-10 blur-[120px]" style="background: radial-gradient(circle, #7e2e00 0%, transparent 70%);"></div>
+</div>
+<!-- Login Portal Card -->
+<main class="relative z-10 w-full max-w-[420px] p-4">
+<div class="bg-surface-container-lowest rounded-[24px] p-8 shadow-[0_8px_32px_0_rgba(26,28,31,0.06)] flex flex-col gap-8">
+<!-- Branding & Welcome -->
+<header class="text-center space-y-2">
+<div class="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-xl mb-4">
+<span class="material-symbols-outlined text-on-primary text-2xl">grid_view</span>
+</div>
+<h1 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface">Vantage OS</h1>
+<p class="text-on-surface-variant font-medium text-sm">Welcome back to the digital curator portal.</p>
+</header>
+<!-- Role Selector: iOS Segmented Control -->
+<div class="bg-surface-container-high p-1 rounded-xl relative flex items-center h-11">
+<!-- Active Pill (Student Default) -->
+<div class="absolute h-9 w-[calc(33.33%-4px)] bg-surface-container-lowest rounded-[10px] shadow-sm ios-segment-pill left-1" id="role-pill"></div>
+<button class="relative z-10 flex-1 text-xs font-semibold text-on-surface text-center" onclick="movePill(0)">Student</button>
+<button class="relative z-10 flex-1 text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-colors text-center" onclick="movePill(1)">Admin</button>
+<button class="relative z-10 flex-1 text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-colors text-center" onclick="movePill(2)">Recruiter</button>
+</div>
+<!-- Auth Form -->
+<form class="flex flex-col gap-6" onsubmit="return false;">
+<!-- Inputs Container -->
+<div class="space-y-4">
+<div class="space-y-1.5">
+<label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant ml-1">Email Address</label>
+<div class="group relative">
+<input id="email-input" class="w-full bg-surface-container-high text-on-surface placeholder:text-outline border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" placeholder="curator@vantage.os" type="email"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between items-center px-1">
+<label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Password</label>
+<a class="text-[11px] font-bold text-primary hover:text-primary-container transition-colors uppercase tracking-wider" href="javascript:void(0)">Forgot password?</a>
+</div>
+<div class="group relative">
+<input id="password-input" class="w-full bg-surface-container-high text-on-surface placeholder:text-outline border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<!-- Error Message -->
+<div id="error-message" class="text-error text-sm font-medium text-center hidden"></div>
+<!-- Action Button -->
+<button id="login-btn" class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold py-4 rounded-xl shadow-lg shadow-primary/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
+                    Sign In
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</form>
+<!-- Footer Meta -->
+<footer class="flex flex-col items-center gap-4 border-t border-surface-container-high pt-6">
+<p class="text-xs text-on-surface-variant">New to the platform?</p>
+<a href="/signup" class="text-sm font-semibold text-on-surface-variant hover:text-on-surface transition-all flex items-center gap-2">
+                    Create account as a <span class="text-primary">Student or Recruiter</span>
+</a>
+<div class="mt-4 flex gap-4">
+<span class="font-mono text-[10px] text-outline uppercase tracking-tighter">Build 4.2.0-Alpha</span>
+<span class="font-mono text-[10px] text-outline uppercase tracking-tighter">Status: Systems Active</span>
+</div>
+</footer>
+</div>
+<!-- Abstract Decorative Element -->
+<div class="mt-8 flex justify-center opacity-30">
+<div class="flex -space-x-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-surface"></div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border-2 border-surface"></div>
+<div class="w-8 h-8 rounded-full bg-surface-container border-2 border-surface"></div>
+</div>
+</div>
+</main>
+<!-- Background Decoration: Ethereal Floating Shapes -->
+<div class="absolute top-20 right-[15%] w-64 h-64 opacity-5 hidden lg:block">
+<img class="w-full h-full object-cover rounded-full" data-alt="abstract liquid 3d shapes in shades of deep blue and pearl white with glass texture and soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALkjuPxWBC_TZtY7PaVGUl3yA9mIDpvBfVZfxbSjgr1na_JLOi_M-lOm8FNq3-lAllA65v4unoImQBDAlAllFWemco7Mk3ZugAM6zFQzXWifSGl9EisYDs_MRHLocdiwW6XGLy0QiU4P0JOFFEmSZMOMwGbFMibsHpvptTnvxFX1VcwBspwqOSvO3nYHJHKBB4v5NpaGxKS4F0fRWXk1LwA9ahtK63zRXkRYo4rVMT3l8Az9HiXfc5M667v9njeYfeD2TtdYzpp0wN"/>
+</div>
+<!-- Vantage API -->
+<script src="/static/js/vantage-api.js"></script>
+<script>
+    // If already logged in, redirect
+    if (authToken) {
+        const rmap = { student: "/student", admin: "/admin", recruiter: "/recruiter" };
+        window.location.href = rmap[authRole] || "/";
+    }
+
+    // Role selector
+    let selectedRole = "student";
+    const ROLES = ["student", "admin", "recruiter"];
+    function movePill(index) {
+        const pill = document.getElementById('role-pill');
+        const buttons = pill.parentElement.querySelectorAll('button');
+        const percent = index * 100;
+        pill.style.transform = `translateX(${percent}%)`;
+        selectedRole = ROLES[index];
+        buttons.forEach((btn, i) => {
+            if (i === index) {
+                btn.classList.replace('text-on-surface-variant', 'text-on-surface');
+            } else {
+                btn.classList.add('text-on-surface-variant');
+            }
+        });
+    }
+
+    // Login handler
+    document.getElementById("login-btn").addEventListener("click", async () => {
+        const btn = document.getElementById("login-btn");
+        const errEl = document.getElementById("error-message");
+        errEl.classList.add("hidden");
+        btn.disabled = true;
+        btn.innerHTML = 'Signing in… <span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>';
+
+        const body = {
+            email: document.getElementById("email-input").value.trim(),
+            password: document.getElementById("password-input").value
+        };
+
+        try {
+            const data = await apiFetch("/api/auth/login", {
+                method: "POST",
+                body: JSON.stringify(body)
+            });
+
+            btn.disabled = false;
+            btn.innerHTML = 'Sign In <span class="material-symbols-outlined text-[18px]">arrow_forward</span>';
+
+            if (!data) {
+                errEl.textContent = "Invalid credentials. Please try again.";
+                errEl.classList.remove("hidden");
+                return;
+            }
+
+            setAuth(data.access_token, data.user.role, data.refresh_token, data.user);
+
+            // Pipeline-created students must change their temp password first
+            if (data.user.needs_password_change) {
+                window.location.href = "/change-password";
+                return;
+            }
+
+            const redirectMap = {
+                student: "/student",
+                admin: "/admin",
+                recruiter: "/recruiter"
+            };
+            window.location.href = redirectMap[data.user.role] || "/";
+        } catch (e) {
+            btn.disabled = false;
+            btn.innerHTML = 'Sign In <span class="material-symbols-outlined text-[18px]">arrow_forward</span>';
+            errEl.textContent = "Login failed. Please check your credentials.";
+            errEl.classList.remove("hidden");
+        }
+    });
+
+    // Allow Enter key to submit
+    document.getElementById("password-input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") document.getElementById("login-btn").click();
+    });
+</script>
+</body></html>

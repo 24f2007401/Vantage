@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9fe;
+            color: #1a1c1f;
+        }
+        .editorial-header {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.02em;
+        }
+        .technical-label {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "outline": "#727784",
+                        "primary": "#004495",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#a43f02",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#021a3f",
+                        "on-secondary-container": "#445880",
+                        "secondary-container": "#bbcffd",
+                        "tertiary-fixed": "#ffdbcd",
+                        "surface-bright": "#f9f9fe",
+                        "inverse-primary": "#adc6ff",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#d8e2ff",
+                        "primary-container": "#005bc2",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#33466d",
+                        "secondary": "#4b5e87",
+                        "on-primary-fixed-variant": "#004494",
+                        "tertiary": "#7e2e00",
+                        "surface-variant": "#e2e2e7",
+                        "on-surface-variant": "#424753",
+                        "on-primary-fixed": "#001a41",
+                        "on-primary-container": "#cad9ff",
+                        "on-surface": "#1a1c1f",
+                        "surface-tint": "#005bc1",
+                        "surface-container-highest": "#e2e2e7",
+                        "surface-dim": "#d9dade",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-tertiary-container": "#ffd0bd",
+                        "surface-container-low": "#f3f3f8",
+                        "surface-container": "#ededf2",
+                        "surface": "#f9f9fe",
+                        "on-background": "#1a1c1f",
+                        "inverse-on-surface": "#f0f0f5",
+                        "outline-variant": "#c2c6d5",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#b3c6f5",
+                        "secondary-fixed": "#d8e2ff",
+                        "background": "#f9f9fe",
+                        "surface-container-high": "#e8e8ed",
+                        "on-tertiary-fixed": "#360f00",
+                        "inverse-surface": "#2e3034"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "18px",
+                        "xl": "24px",
+                        "full": "9999px"
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] flex justify-between items-center h-14 px-8 w-full">
+<div class="flex items-center gap-6">
+<span class="text-xl font-bold tracking-tighter text-blue-900 editorial-header">RecruitGallery</span>
+<div class="hidden md:flex gap-6 font-['Plus_Jakarta_Sans'] font-medium text-sm tracking-tight">
+<a class="text-slate-500 hover:text-blue-600 transition-colors" href="/admin">Dashboard</a>
+<a class="text-blue-700 font-bold border-b-2 border-blue-600" href="/admin/drives">Drives</a>
+<a class="text-slate-500 hover:text-blue-600 transition-colors" href="/admin/candidates">Candidates</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="bg-surface-container-high border-none rounded-full pl-9 pr-4 py-1.5 text-sm focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search applicants..." type="text"/>
+</div>
+<button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors relative">
+<span class="material-symbols-outlined text-[20px] text-slate-500">notifications</span>
+<span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+</button>
+<button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer select-none border-2 border-white shadow-sm">--</button>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="m-3 rounded-2xl h-[calc(100vh-24px)] w-64 fixed left-0 top-0 bg-slate-50 shadow-[0_8px_32px_0_rgba(26,28,31,0.06)] flex flex-col p-4 gap-2 z-40 mt-[72px]">
+<div class="flex items-center gap-3 px-2 py-4 mb-4">
+<div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h2 class="text-lg font-black text-blue-900 editorial-header leading-tight">Student Drive</h2>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Curated Recruitment</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 font-semibold text-base hover:pl-5 transition-all duration-300 rounded-xl" href="javascript:void(0)">
+<span class="material-symbols-outlined">work</span>
+<span>Drives</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-700 font-semibold text-base shadow-sm rounded-xl" href="javascript:void(0)">
+<span class="material-symbols-outlined">group</span>
+<span>Candidates</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 font-semibold text-base hover:pl-5 transition-all duration-300 rounded-xl" href="javascript:void(0)">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span>Messages</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 font-semibold text-base hover:pl-5 transition-all duration-300 rounded-xl" href="javascript:void(0)">
+<span class="material-symbols-outlined">assessment</span>
+<span>Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 font-semibold text-base hover:pl-5 transition-all duration-300 rounded-xl" href="javascript:void(0)">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Archive</span>
+</a>
+</nav>
+<button id="new-drive-btn" onclick="window.location.href='/admin/drives'" class="bg-gradient-to-br from-primary to-primary-container text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">add</span>
+<span>Post New Drive</span>
+</button>
+<div class="pt-4 border-t border-slate-200 mt-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 font-semibold text-sm hover:pl-5 transition-all duration-300" href="javascript:void(0)">
+<span class="material-symbols-outlined text-xl">help_outline</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 font-semibold text-sm hover:pl-5 transition-all duration-300" href="javascript:void(0)">
+<span class="material-symbols-outlined text-xl">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-20 px-8 pb-12 min-h-screen">
+<!-- Header & Drive Selector -->
+<header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<p class="technical-label text-xs font-medium text-primary">DRIVE_ID: FALL_2024_082</p>
+<div class="flex items-center gap-4 group cursor-pointer">
+<h1 class="display-lg editorial-header text-4xl font-extrabold text-on-surface">Engineering Summer Internships</h1>
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">expand_more</span>
+</div>
+<p class="text-on-surface-variant max-w-lg">Managing applicants for the North American engineering development cycle.</p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low p-1.5 rounded-xl">
+<button class="px-6 py-2 rounded-lg bg-white shadow-sm text-primary font-bold text-sm transition-all">All Applicants</button>
+<button class="px-6 py-2 rounded-lg text-slate-500 hover:text-slate-700 font-semibold text-sm transition-all">Shortlist</button>
+</div>
+</header>
+<!-- Stats Bento Grid (Digital Curator Minimalist) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+<div class="bg-white p-6 rounded-xl shadow-sm border border-transparent hover:border-primary/10 transition-all flex flex-col justify-between h-32">
+<span class="technical-label text-[10px] text-slate-400 uppercase tracking-widest">Total Applicants</span>
+<div class="flex items-baseline gap-2">
+<span class="editorial-header text-3xl font-bold">1,284</span>
+<span class="text-xs text-green-600 font-bold">+12%</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border border-transparent hover:border-primary/10 transition-all flex flex-col justify-between h-32">
+<span class="technical-label text-[10px] text-slate-400 uppercase tracking-widest">Avg. CGPA</span>
+<div class="flex items-baseline gap-2">
+<span class="editorial-header text-3xl font-bold">3.82</span>
+<span class="text-xs text-slate-400">Top 5%</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border border-transparent hover:border-primary/10 transition-all flex flex-col justify-between h-32">
+<span class="technical-label text-[10px] text-slate-400 uppercase tracking-widest">Shortlisted</span>
+<div class="flex items-baseline gap-2">
+<span class="editorial-header text-3xl font-bold">42</span>
+<span class="text-xs text-primary font-bold">3.2% Rate</span>
+</div>
+</div>
+<div class="bg-primary/5 p-6 rounded-xl border border-primary/10 flex flex-col justify-between h-32">
+<span class="technical-label text-[10px] text-primary uppercase tracking-widest">Next Phase</span>
+<div class="flex flex-col">
+<span class="editorial-header text-xl font-bold text-primary">Technical Interviews</span>
+<span class="text-xs text-primary/70">Starts Oct 12</span>
+</div>
+</div>
+</div>
+<!-- Table Controls -->
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 text-sm font-semibold text-slate-600 bg-surface-container-low px-4 py-2 rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                    Filter
+                </button>
+<button class="flex items-center gap-2 text-sm font-semibold text-slate-600 bg-surface-container-low px-4 py-2 rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-lg">sort</span>
+                    Sort by CGPA
+                </button>
+</div>
+<button class="bg-white border border-outline-variant/30 text-on-surface px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-slate-50 transition-all shadow-sm">
+<span class="material-symbols-outlined text-lg">ios_share</span>
+                Export Shortlist
+            </button>
+</div>
+<!-- Applicant Gallery Table (The "Exhibits") -->
+<div class="bg-white rounded-2xl overflow-hidden shadow-[0_8px_32px_0_rgba(26,28,31,0.02)]">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low/50">
+<tr>
+<th class="px-6 py-4 technical-label text-[10px] text-slate-400 uppercase tracking-widest font-bold">Candidate Name</th>
+<th class="px-6 py-4 technical-label text-[10px] text-slate-400 uppercase tracking-widest font-bold">Academic Performance</th>
+<th class="px-6 py-4 technical-label text-[10px] text-slate-400 uppercase tracking-widest font-bold">Core Competencies</th>
+<th class="px-6 py-4 technical-label text-[10px] text-slate-400 uppercase tracking-widest font-bold">Workflow Status</th>
+<th class="px-6 py-4 technical-label text-[10px] text-slate-400 uppercase tracking-widest font-bold">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<!-- Row 1 -->
+<tr class="group hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden ring-2 ring-white shadow-sm">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="headshot of a confident young professional man with dark hair and glasses looking forward with a slight smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm3LEbigdHN51fRxMxydfQk_bLNn-_zGYEyq2u_lPSmK9cWIjsfgpnVhzs8rYRcorkN3UNar8AOHw6O-RaJ9m5tPfdrGtpVKeQR6U8XUMFqmbcoq3cwuYQ84gafwEDSSseFy0muuZxf8qG8QmxhQUE-_NVS-XSp3WQDsn9rYg7mXRDp8SGuHmGZO9WP25JdmEFWOSVvE1WCwgYI2NTjLrElCjA82sUhGNU9fow_Ymy5d2W-iWrMD6xNQuhjrZHnBkfbDdBEQw-OxQc"/>
+</div>
+<div>
+<p class="editorial-header font-bold text-on-surface">Alexander Vance</p>
+<p class="text-xs text-slate-400">Stanford University • CS</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-baseline gap-1">
+<span class="editorial-header text-lg font-bold text-primary">3.98</span>
+<span class="text-[10px] text-slate-400">/ 4.0</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold rounded-full uppercase tracking-tight">Python</span>
+<span class="px-3 py-1 bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold rounded-full uppercase tracking-tight">React</span>
+<span class="px-3 py-1 bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold rounded-full uppercase tracking-tight">+2</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="relative">
+<select class="appearance-none bg-surface-container-high border-none rounded-lg text-xs font-bold px-4 py-2 pr-10 focus:ring-2 focus:ring-primary/20 cursor-pointer w-40">
+<option>Applied</option>
+<option>Technical Test</option>
+<option selected="">Shortlisted</option>
+<option>Interviewed</option>
+<option>Offered</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none">expand_more</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-primary"><span class="material-symbols-outlined">visibility</span></button>
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-primary"><span class="material-symbols-outlined">mail</span></button>
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-error"><span class="material-symbols-outlined">archive</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden ring-2 ring-white shadow-sm">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="modern close-up portrait of a professional woman with a friendly expression and styled hair in a soft light background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMGEdSxoR9w5gLTs0ZOzcY9LWP6YhTqWVf_d1Gzmd6tdFDBU5v91aNPw5htADCxUxgl2jnAORTZNnpy2Ru-u6-gbAU3KRCvHW81SK_sn9AyeWlYq21239899xvaywn9i_AjsbxpeQmICmjWEPzv3Y30E5t1egz0_Zc57Va2P4_lFm5bMkD6NeKGV_-fnVf408zUYs-EiZXyryvt7ycQJaPRS8GnIqwcBbOVbUvpjPpGcI7VYpaOOv89u-9GgM7ehRHjryEZXp1wAMn"/>
+</div>
+<div>
+<p class="editorial-header font-bold text-on-surface">Maya Rodriguez</p>
+<p class="text-xs text-slate-400">MIT • Systems Engineering</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-baseline gap-1">
+<span class="editorial-header text-lg font-bold text-primary">3.92</span>
+<span class="text-[10px] text-slate-400">/ 4.0</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold rounded-full uppercase tracking-tight">Kubernetes</span>
+<span class="px-3 py-1 bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold rounded-full uppercase tracking-tight">Rust</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="relative">
+<select class="appearance-none bg-surface-container-high border-none rounded-lg text-xs font-bold px-4 py-2 pr-10 focus:ring-2 focus:ring-primary/20 cursor-pointer w-40">
+<option>Applied</option>
+<option selected="">Technical Test</option>
+<option>Shortlisted</option>
+<option>Interviewed</option>
+<option>Offered</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none">expand_more</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-primary"><span class="material-symbols-outlined">visibility</span></button>
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-primary"><span class="material-symbols-outlined">mail</span></button>
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-error"><span class="material-symbols-outlined">archive</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden ring-2 ring-white shadow-sm">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="professional male profile shot against a neutral studio background with soft natural lighting and clean skin texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkt3uMywuAMXWtnxK0OZ9YW3T_JNF45jh8j8lY1FamJMk6GmH1oL1ikJDvelwq2Ue_2c7Vn_AjMlOxBUDBbmauUEQKCP75vG1nQ6CKWMV7vJ3jsh8Dag9NiQF1RHVxj1hRonbWw60olwBAJMuP9WQNZ3vu9teJ9RFtefPst0fuHZ9Eqy2hlcsZREZzxSnYMIlUMDf9Qub5x0wI7AolcKAHha6vZcIXzaXWQmjTkZj0DJr4hzO4Lwh5hLR9ShSq60-fqQXZqFbF4w32"/>
+</div>
+<div>
+<p class="editorial-header font-bold text-on-surface">Julian Thorne</p>
+<p class="text-xs text-slate-400">UC Berkeley • Data Science</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-baseline gap-1">
+<span class="editorial-header text-lg font-bold text-primary">3.75</span>
+<span class="text-[10px] text-slate-400">/ 4.0</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold rounded-full uppercase tracking-tight">PyTorch</span>
+<span class="px-3 py-1 bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold rounded-full uppercase tracking-tight">SQL</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="relative">
+<select class="appearance-none bg-surface-container-high border-none rounded-lg text-xs font-bold px-4 py-2 pr-10 focus:ring-2 focus:ring-primary/20 cursor-pointer w-40">
+<option selected="">Applied</option>
+<option>Technical Test</option>
+<option>Shortlisted</option>
+<option>Interviewed</option>
+<option>Offered</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none">expand_more</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-primary"><span class="material-symbols-outlined">visibility</span></button>
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-primary"><span class="material-symbols-outlined">mail</span></button>
+<button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-error"><span class="material-symbols-outlined">archive</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<footer class="p-6 bg-white flex items-center justify-between border-t border-slate-50">
+<span class="technical-label text-[10px] text-slate-400">PAGE 1 OF 64 • 1284 TOTAL RECORDS</span>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-slate-100 rounded-lg text-slate-400 transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-lg">1</button>
+<button class="px-3 py-1 hover:bg-slate-100 text-slate-500 text-xs font-bold rounded-lg">2</button>
+<button class="px-3 py-1 hover:bg-slate-100 text-slate-500 text-xs font-bold rounded-lg">3</button>
+<span class="text-slate-300 mx-1">...</span>
+<button class="px-3 py-1 hover:bg-slate-100 text-slate-500 text-xs font-bold rounded-lg">64</button>
+<button class="p-2 hover:bg-slate-100 rounded-lg text-slate-400 transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</footer>
+</div>
+</main>
+<!-- FAB Suppression logic: No FAB on Manager Detail Screen per design system rules -->
+<!-- Vantage API -->
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("admin")) { /* redirected */ }
+
+// Wire logout — find Sign Out link
+document.querySelectorAll('aside a').forEach(el => {
+    if (el.textContent.trim() === 'Sign Out') {
+        el.addEventListener('click', (e) => { e.preventDefault(); doLogout(); });
+    }
+});
+
+// Fix sidebar nav links
+document.querySelectorAll('aside nav a[href="javascript:void(0)"]').forEach(el => {
+    const text = el.textContent.trim();
+    if (text === 'Drives') el.href = '/admin/drives';
+    else if (text === 'Candidates') el.href = '/admin/candidates';
+});
+
+// Get drive ID from URL
+const pathParts = window.location.pathname.split('/');
+const driveId = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
+
+async function loadApplicants() {
+    // Try to get drive detail first
+    const drive = await apiFetch(`/api/admin/drives/${driveId}`);
+    if (drive) {
+        const title = document.querySelector('h1.editorial-header');
+        if (title) title.textContent = drive.drive_title || drive.role_title || 'Drive Applicants';
+        
+        const driveLabel = document.querySelector('.technical-label.text-xs.text-primary');
+        if (driveLabel) driveLabel.textContent = `DRIVE_ID: ${driveId}`;
+    }
+
+    // Fetch applications
+    const data = await apiFetch(`/api/admin/drives/${driveId}/applications`);
+    if (!data) return;
+
+    const apps = Array.isArray(data) ? data : (data.items || []);
+    
+    // Update KPIs
+    const kpis = document.querySelectorAll('.editorial-header.text-3xl');
+    if (kpis[0]) kpis[0].textContent = apps.length.toLocaleString();
+    
+    const shortlisted = apps.filter(a => a.status === 'SHORTLISTED' || a.status === 'SELECTED').length;
+    if (kpis[2]) kpis[2].textContent = shortlisted;
+
+    // Populate table
+    const tbody = document.querySelector('tbody');
+    tbody.innerHTML = '';
+
+    if (apps.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-12 text-center text-slate-400">No applicants yet</td></tr>`;
+        return;
+    }
+
+    apps.forEach(a => {
+        const initials = (a.student_name || 'U').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+        const statuses = ['APPLIED', 'SHORTLISTED', 'SELECTED', 'REJECTED', 'WITHDRAWN'];
+        
+        tbody.innerHTML += `
+        <tr class="group hover:bg-surface-container-low/30 transition-colors">
+            <td class="px-6 py-5">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm ring-2 ring-white shadow-sm">${initials}</div>
+                    <div>
+                        <p class="editorial-header font-bold text-on-surface">${a.student_name || 'Unknown'}</p>
+                        <p class="text-xs text-slate-400">${a.branch || '—'} • ${a.roll_number || ''}</p>
+                    </div>
+                </div>
+            </td>
+            <td class="px-6 py-5">
+                <div class="flex items-baseline gap-1">
+                    <span class="editorial-header text-lg font-bold text-primary">${a.cgpa ? a.cgpa.toFixed(2) : '—'}</span>
+                    <span class="text-[10px] text-slate-400">/ 10.0</span>
+                </div>
+            </td>
+            <td class="px-6 py-5">
+                <span class="text-xs text-slate-500">${a.backlogs || 0} backlogs</span>
+            </td>
+            <td class="px-6 py-5">
+                <div class="relative">
+                    <select class="appearance-none bg-surface-container-high border-none rounded-lg text-xs font-bold px-4 py-2 pr-10 focus:ring-2 focus:ring-primary/20 cursor-pointer w-40" onchange="updateStatus('${a.id}', this.value)">
+                        ${statuses.map(s => `<option value="${s}" ${s === a.status ? 'selected' : ''}>${s}</option>`).join('')}
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none">expand_more</span>
+                </div>
+            </td>
+            <td class="px-6 py-5">
+                <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-primary" onclick="window.location.href='/admin/students?open=${a.student_id}'"><span class="material-symbols-outlined">visibility</span></button>
+                    <button class="p-2 hover:bg-white rounded-lg transition-colors text-slate-400 hover:text-error" onclick="showToast('Archive not yet implemented', 'warning')"><span class="material-symbols-outlined">archive</span></button>
+                </div>
+            </td>
+        </tr>`;
+    });
+
+    // Update pagination
+    const footer = document.querySelector('footer span');
+    if (footer) footer.textContent = `PAGE 1 OF 1 • ${apps.length} TOTAL RECORDS`;
+}
+
+async function updateStatus(appId, newStatus) {
+    const res = await apiFetch(`/api/admin/applications/${appId}/status`, {
+        method: "PATCH",
+        body: JSON.stringify({ status: newStatus })
+    });
+    if (res) showToast(`Status updated to ${newStatus}`, "success");
+}
+
+document.addEventListener('DOMContentLoaded', () => { loadApplicants(); initAdminHeader(); });
+</script>
+</body></html>

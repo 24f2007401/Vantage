@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile | Vantage OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode:"class",
+  theme:{ extend:{ colors:{
+    "primary":"#004495","primary-container":"#005bc2","on-primary":"#ffffff",
+    "secondary":"#4b5e87","secondary-container":"#bbcffd","on-secondary-container":"#445880",
+    "surface":"#f9f9fe","surface-container-lowest":"#ffffff","surface-container-low":"#f3f3f8",
+    "surface-container":"#ededf2","surface-container-high":"#e8e8ed","surface-container-highest":"#e2e2e7",
+    "on-surface":"#1a1c1f","on-surface-variant":"#424753","outline":"#727784","outline-variant":"#c2c6d5",
+    "tertiary":"#7e2e00","tertiary-container":"#a43f02","tertiary-fixed":"#ffdbcd","on-tertiary-fixed":"#360f00","on-tertiary-fixed-variant":"#7d2d00",
+    "error":"#ba1a1a","error-container":"#ffdad6","background":"#f9f9fe",
+    "primary-fixed":"#d8e2ff","primary-fixed-dim":"#adc6ff","on-primary-fixed":"#001a41"
+  }, borderRadius:{"DEFAULT":"0.25rem","lg":"18px","xl":"24px","full":"9999px"},
+  fontFamily:{"headline":["Plus Jakarta Sans"],"body":["Inter"],"technical":["JetBrains Mono"]} } }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+  .gradient-primary { background: linear-gradient(135deg,#004495 0%,#005bc2 100%); }
+  .tag-chip { display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#d8e2ff;color:#004495;border-radius:999px;font-size:11px;font-weight:600; }
+</style>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl shadow-sm flex justify-between items-center h-14 px-6">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight text-blue-900 font-headline">Vantage OS</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-slate-500 hover:bg-slate-100/50 transition-colors px-3 py-1 rounded-lg text-sm font-medium" href="/student">Dashboard</a>
+<a class="text-slate-500 hover:bg-slate-100/50 transition-colors px-3 py-1 rounded-lg text-sm font-medium" href="/student/drives">Drives</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<div id="header-avatar" class="h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-white text-xs font-bold">--</div>
+</div>
+</header>
+
+<!-- Sidebar -->
+<aside class="fixed left-3 top-20 bottom-3 w-64 rounded-2xl bg-white shadow-[0_8px_32px_0_rgba(26,28,31,0.04)] flex flex-col p-4 space-y-6 z-40">
+<div class="flex items-center gap-3 px-2">
+<div class="h-10 w-10 gradient-primary rounded-xl flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">cloud_done</span>
+</div>
+<div>
+<h2 class="text-lg font-black text-blue-800 font-headline leading-none">Vantage Student</h2>
+<p class="text-[10px] text-slate-400 font-technical uppercase tracking-wider mt-1">Recruitment Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-all text-sm" href="/student">
+<span class="material-symbols-outlined">dashboard</span><span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-blue-700 font-bold rounded-xl text-sm" href="/student/profile">
+<span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">person</span><span>Profile</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-all text-sm" href="/student/drives">
+<span class="material-symbols-outlined">campaign</span><span>Drives</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-all text-sm" href="/student/applications">
+<span class="material-symbols-outlined">description</span><span>Applications</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-slate-100 space-y-1">
+<button id="logout-btn" class="w-full text-left flex items-center gap-3 px-4 py-2 text-error hover:bg-error-container/20 rounded-xl transition-all text-sm">
+<span class="material-symbols-outlined">logout</span><span>Logout</span>
+</button>
+</div>
+</aside>
+
+<!-- Main -->
+<main class="ml-72 pt-20 pb-16 px-8 max-w-5xl">
+
+<!-- Profile Header -->
+<section class="mb-8 flex flex-wrap items-end justify-between gap-6">
+<div class="flex items-center gap-6">
+<div id="avatar-circle" class="h-20 w-20 rounded-2xl gradient-primary text-white flex items-center justify-center text-2xl font-bold shadow-xl ring-4 ring-white">--</div>
+<div class="space-y-1.5">
+<div class="flex items-center gap-3 flex-wrap">
+<h1 id="profile-name" class="text-3xl font-extrabold font-headline tracking-tight text-on-surface">Loading…</h1>
+<span id="verif-badge" class="flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-slate-100 text-slate-500">
+<span class="material-symbols-outlined text-[13px]">hourglass_empty</span>Loading
+</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant font-medium flex-wrap">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">tag</span>
+<span id="profile-roll" class="font-technical text-sm">—</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">school</span>
+<span id="profile-branch" class="text-sm">—</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span id="profile-year" class="text-sm">—</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Verification Banner -->
+<div id="verif-banner" class="mb-6 p-4 rounded-xl border flex items-start gap-3 hidden">
+<span id="verif-banner-icon" class="material-symbols-outlined text-[20px] mt-0.5"></span>
+<div>
+<p id="verif-banner-title" class="text-sm font-semibold"></p>
+<p id="verif-banner-msg" class="text-xs text-slate-500 mt-0.5"></p>
+</div>
+</div>
+
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+<!-- Academic Details (Read-only) -->
+<div class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_4px_20px_0_rgba(26,28,31,0.04)]">
+<div class="flex items-center justify-between mb-5">
+<h3 class="text-base font-bold font-headline">Academic Details</h3>
+<span class="material-symbols-outlined text-slate-300 text-[20px]">lock</span>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl border-l-4 border-primary/20 mb-5">
+<p class="text-xs text-on-surface-variant leading-relaxed">
+<span class="font-bold text-primary">Read-only.</span> Managed by the T-Sheet pipeline. Contact academic office for corrections.
+</p>
+</div>
+<div class="grid grid-cols-2 gap-5">
+<div>
+<p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">CGPA</p>
+<p id="acad-cgpa" class="text-3xl font-extrabold text-primary font-headline">—</p>
+</div>
+<div>
+<p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Semesters</p>
+<p id="acad-sems" class="text-3xl font-extrabold text-on-surface font-headline">—</p>
+</div>
+<div>
+<p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Active Backlogs</p>
+<p id="acad-backlogs" class="text-3xl font-extrabold text-on-surface font-headline">00</p>
+</div>
+<div>
+<p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Total Backlogs Ever</p>
+<p id="acad-total-backlogs" class="text-3xl font-extrabold text-on-surface font-headline">00</p>
+</div>
+</div>
+</div>
+
+<!-- Personal Details (Editable) -->
+<div class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_4px_20px_0_rgba(26,28,31,0.04)]">
+<div class="flex items-center justify-between mb-5">
+<h3 class="text-base font-bold font-headline">Personal Details</h3>
+<span class="text-[10px] font-technical bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-0.5 rounded uppercase tracking-widest">Editable</span>
+</div>
+<form id="personal-form" class="space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Full Name</label>
+<input id="f-name" class="w-full px-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="Your full name" />
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Phone Number</label>
+<input id="f-phone" class="w-full px-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="+91 9XXXXXXXXX" />
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Date of Birth</label>
+<input id="f-dob" class="w-full px-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="date" />
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Gender</label>
+<select id="f-gender" class="w-full px-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20">
+<option value="">Prefer not to say</option>
+<option value="MALE">Male</option>
+<option value="FEMALE">Female</option>
+<option value="OTHER">Other</option>
+</select>
+</div>
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Personal Email</label>
+<input id="f-email" class="w-full px-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="email" placeholder="personal@example.com" />
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Address</label>
+<textarea id="f-address" class="w-full px-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" rows="2" placeholder="Current address (optional)"></textarea>
+</div>
+<button id="save-personal-btn" class="w-full py-3 gradient-primary text-white font-bold rounded-xl text-sm hover:opacity-90 transition-all" type="submit">
+Save Personal Details
+</button>
+</form>
+</div>
+</div>
+
+<!-- Professional Links + Skills (Full Width) -->
+<div class="bg-surface-container-lowest rounded-xl p-7 mb-6 shadow-[0_4px_20px_0_rgba(26,28,31,0.04)]">
+<h3 class="text-base font-bold font-headline mb-5">Professional Links &amp; Skills</h3>
+<form id="links-form" class="space-y-4">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">GitHub Profile URL</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">code</span>
+<input id="f-github" class="w-full pl-9 pr-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="https://github.com/username" />
+</div>
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">LinkedIn Profile URL</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">work</span>
+<input id="f-linkedin" class="w-full pl-9 pr-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="https://linkedin.com/in/username" />
+</div>
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Portfolio / Website URL</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">language</span>
+<input id="f-portfolio" class="w-full pl-9 pr-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="https://yoursite.com" />
+</div>
+</div>
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Resume URL</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">description</span>
+<input id="f-resume" class="w-full pl-9 pr-3 py-2.5 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="https://drive.google.com/... or Dropbox link" />
+</div>
+</div>
+<!-- Skills Tag Input -->
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Skills</label>
+<div id="skills-tags" class="flex flex-wrap gap-2 mb-2 min-h-[28px]"></div>
+<div class="flex gap-2">
+<input id="skill-input" class="flex-1 px-3 py-2 bg-surface-container-high border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="Type a skill and press Enter or comma" />
+<button type="button" onclick="addSkill()" class="px-4 py-2 bg-primary-fixed text-on-primary-fixed rounded-xl text-sm font-semibold hover:bg-primary-fixed-dim transition-colors">Add</button>
+</div>
+</div>
+<button id="save-links-btn" class="w-full py-3 gradient-primary text-white font-bold rounded-xl text-sm hover:opacity-90 transition-all" type="submit">
+Save Links &amp; Skills
+</button>
+</form>
+</div>
+
+<!-- Semester Records (Read-only) -->
+<section class="bg-surface-container-lowest rounded-xl overflow-hidden mb-6 shadow-[0_4px_20px_0_rgba(26,28,31,0.04)]">
+<div class="p-6 pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<h3 class="text-base font-bold font-headline">Semester Records</h3>
+<span class="material-symbols-outlined text-slate-300 text-[18px]">lock</span>
+</div>
+<div id="cgpa-badge" class="px-3 py-1 bg-surface-container-low rounded-lg text-[10px] font-bold text-on-surface-variant flex items-center gap-1.5">
+<span class="h-1.5 w-1.5 rounded-full bg-primary"></span>CGPA —
+</div>
+</div>
+<div class="px-6 pb-6 overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+<th class="py-3">Semester</th>
+<th class="py-3 text-center">SGPA</th>
+<th class="py-3 text-center">Backlogs</th>
+<th class="py-3 text-right">Status</th>
+</tr>
+</thead>
+<tbody id="sem-tbody" class="divide-y divide-surface-container-low">
+<tr><td colspan="4" class="py-6 text-center text-slate-400 text-sm">Loading records…</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- Certifications Section -->
+<section class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_4px_20px_0_rgba(26,28,31,0.04)]">
+<div class="flex items-center justify-between mb-5">
+<div>
+<h3 class="text-base font-bold font-headline">Certifications</h3>
+<p class="text-xs text-slate-400 mt-1">Globally recognised certifications that strengthen your profile</p>
+</div>
+<button onclick="document.getElementById('cert-modal').style.display='flex'" class="flex items-center gap-1.5 px-4 py-2 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>Add Cert
+</button>
+</div>
+<div id="certs-list" class="space-y-3">
+<p class="text-sm text-slate-400 text-center py-6">Loading certifications…</p>
+</div>
+</section>
+
+</main>
+
+<!-- Certification Add Modal -->
+<div id="cert-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] hidden items-center justify-center p-6">
+<div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="text-lg font-bold font-headline">Add Certification</h3>
+<button onclick="document.getElementById('cert-modal').style.display='none'" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<form id="cert-form" class="p-6 space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="col-span-2">
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Provider *</label>
+<select id="cert-provider" class="w-full px-3 py-2.5 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" required>
+<option value="">Select a provider</option>
+<option>AWS (Amazon Web Services)</option>
+<option>Google Cloud</option>
+<option>Microsoft Azure</option>
+<option>Oracle</option>
+<option>Cisco</option>
+<option>CompTIA</option>
+<option>Meta (Facebook) Developer</option>
+<option>Salesforce</option>
+<option>Red Hat</option>
+<option>Linux Foundation</option>
+<option>PMI</option>
+<option>Scrum Alliance / Scrum.org</option>
+<option>GitHub Certifications</option>
+<option>Databricks</option>
+<option>Snowflake</option>
+<option>MongoDB University</option>
+<option>HashiCorp</option>
+<option>CFA Institute</option>
+<option>NASSCOM</option>
+<option>Other (specify in name)</option>
+</select>
+</div>
+<div class="col-span-2">
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Certification Name *</label>
+<input id="cert-name" class="w-full px-3 py-2.5 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="e.g. AWS Solutions Architect – Associate" required />
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Credential ID</label>
+<input id="cert-cred-id" class="w-full px-3 py-2.5 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="e.g. ABC123XYZ" />
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Issue Date</label>
+<input id="cert-issue-date" class="w-full px-3 py-2.5 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="date" />
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Expiry Date (optional)</label>
+<input id="cert-expiry" class="w-full px-3 py-2.5 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="date" />
+</div>
+<div>
+<label class="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Verification URL</label>
+<input id="cert-verify-url" class="w-full px-3 py-2.5 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" type="text" placeholder="https://credly.com/badges/..." />
+</div>
+</div>
+<div class="flex justify-end gap-3 pt-2">
+<button type="button" onclick="document.getElementById('cert-modal').style.display='none'" class="px-5 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold hover:bg-slate-50">Cancel</button>
+<button type="submit" id="cert-submit-btn" class="px-6 py-2.5 gradient-primary text-white rounded-xl text-sm font-semibold">Add Certification</button>
+</div>
+</form>
+</div>
+</div>
+
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("student")) { /* redirected */ }
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+// ── Skills tag management ──
+let skills = [];
+
+function renderSkillTags() {
+    const container = document.getElementById('skills-tags');
+    container.innerHTML = skills.map((s, i) =>
+        `<span class="tag-chip">${s}<button type="button" onclick="removeSkill(${i})" class="ml-1 hover:text-error transition-colors">×</button></span>`
+    ).join('');
+}
+
+function addSkill() {
+    const input = document.getElementById('skill-input');
+    const val = input.value.trim().replace(/,$/, '');
+    if (val && !skills.includes(val)) {
+        skills.push(val);
+        renderSkillTags();
+    }
+    input.value = '';
+}
+
+function removeSkill(i) {
+    skills.splice(i, 1);
+    renderSkillTags();
+}
+
+document.getElementById('skill-input')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addSkill(); }
+});
+
+// ── Load profile ──
+async function loadProfile() {
+    const data = await apiFetch("/api/student/profile");
+    if (!data) return;
+
+    // Browser tab title
+    document.title = data.full_name
+        ? `${data.full_name} | Vantage OS`
+        : data.roll_number
+            ? `${data.roll_number} | Vantage OS`
+            : 'Profile | Vantage OS';
+
+    // Header
+    const name = data.full_name || data.roll_number || 'Student';
+    document.getElementById('profile-name').textContent = name;
+    const initials = name.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0,2).toUpperCase() || '--';
+    document.getElementById('avatar-circle').textContent = initials;
+    document.getElementById('header-avatar').textContent = initials;
+    document.getElementById('profile-roll').textContent = data.roll_number || '—';
+    document.getElementById('profile-branch').textContent = data.branch || '—';
+    document.getElementById('profile-year').textContent = data.graduation_year ? `Class of ${data.graduation_year}` : '—';
+
+    // Verification badge
+    const badge = document.getElementById('verif-badge');
+    const banner = document.getElementById('verif-banner');
+    const bannerIcon = document.getElementById('verif-banner-icon');
+    const bannerTitle = document.getElementById('verif-banner-title');
+    const bannerMsg = document.getElementById('verif-banner-msg');
+    banner.classList.remove('hidden');
+
+    if (data.is_verified) {
+        const isTsheet = data.verification_source === 'tsheet';
+        const verifiedAt = data.verified_at ? new Date(data.verified_at).toLocaleDateString() : '';
+        badge.className = 'flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ' +
+            (isTsheet ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700');
+        badge.innerHTML = `<span class="material-symbols-outlined text-[13px]" style="font-variation-settings:'FILL' 1;">verified</span>${isTsheet ? 'Verified via T-Sheet' : 'Manually Verified'}`;
+
+        banner.className = 'mb-6 p-4 rounded-xl border flex items-start gap-3 bg-emerald-50 border-emerald-200';
+        bannerIcon.className = 'material-symbols-outlined text-[20px] mt-0.5 text-emerald-600';
+        bannerIcon.textContent = 'verified';
+        bannerTitle.className = 'text-sm font-semibold text-emerald-800';
+        bannerTitle.textContent = `✓ Verified${verifiedAt ? ' on ' + verifiedAt : ''}`;
+        bannerMsg.textContent = 'Your academic records have been verified from official T-Sheets.';
+    } else {
+        badge.className = 'flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-amber-100 text-amber-700';
+        badge.innerHTML = `<span class="material-symbols-outlined text-[13px]">hourglass_empty</span>Pending Verification`;
+
+        banner.className = 'mb-6 p-4 rounded-xl border flex items-start gap-3 bg-amber-50 border-amber-200';
+        bannerIcon.className = 'material-symbols-outlined text-[20px] mt-0.5 text-amber-600';
+        bannerIcon.textContent = 'pending';
+        bannerTitle.className = 'text-sm font-semibold text-amber-800';
+        bannerTitle.textContent = '⏳ Verification Pending';
+        bannerMsg.textContent = 'Your profile will be verified once your T-Sheet records are uploaded by the placement cell. You can still browse drives but cannot apply until verified.';
+    }
+
+    // Academic details
+    document.getElementById('acad-cgpa').textContent = data.cgpa ? data.cgpa.toFixed(2) : '—';
+    document.getElementById('acad-sems').textContent = data.academic_records?.length || '—';
+    document.getElementById('acad-backlogs').textContent = String(data.backlogs || 0).padStart(2, '0');
+    document.getElementById('acad-total-backlogs').textContent = String(data.total_backlogs || 0).padStart(2, '0');
+    document.getElementById('cgpa-badge').innerHTML = `<span class="h-1.5 w-1.5 rounded-full bg-primary"></span>CGPA ${data.cgpa ? data.cgpa.toFixed(2) : '—'}`;
+
+    // Personal form
+    document.getElementById('f-name').value = data.full_name || '';
+    document.getElementById('f-phone').value = data.phone || '';
+    document.getElementById('f-dob').value = data.dob || '';
+    document.getElementById('f-gender').value = data.gender || '';
+    document.getElementById('f-email').value = data.personal_email || '';
+    document.getElementById('f-address').value = data.address || '';
+
+    // Links form
+    document.getElementById('f-github').value = data.github_url || '';
+    document.getElementById('f-linkedin').value = data.linkedin_url || '';
+    document.getElementById('f-portfolio').value = data.portfolio_url || '';
+    document.getElementById('f-resume').value = data.resume_url || '';
+
+    // Skills
+    skills = Array.isArray(data.skills) ? [...data.skills] : [];
+    renderSkillTags();
+
+    // Semester records
+    const tbody = document.getElementById('sem-tbody');
+    const records = data.academic_records || [];
+    if (!records.length) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-400 text-sm">No academic records yet</td></tr>`;
+    } else {
+        tbody.innerHTML = records.map(s => {
+            const cleared = (s.backlogs || 0) === 0;
+            const statusClass = cleared ? 'bg-secondary-container/30 text-on-secondary-container' : 'bg-error-container text-error';
+            const statusLabel = cleared ? 'CLEARED' : 'BACKLOGS';
+            return `<tr class="group hover:bg-surface-container-low transition-all">
+                <td class="py-4 font-semibold text-sm">Semester ${s.semester}</td>
+                <td class="py-4 text-center font-technical text-sm">${s.sgpa != null ? Number(s.sgpa).toFixed(2) : '—'}</td>
+                <td class="py-4 text-center font-technical text-sm ${(s.backlogs || 0) > 0 ? 'text-error font-bold' : ''}">${s.backlogs || 0}</td>
+                <td class="py-4 text-right"><span class="px-2.5 py-1 ${statusClass} text-[10px] font-bold rounded-full">${statusLabel}</span></td>
+            </tr>`;
+        }).join('');
+    }
+}
+
+// ── Save Personal Details ──
+document.getElementById('personal-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('save-personal-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+    try {
+        const res = await apiFetch("/api/student/profile", {
+            method: "PATCH",
+            body: JSON.stringify({
+                full_name: document.getElementById('f-name').value.trim(),
+                phone: document.getElementById('f-phone').value.trim(),
+                dob: document.getElementById('f-dob').value || null,
+                gender: document.getElementById('f-gender').value || null,
+                personal_email: document.getElementById('f-email').value.trim(),
+                address: document.getElementById('f-address').value.trim(),
+            })
+        });
+        if (res) {
+            showToast("Personal details saved", "success");
+            loadProfile();
+        }
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Personal Details';
+    }
+});
+
+// ── Save Links & Skills ──
+document.getElementById('links-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('save-links-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+    try {
+        const res = await apiFetch("/api/student/profile", {
+            method: "PATCH",
+            body: JSON.stringify({
+                github_url: document.getElementById('f-github').value.trim(),
+                linkedin_url: document.getElementById('f-linkedin').value.trim(),
+                portfolio_url: document.getElementById('f-portfolio').value.trim(),
+                resume_url: document.getElementById('f-resume').value.trim(),
+                skills: skills,
+            })
+        });
+        if (res) showToast("Links & skills saved", "success");
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Links & Skills';
+    }
+});
+
+// ── Certifications ──
+async function loadCertifications() {
+    const container = document.getElementById('certs-list');
+    const data = await apiFetch('/api/student/certifications');
+    if (!data) return;
+
+    if (!data.length) {
+        container.innerHTML = `<div class="text-center py-8 text-slate-400">
+            <span class="material-symbols-outlined text-3xl block mb-2">workspace_premium</span>
+            <p class="text-sm">No certifications added yet</p>
+            <p class="text-xs mt-1">Add globally recognised certifications to strengthen your profile</p>
+        </div>`;
+        return;
+    }
+
+    container.innerHTML = data.map(c => {
+        const isExpired = c.expiry_date && new Date(c.expiry_date) < new Date();
+        return `<div class="flex items-start justify-between p-4 bg-surface-container-low rounded-xl gap-4">
+            <div class="flex items-start gap-3 flex-1 min-w-0">
+                <div class="w-10 h-10 rounded-xl bg-primary-fixed/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
+                    ${c.provider.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}
+                </div>
+                <div class="min-w-0">
+                    <p class="font-semibold text-sm text-on-surface truncate">${c.cert_name}</p>
+                    <p class="text-xs text-slate-500">${c.provider}</p>
+                    <div class="flex flex-wrap gap-3 mt-1.5">
+                        ${c.credential_id ? `<span class="text-[10px] font-mono text-slate-400">ID: ${c.credential_id}</span>` : ''}
+                        ${c.issue_date ? `<span class="text-[10px] text-slate-400">Issued: ${new Date(c.issue_date).toLocaleDateString()}</span>` : ''}
+                        ${c.expiry_date ? `<span class="text-[10px] ${isExpired ? 'text-error' : 'text-slate-400'}">Expires: ${new Date(c.expiry_date).toLocaleDateString()}${isExpired ? ' (Expired)' : ''}</span>` : ''}
+                        ${c.verify_url ? `<a href="${c.verify_url}" target="_blank" class="text-[10px] text-primary hover:underline flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">open_in_new</span>Verify</a>` : ''}
+                    </div>
+                </div>
+            </div>
+            <button onclick="deleteCert('${c.id}')" class="w-8 h-8 rounded-lg hover:bg-error-container text-slate-400 hover:text-error flex items-center justify-center transition-colors flex-shrink-0">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+        </div>`;
+    }).join('');
+}
+
+async function deleteCert(id) {
+    if (!confirm('Remove this certification?')) return;
+    const res = await apiFetch(`/api/student/certifications/${id}`, { method: 'DELETE' });
+    if (res) { showToast('Certification removed', 'success'); loadCertifications(); }
+}
+
+document.getElementById('cert-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('cert-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Adding…';
+    try {
+        const res = await apiFetch('/api/student/certifications', {
+            method: 'POST',
+            body: JSON.stringify({
+                provider: document.getElementById('cert-provider').value,
+                cert_name: document.getElementById('cert-name').value.trim(),
+                credential_id: document.getElementById('cert-cred-id').value.trim() || null,
+                issue_date: document.getElementById('cert-issue-date').value || null,
+                expiry_date: document.getElementById('cert-expiry').value || null,
+                verify_url: document.getElementById('cert-verify-url').value.trim() || null,
+            })
+        });
+        if (res) {
+            showToast('Certification added', 'success');
+            document.getElementById('cert-modal').style.display = 'none';
+            document.getElementById('cert-form').reset();
+            loadCertifications();
+        }
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Add Certification';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    initStudentHeader();
+    loadProfile();
+    loadCertifications();
+    connectStudentSSE();
+});
+</script>
+</body></html>

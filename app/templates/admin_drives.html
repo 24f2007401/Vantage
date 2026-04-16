@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Placement Drives | Vantage OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9fe;
+        }
+        h1, h2, h3, .headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#005bc2",
+                      "tertiary-fixed": "#ffdbcd",
+                      "on-primary-fixed-variant": "#004494",
+                      "on-primary-fixed": "#001a41",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed": "#d8e2ff",
+                      "surface-container-low": "#f3f3f8",
+                      "primary-fixed": "#d8e2ff",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "surface-container": "#ededf2",
+                      "on-surface": "#1a1c1f",
+                      "error-container": "#ffdad6",
+                      "tertiary-container": "#a43f02",
+                      "inverse-primary": "#adc6ff",
+                      "surface": "#f9f9fe",
+                      "surface-container-highest": "#e2e2e7",
+                      "tertiary": "#7e2e00",
+                      "on-secondary-fixed": "#021a3f",
+                      "on-primary-container": "#cad9ff",
+                      "on-secondary-container": "#445880",
+                      "on-error": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#d9dade",
+                      "on-secondary-fixed-variant": "#33466d",
+                      "secondary-container": "#bbcffd",
+                      "on-primary": "#ffffff",
+                      "secondary-fixed-dim": "#b3c6f5",
+                      "inverse-surface": "#2e3034",
+                      "surface-variant": "#e2e2e7",
+                      "on-tertiary-fixed-variant": "#7d2d00",
+                      "secondary": "#4b5e87",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#004495",
+                      "inverse-on-surface": "#f0f0f5",
+                      "outline": "#727784",
+                      "surface-container-high": "#e8e8ed",
+                      "primary-fixed-dim": "#adc6ff",
+                      "outline-variant": "#c2c6d5",
+                      "on-tertiary-fixed": "#360f00",
+                      "on-tertiary-container": "#ffd0bd",
+                      "surface-tint": "#005bc1",
+                      "on-surface-variant": "#424753",
+                      "on-error-container": "#93000a",
+                      "on-background": "#1a1c1f",
+                      "background": "#f9f9fe",
+                      "surface-bright": "#f9f9fe",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "18px",
+                      "xl": "24px",
+                      "full": "9999px"
+              },
+            },
+          }
+        }
+    </script>
+</head>
+<body class="text-on-surface min-h-screen">
+<!-- Floating SideNavBar -->
+<aside class="fixed left-0 top-0 h-[calc(100vh-24px)] w-[220px] m-3 rounded-[24px] bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl flex flex-col p-6 z-40 shadow-[0_8px_32px_0_rgba(26,28,31,0.05)]">
+<div class="mb-10 flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-sm" data-weight="fill" style="font-variation-settings: 'FILL' 1;">panorama_vertical</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50 leading-none">Vantage OS</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1 font-medium">Digital Curator</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/students">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+<span class="text-sm font-medium">Students</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-blue-700 dark:text-blue-400 font-semibold border-r-4 border-blue-600 bg-slate-100/50 transition-colors duration-300" href="/admin/drives">
+<span class="material-symbols-outlined text-[20px]">work</span>
+<span class="text-sm font-medium">Drives</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/recruiters">
+<span class="material-symbols-outlined text-[20px]">business</span>
+<span class="text-sm font-medium">Recruiters</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/tsheets">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span class="text-sm font-medium">T-Sheets</span>
+</a>
+<a class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100/50 transition-colors duration-300" href="/admin/analytics">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span class="text-sm font-medium">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1">
+<button id="logout-btn" class="flex items-center gap-3 py-2.5 px-4 rounded-xl text-slate-500 dark:text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors duration-300 w-full">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</button>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 h-[56px] bg-white/70 dark:bg-slate-900/70 backdrop-blur-[25px] flex justify-between items-center w-full pl-[250px] pr-8 z-30">
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="bg-surface-container-high/50 border-none rounded-full pl-10 pr-4 py-1.5 text-sm w-64 focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400" placeholder="Search exhibition drives..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button id="admin-bell-btn" class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-full transition-all relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span id="notif-badge" style="display:none;position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:#ba1a1a;color:#fff;border-radius:999px;font-size:9px;font-weight:700;align-items:center;justify-content:center;padding:0 3px;"></span>
+</button>
+<button id="admin-avatar" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer select-none border-2 border-white shadow-sm">--</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[72px] pl-[244px] pr-8 pb-12 min-h-screen">
+<!-- Header Section -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<h2 class="text-[3.5rem] font-extrabold tracking-tight leading-none text-on-surface headline">Placement Drives</h2>
+<p class="text-slate-500 mt-2 text-lg">Curating the next generation of industry talent.</p>
+</div>
+<div class="flex gap-2 p-1 bg-surface-container-low rounded-xl">
+<button class="px-4 py-2 text-sm font-semibold bg-white shadow-sm rounded-lg text-primary transition-all">All Drives</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all">Active</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all">Draft</button>
+<button class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all">Closed</button>
+</div>
+</div>
+<!-- Drives Table -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(26,28,31,0.04)]">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low/50 border-b border-outline-variant/20">
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Drive / Company</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Type</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">CTC (LPA)</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Branches</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Min CGPA</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Deadline</th>
+<th class="px-6 py-4 text-[10px] font-mono text-slate-500 uppercase tracking-widest">Status</th>
+</tr>
+</thead>
+<tbody id="drives-tbody" class="divide-y divide-surface-container-high">
+<tr><td colspan="7" class="px-6 py-16 text-center text-slate-400">
+<span class="material-symbols-outlined text-3xl block mb-3 animate-pulse">hourglass_top</span>Loading drives…
+</td></tr>
+</tbody>
+</table>
+</div>
+</main>
+<!-- Side Detail Panel (Read-Only) -->
+<div id="detail-panel" class="fixed inset-y-0 right-0 w-[520px] bg-white shadow-[-8px_0_32px_rgba(26,28,31,0.08)] z-50 transform transition-transform duration-300 translate-x-full flex flex-col">
+<!-- Panel Header -->
+<div class="p-6 border-b border-slate-100">
+<div class="flex justify-between items-center mb-4">
+<button id="panel-close-btn" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center transition-all">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<div class="flex gap-2">
+<span id="panel-status-badge" class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-500"></span>
+</div>
+</div>
+<h2 id="panel-title" class="text-2xl font-bold headline text-slate-900 leading-tight"></h2>
+<p id="panel-subtitle" class="text-slate-500 text-sm mt-1"></p>
+<p class="text-[10px] font-mono text-slate-400 mt-2">Submitted by: <span id="panel-submitted-by">—</span></p>
+</div>
+<!-- Panel Body (scrollable) -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6 bg-surface">
+<!-- Key info grid -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low rounded-xl p-4">
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Job Type</p>
+<p id="panel-job-type" class="text-sm font-semibold text-slate-800">—</p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-4">
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">CTC (LPA)</p>
+<p id="panel-ctc" class="text-sm font-semibold text-primary mono">—</p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-4">
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Location</p>
+<p id="panel-location" class="text-sm font-semibold text-slate-800">—</p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-4">
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Openings</p>
+<p id="panel-openings" class="text-sm font-semibold text-slate-800">—</p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-4">
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Apply Deadline</p>
+<p id="panel-deadline" class="text-sm font-semibold text-slate-800">—</p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-4">
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Drive Start</p>
+<p id="panel-drive-date" class="text-sm font-semibold text-slate-800">—</p>
+</div>
+</div>
+<!-- Eligibility -->
+<div class="bg-slate-900 rounded-xl p-5 text-slate-300 text-sm space-y-2">
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-3">Eligibility Requirements</p>
+<div class="flex justify-between"><span class="text-slate-400">Min CGPA</span><span id="panel-min-cgpa" class="font-mono font-semibold">—</span></div>
+<div class="flex justify-between"><span class="text-slate-400">Max Active Backlogs</span><span id="panel-max-backlogs" class="font-mono font-semibold">—</span></div>
+<div class="flex justify-between"><span class="text-slate-400">Min Semesters</span><span id="panel-min-semesters" class="font-mono font-semibold">—</span></div>
+<div class="flex justify-between"><span class="text-slate-400">Grad Years</span><span id="panel-grad-years" class="font-mono font-semibold">—</span></div>
+</div>
+<!-- Branches -->
+<div>
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-2">Allowed Branches</p>
+<div id="panel-branches" class="flex flex-wrap gap-2"></div>
+</div>
+<!-- Skills / Certifications / Bond -->
+<div class="grid grid-cols-1 gap-4">
+<div>
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Skills Required</p>
+<p id="panel-skills" class="text-sm text-slate-700">—</p>
+</div>
+<div>
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Preferred Certifications</p>
+<p id="panel-certifications" class="text-sm text-slate-700">—</p>
+</div>
+<div>
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Bond Details</p>
+<p id="panel-bond" class="text-sm text-slate-700">—</p>
+</div>
+<div>
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-1">Interview Rounds</p>
+<p id="panel-interview-rounds" class="text-sm text-slate-700">—</p>
+</div>
+</div>
+<!-- JD -->
+<div>
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-2">Job Description</p>
+<p id="panel-jd" class="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-surface-container-low rounded-xl p-4">—</p>
+</div>
+<!-- Notes -->
+<div>
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest mb-2">Additional Notes</p>
+<p id="panel-notes" class="text-sm text-slate-700 leading-relaxed whitespace-pre-line bg-surface-container-low rounded-xl p-4">—</p>
+</div>
+<!-- Status Update -->
+<div id="panel-status-section" class="border border-outline-variant/30 rounded-xl p-5 space-y-3">
+<p class="text-[9px] font-mono text-slate-400 uppercase tracking-widest">Update Status</p>
+<div id="panel-approve-section" class="hidden space-y-3">
+<button id="btn-approve" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>Approve → Open
+</button>
+<div class="flex gap-2">
+<input id="reject-reason" class="flex-1 bg-surface-container-high border-none rounded-xl px-3 py-2 text-sm" placeholder="Rejection reason (required)" type="text" />
+<button id="btn-reject" class="px-4 py-2 rounded-xl bg-red-50 text-red-600 border border-red-200 text-sm font-semibold hover:bg-red-100 transition-colors">Reject</button>
+</div>
+</div>
+<div id="panel-close-drive-section" class="hidden">
+<button id="btn-close-drive" class="w-full py-2.5 rounded-xl bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200 transition-colors">
+Close Drive
+</button>
+</div>
+</div>
+</div>
+<!-- Panel Footer -->
+<div class="p-5 border-t border-slate-100 bg-white">
+<button id="btn-notify-recruiter" class="w-full py-2.5 rounded-xl border border-outline-variant text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span>Notify Recruiter
+</button>
+</div>
+</div>
+
+<!-- Notify Recruiter Modal -->
+<div id="notify-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[70] hidden items-center justify-center p-8">
+<div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="text-lg font-bold headline">Notify Recruiter</h3>
+<button onclick="document.getElementById('notify-modal').classList.add('hidden');document.getElementById('notify-modal').style.display='none';" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-6 space-y-4">
+<div>
+<label class="text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-1">Subject</label>
+<input id="notify-subject" class="w-full bg-surface-container-low border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20" placeholder="e.g. Additional info required" type="text" />
+</div>
+<div>
+<label class="text-[10px] font-mono text-slate-400 uppercase tracking-widest block mb-1">Message</label>
+<textarea id="notify-message" class="w-full bg-surface-container-low border-none rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20" rows="4" placeholder="Type your message to the recruiter…"></textarea>
+</div>
+</div>
+<div class="p-6 border-t border-slate-100 flex justify-end gap-3">
+<button onclick="document.getElementById('notify-modal').classList.add('hidden');document.getElementById('notify-modal').style.display='none';" class="px-5 py-2 rounded-xl border border-slate-200 text-sm font-semibold hover:bg-slate-50">Cancel</button>
+<button id="btn-send-notify" class="px-6 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">Send</button>
+</div>
+</div>
+</div>
+<!-- Vantage API -->
+<script src="/static/js/vantage-api.js"></script>
+<script>
+if (!requireAuth("admin")) { /* redirected */ }
+
+document.getElementById("logout-btn")?.addEventListener("click", doLogout);
+
+const STATUS_MAP = {
+    'OPEN':      { cls: 'bg-emerald-100 text-emerald-700', label: 'Active' },
+    'DRAFT':     { cls: 'bg-amber-100 text-amber-700',   label: 'Pending Approval' },
+    'CLOSED':    { cls: 'bg-slate-200 text-slate-600',   label: 'Closed' },
+    'COMPLETED': { cls: 'bg-blue-100 text-blue-700',     label: 'Completed' },
+};
+
+let statusFilter = '';
+let currentDriveId = null;
+let currentDrive = null;
+
+async function loadDrives() {
+    const tbody = document.getElementById('drives-tbody');
+    if (!tbody) return;
+    const data = await apiFetch("/api/admin/drives");
+    if (!data) return;
+
+    const filtered = statusFilter ? data.filter(d => d.status === statusFilter) : data;
+    if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-16 text-center text-slate-400">
+            <span class="material-symbols-outlined text-3xl block mb-3">inbox</span>No drives found</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(d => {
+        const st = STATUS_MAP[d.status] || { cls: 'bg-slate-100 text-slate-500', label: d.status };
+        const branches = (d.allowed_branches || []).slice(0, 2).join(', ') + ((d.allowed_branches || []).length > 2 ? '…' : '');
+        return `<tr class="hover:bg-surface-container-low transition-colors cursor-pointer" onclick="openDrive('${d.id}')">
+            <td class="px-6 py-4">
+                <p class="font-semibold text-sm text-slate-900">${d.drive_title || '—'}</p>
+                <p class="text-xs text-slate-500">${d.role_title || ''}</p>
+            </td>
+            <td class="px-6 py-4 text-xs text-slate-600">${d.job_type ? d.job_type.replace('_', ' ') : '—'}</td>
+            <td class="px-6 py-4 text-sm font-mono text-primary">${d.ctc_lpa ? d.ctc_lpa + ' LPA' : '—'}</td>
+            <td class="px-6 py-4 text-xs text-slate-600">${branches || '—'}</td>
+            <td class="px-6 py-4 text-xs font-mono text-slate-600">${d.min_cgpa != null ? d.min_cgpa : '—'}</td>
+            <td class="px-6 py-4 text-xs text-slate-600">${d.application_deadline ? new Date(d.application_deadline).toLocaleDateString() : '—'}</td>
+            <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${st.cls}">${st.label}</span></td>
+        </tr>`;
+    }).join('');
+}
+
+async function openDrive(id) {
+    const panel = document.getElementById('detail-panel');
+    panel.classList.remove('translate-x-full');
+    currentDriveId = id;
+
+    const d = await apiFetch(`/api/admin/drives/${id}`);
+    if (!d) return;
+    currentDrive = d;
+
+    const st = STATUS_MAP[d.status] || { cls: 'bg-slate-100 text-slate-500', label: d.status };
+    document.getElementById('panel-title').textContent = d.drive_title || '—';
+    document.getElementById('panel-subtitle').textContent = d.role_title || '';
+    document.getElementById('panel-submitted-by').textContent = d.submitted_by || d.recruiter_email || '—';
+    document.getElementById('panel-status-badge').textContent = st.label;
+    document.getElementById('panel-status-badge').className = `px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${st.cls}`;
+    document.getElementById('panel-job-type').textContent = d.job_type ? d.job_type.replace('_', ' ') : '—';
+    document.getElementById('panel-ctc').textContent = d.ctc_lpa ? d.ctc_lpa + ' LPA' : '—';
+    document.getElementById('panel-location').textContent = d.location || '—';
+    document.getElementById('panel-openings').textContent = d.openings != null ? d.openings : '—';
+    document.getElementById('panel-deadline').textContent = d.application_deadline ? new Date(d.application_deadline).toLocaleDateString() : '—';
+    document.getElementById('panel-drive-date').textContent = d.drive_date ? new Date(d.drive_date).toLocaleDateString() : '—';
+    document.getElementById('panel-min-cgpa').textContent = d.min_cgpa != null ? d.min_cgpa : 'No minimum';
+    document.getElementById('panel-max-backlogs').textContent = d.max_active_backlogs != null ? d.max_active_backlogs : 'No limit';
+    document.getElementById('panel-min-semesters').textContent = d.min_semesters_completed != null ? d.min_semesters_completed : '—';
+    document.getElementById('panel-grad-years').textContent = (d.allowed_graduation_years || []).join(', ') || '—';
+    document.getElementById('panel-skills').textContent = (d.required_skills || []).join(', ') || '—';
+    document.getElementById('panel-certifications').textContent = d.preferred_certifications || '—';
+    document.getElementById('panel-bond').textContent = d.bond_details || 'None';
+    document.getElementById('panel-interview-rounds').textContent = d.interview_rounds || '—';
+    document.getElementById('panel-jd').textContent = d.job_description || '—';
+    document.getElementById('panel-notes').textContent = d.notes || '—';
+
+    const branchesEl = document.getElementById('panel-branches');
+    const branches = d.allowed_branches || [];
+    branchesEl.innerHTML = branches.length
+        ? branches.map(b => `<span class="px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium">${b}</span>`).join('')
+        : '<span class="text-sm text-slate-400">All branches</span>';
+
+    // Show/hide action buttons based on status
+    document.getElementById('panel-approve-section').classList.toggle('hidden', d.status !== 'DRAFT');
+    document.getElementById('panel-close-drive-section').classList.toggle('hidden', d.status !== 'OPEN');
+}
+
+// Status filter tabs
+document.querySelectorAll('.flex.gap-2.p-1 button').forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.flex.gap-2.p-1 button').forEach(b => {
+            b.className = 'px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 transition-all';
+        });
+        btn.className = 'px-4 py-2 text-sm font-semibold bg-white shadow-sm rounded-lg text-primary transition-all';
+        const filters = ['', 'OPEN', 'DRAFT', 'CLOSED'];
+        statusFilter = filters[idx] || '';
+        loadDrives();
+    });
+});
+
+document.getElementById('panel-close-btn')?.addEventListener('click', () => {
+    document.getElementById('detail-panel').classList.add('translate-x-full');
+});
+
+async function updateDriveStatus(status, reason) {
+    const payload = { status };
+    if (reason) payload.rejection_reason = reason;
+    const res = await apiFetch(`/api/admin/drives/${currentDriveId}/status`, {
+        method: 'PATCH', body: JSON.stringify(payload)
+    });
+    if (res) {
+        showToast(`Drive status updated to ${status}`, 'success');
+        loadDrives();
+        openDrive(currentDriveId);
+    }
+}
+
+document.getElementById('btn-approve')?.addEventListener('click', () => updateDriveStatus('OPEN'));
+document.getElementById('btn-reject')?.addEventListener('click', () => {
+    const reason = document.getElementById('reject-reason').value.trim();
+    if (!reason) { showToast('Please enter a rejection reason', 'error'); return; }
+    updateDriveStatus('CLOSED', reason);
+});
+document.getElementById('btn-close-drive')?.addEventListener('click', () => updateDriveStatus('CLOSED'));
+
+document.getElementById('btn-notify-recruiter')?.addEventListener('click', () => {
+    const modal = document.getElementById('notify-modal');
+    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+    document.getElementById('notify-subject').value = '';
+    document.getElementById('notify-message').value = '';
+});
+
+document.getElementById('btn-send-notify')?.addEventListener('click', async () => {
+    const subject = document.getElementById('notify-subject').value.trim();
+    const message = document.getElementById('notify-message').value.trim();
+    if (!subject || !message) { showToast('Subject and message are required', 'error'); return; }
+    const res = await apiFetch(`/api/admin/drives/${currentDriveId}/notify-recruiter`, {
+        method: 'POST', body: JSON.stringify({ subject, message })
+    });
+    if (res) {
+        showToast('Recruiter notified', 'success');
+        const modal = document.getElementById('notify-modal');
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => { loadDrives(); initAdminHeader(); });
+</script>
+</body></html>
