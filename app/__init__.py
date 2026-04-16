@@ -2,41 +2,127 @@
 Vantage — Application Factory
 Creates and configures the Flask application instance.
 """
+import json
+import logging
 import os
+import sys
 import time
 from flask import Flask, g, request
 from app.config import config_map
-from app.extensions import db, login_manager, jwt, cors, init_redis, limiter
+from app.extensions import db, login_manager, jwt, cors, init_redis, limiter, migrate
 
+
+# ── Structured JSON logging ─────────────────────────────────────────────────
+
+class _JsonFormatter(logging.Formatter):
+    """Emit each log record as a single JSON line — parseable by log aggregators."""
+    def format(self, record):
+        log_record = {
+            "timestamp": self.formatTime(record, self.datefmt),
+            "level":     record.levelname,
+            "logger":    record.name,
+            "message":   record.getMessage(),
+            "module":    record.module,
+        }
+        if record.exc_info:
+            log_record["exception"] = self.formatException(record.exc_info)
+        return json.dumps(log_record)
+
+
+def _configure_logging(app: Flask) -> None:
+    """Replace the default handler with a JSON formatter in non-debug mode."""
+    if not app.debug:
+        handler = logging.StreamHandler()
+        handler.setFormatter(_JsonFormatter())
+        app.logger.handlers = [handler]
+        app.logger.setLevel(logging.INFO)
+        # Silence noisy library loggers in production
+        logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
+        logging.getLogger("werkzeug").setLevel(logging.WARNING)
+
+
+# ── Application factory ─────────────────────────────────────────────────────
 
 def create_app(config_name=None):
     """Create and configure the Flask application."""
-    app = Flask(__name__)
 
     # ── Load Configuration ──────────────────────────────────────
     if config_name is None:
         config_name = os.getenv("FLASK_ENV", "development")
 
-    app.config.from_object(config_map[config_name])
+    cfg = config_map[config_name]
+
+    # Validate required env vars before doing anything else.
+    # TestingConfig overrides this to a no-op.
+    cfg.validate()
+
+    # ── Sentry error monitoring (optional) ──────────────────────
+    sentry_dsn = os.environ.get("SENTRY_DSN")
+    if sentry_dsn:
+        try:
+            import sentry_sdk
+            from sentry_sdk.integrations.flask import FlaskIntegration
+            sentry_sdk.init(
+                dsn=sentry_dsn,
+                integrations=[FlaskIntegration()],
+                traces_sample_rate=0.1,
+                environment=config_name,
+                send_default_pii=False,   # never send passwords / tokens
+            )
+        except ImportError:
+            pass  # sentry-sdk not installed — silently skip
+
+    app = Flask(__name__)
+    app.config.from_object(cfg)
+
+    # ── Configure structured logging ────────────────────────────
+    _configure_logging(app)
 
     # ── File upload limit ───────────────────────────────────────
     app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10 MB
 
     # ── Rate limiter storage ─────────────────────────────────────
-    # Use Redis only when a non-localhost URL is configured; else fall back
-    # to in-process memory so a missing Redis doesn't crash every request.
+    # Use Redis only when a genuinely remote URL is configured.
+    # "localhost" / "127.0.0.1" / "::1" indicate a local instance that
+    # won't exist in multi-worker cloud deployment — fall back to memory.
     redis_url = app.config.get("REDIS_URL", "")
-    if redis_url and "localhost" not in redis_url and "127.0.0.1" not in redis_url:
+    _local_indicators = ["localhost", "127.0.0.1", "::1"]
+    _is_remote_redis = redis_url and not any(
+        indicator in redis_url for indicator in _local_indicators
+    )
+    if _is_remote_redis:
         app.config["RATELIMIT_STORAGE_URI"] = redis_url
     else:
         app.config["RATELIMIT_STORAGE_URI"] = "memory://"
+        app.logger.warning(
+            "Rate limiter using in-memory storage. "
+            "Set a remote REDIS_URL for production rate limiting."
+        )
     app.config.setdefault("RATELIMIT_SWALLOW_ERRORS", True)
 
     # ── Initialise Extensions ───────────────────────────────────
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
     jwt.init_app(app)
-    cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
+
+    # CORS: restrict to the configured frontend origin(s) — never wildcard
+    allowed_origins = [
+        o.strip()
+        for o in os.environ.get(
+            "FRONTEND_ORIGIN", "http://localhost:5000"
+        ).split(",")
+        if o.strip()
+    ]
+    cors.init_app(app, resources={
+        r"/api/*": {
+            "origins":             allowed_origins,
+            "supports_credentials": True,
+            "allow_headers":       ["Content-Type", "Authorization"],
+            "methods":             ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+        }
+    })
+
     init_redis(app)
     limiter.init_app(app)
 
@@ -63,7 +149,9 @@ def create_app(config_name=None):
 
     @app.after_request
     def _log_response(response):
-        duration_ms = int((time.monotonic() - getattr(g, "_req_start", time.monotonic())) * 1000)
+        duration_ms = int(
+            (time.monotonic() - getattr(g, "_req_start", time.monotonic())) * 1000
+        )
         status = response.status_code
         log = app.logger.error if status >= 500 else (
             app.logger.warning if status >= 400 else app.logger.info
@@ -124,12 +212,35 @@ def create_app(config_name=None):
 
     @jwt.token_in_blocklist_loader
     def check_blocklist(jwt_header, jwt_payload) -> bool:
-        if not redis_store:
-            return False
+        """
+        Check JWT blocklist — Redis first, DB fallback when Redis is unavailable.
+
+        Redis path  : fast O(1) key lookup, auto-expires with the token.
+        DB fallback : queries revoked_tokens table; used when Redis is down.
+                      Keeps the blocklist functional even without Redis.
+        """
         jti = jwt_payload["jti"]
+
+        # ── Primary: Redis ──────────────────────────────────────
+        if redis_store:
+            try:
+                return redis_store.exists(f"jwt:blocklist:{jti}") > 0
+            except Exception:
+                pass  # fall through to DB check
+
+        # ── Fallback: database ──────────────────────────────────
         try:
-            return redis_store.exists(f"jwt:blocklist:{jti}") > 0
+            from app.models.revoked_token import RevokedToken
+            from datetime import datetime, timezone
+            now = datetime.now(timezone.utc)
+            row = RevokedToken.query.filter(
+                RevokedToken.jti == jti,
+                RevokedToken.expires_at > now,
+            ).first()
+            return row is not None
         except Exception:
+            # If DB check also fails, allow the token — availability over
+            # security for the edge case where both Redis and DB are down.
             return False
 
     @jwt.additional_claims_loader
@@ -305,7 +416,16 @@ def _seed_admin(app) -> None:
     from app.models.enums import RoleEnum
 
     admin_email    = os.environ.get("ADMIN_EMAIL", "admin@vantage.os")
-    admin_password = os.environ.get("ADMIN_PASSWORD", "changeme_admin_2026")
+    admin_password = os.environ.get("ADMIN_PASSWORD")
+
+    # Enforce a minimum password length — a weak or missing admin password
+    # is a critical security misconfiguration that must be caught at boot.
+    if not admin_password or len(admin_password) < 16:
+        sys.exit(
+            "FATAL: ADMIN_PASSWORD must be set and at least 16 characters long.\n"
+            "Generate one with: python -c \"import secrets; print(secrets.token_urlsafe(24))\"\n"
+            "Then set it in your .env file."
+        )
 
     existing = User.query.filter(
         User.role.in_([RoleEnum.ADMIN, RoleEnum.OWNER])
@@ -323,4 +443,4 @@ def _seed_admin(app) -> None:
     admin.set_password(admin_password)
     db.session.add(admin)
     db.session.commit()
-    app.logger.info(f"[Vantage] Admin seeded → {admin_email}")
+    app.logger.info("[Vantage] Admin seeded → %s", admin_email)

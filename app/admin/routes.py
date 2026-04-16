@@ -10,6 +10,7 @@ import hashlib
 from datetime import datetime, timezone
 from flask import request, jsonify, g, Response, stream_with_context, current_app
 from sqlalchemy import func, or_
+from sqlalchemy.orm import joinedload
 
 from app.admin import bp
 from app.extensions import db, limiter
@@ -37,6 +38,7 @@ from app.pipeline.parser import parse_file, ParserError
 from app.pipeline.normalizer import normalize_dataframe
 from app.pipeline.ingestion import ingest_records
 from app.storage import upload_tsheet as _storage_upload, get_tsheet_signed_url
+from app.models.audit_log import log_action
 
 
 def _require_fields(data: dict, *fields):
@@ -212,6 +214,24 @@ def upload_tsheet():
         return jsonify({"error": "Missing required fields: branch_id, semester, exam_year (or academic_year)"}), 400
 
     file_bytes = file.read()
+
+    # MIME type validation — reject files that aren't CSV or Excel
+    try:
+        import magic as _magic
+        detected_mime = _magic.from_buffer(file_bytes, mime=True)
+    except Exception:
+        detected_mime = file.mimetype or ""
+    _allowed_mimes = {
+        "text/csv", "text/plain",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    }
+    if detected_mime not in _allowed_mimes:
+        return jsonify({
+            "error": f"Unsupported file type '{detected_mime}'. Upload a CSV or Excel file.",
+            "code": 415,
+        }), 415
+
     file_hash = hashlib.sha256(file_bytes).hexdigest()
 
     # Duplicate-file guard (before storage upload, avoids IntegrityError 500)
@@ -270,6 +290,20 @@ def upload_tsheet():
     db.session.flush()
     exam_batch.tsheet_upload_id = upload.id
 
+    log_action(
+        actor_id=g.current_user.id,
+        actor_role=g.current_user.role.value,
+        action="upload_tsheet",
+        target_type="tsheet_upload",
+        target_id=upload.id,
+        new_value={
+            "filename": filename,
+            "branch_id": branch_id,
+            "semester": semester,
+            "exam_type": exam_type,
+            "exam_year": exam_year,
+        },
+    )
     try:
         db.session.commit()
     except Exception:
@@ -316,30 +350,35 @@ def stream_batch_progress(batch_id):
             "failed":     "failed",
         }
         while True:
-            # Always expire before reading so we never serve a stale object
-            db.session.expire_all()
-            u = db.session.get(TSheetUpload, batch_id)
-            if not u:
-                yield f"data: {json.dumps({'stage': 'failed', 'error': 'Batch not found'})}\n\n"
-                break
+            try:
+                # Always expire before reading so we never serve a stale object
+                db.session.expire_all()
+                u = db.session.get(TSheetUpload, batch_id)
+                if not u:
+                    yield f"data: {json.dumps({'stage': 'failed', 'error': 'Batch not found'})}\n\n"
+                    break
 
-            raw_stage = u.current_stage or status_to_stage.get(
-                u.upload_status.value.lower(), "ingesting"
-            )
-            payload = {
-                "stage": raw_stage,
-                "progress": {
-                    "uploading": 10, "parsing": 30, "normalizing": 55,
-                    "ingesting": 80, "completed": 100, "failed": 0,
-                }.get(raw_stage, 50),
-                "records_ingested": (u.total_records_parsed or 0) - (u.total_conflicts or 0),
-                "records_conflict": u.total_conflicts or 0,
-                "records_skipped": 0,
-                "error": u.error_message if u.upload_status == UploadStatusEnum.FAILED else None,
-            }
-            yield f"data: {json.dumps(payload)}\n\n"
+                raw_stage = u.current_stage or status_to_stage.get(
+                    u.upload_status.value.lower(), "ingesting"
+                )
+                payload = {
+                    "stage": raw_stage,
+                    "progress": {
+                        "uploading": 10, "parsing": 30, "normalizing": 55,
+                        "ingesting": 80, "completed": 100, "failed": 0,
+                    }.get(raw_stage, 50),
+                    "records_ingested": (u.total_records_parsed or 0) - (u.total_conflicts or 0),
+                    "records_conflict": u.total_conflicts or 0,
+                    "records_skipped": 0,
+                    "error": u.error_message if u.upload_status == UploadStatusEnum.FAILED else None,
+                }
+                yield f"data: {json.dumps(payload)}\n\n"
 
-            if u.upload_status in terminal:
+                if u.upload_status in terminal:
+                    break
+            except Exception:
+                current_app.logger.exception("stream_batch_progress SSE error")
+                yield f"event: error\ndata: {json.dumps({'error': 'stream error'})}\n\n"
                 break
 
             time.sleep(1)
@@ -377,11 +416,15 @@ def stream_batch_list():
 
     def generate():
         while True:
-            db.session.expire_all()
-            uploads = TSheetUpload.query.order_by(TSheetUpload.uploaded_at.desc()).limit(50).all()
-            batches = [_batch_to_dict(u) for u in uploads]
-            payload = json.dumps({"event": "batches_updated", "batches": batches})
-            yield f"event: batches_updated\ndata: {payload}\n\n"
+            try:
+                db.session.expire_all()
+                uploads = TSheetUpload.query.order_by(TSheetUpload.uploaded_at.desc()).limit(50).all()
+                batches = [_batch_to_dict(u) for u in uploads]
+                payload = json.dumps({"event": "batches_updated", "batches": batches})
+                yield f"event: batches_updated\ndata: {payload}\n\n"
+            except Exception:
+                current_app.logger.exception("stream_batch_list SSE error")
+                yield f"event: error\ndata: {json.dumps({'error': 'stream error'})}\n\n"
             time.sleep(3)
 
     return Response(stream_with_context(generate()), mimetype="text/event-stream",
@@ -434,8 +477,18 @@ def seed_branches():
 @bp.route("/tsheets/batches", methods=["GET"])
 @role_required(RoleEnum.ADMIN)
 def list_batches():
-    uploads = TSheetUpload.query.order_by(TSheetUpload.uploaded_at.desc()).all()
-    return jsonify([_batch_to_dict(u) for u in uploads]), 200
+    page = request.args.get("page", 1, type=int)
+    per_page = min(request.args.get("per_page", 20, type=int), 100)
+    pagination = TSheetUpload.query.order_by(TSheetUpload.uploaded_at.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    return jsonify({
+        "items": [_batch_to_dict(u) for u in pagination.items],
+        "page": pagination.page,
+        "per_page": pagination.per_page,
+        "total": pagination.total,
+        "pages": pagination.pages,
+    }), 200
 
 
 @bp.route("/tsheets/conflicts/<conflict_id>/resolve", methods=["POST"])
@@ -671,7 +724,7 @@ def list_students():
     per_page = request.args.get("per_page", 50, type=int)
     per_page = min(per_page, 200)
 
-    query = Student.query.filter(Student.deleted_at.is_(None))
+    query = Student.query.options(joinedload(Student.academic_batch)).filter(Student.deleted_at.is_(None))
 
     # Filters
     branch_filter = request.args.get("branch")
@@ -720,10 +773,14 @@ def list_students():
         page=page, per_page=per_page, error_out=False
     )
 
+    # Bulk-fetch branches for the current page in a single query (avoids N+1)
+    branch_ids = {s.academic_batch.branch_id for s in pagination.items if s.academic_batch}
+    branches_by_id = {b.id: b for b in Branch.query.filter(Branch.id.in_(branch_ids)).all()} if branch_ids else {}
+
     data = []
     for s in pagination.items:
-        batch = db.session.get(AcademicBatch, s.academic_batch_id) if s.academic_batch_id else None
-        branch_obj = db.session.get(Branch, batch.branch_id) if batch else None
+        batch = s.academic_batch  # already eager-loaded
+        branch_obj = branches_by_id.get(batch.branch_id) if batch else None
         is_verified = s.is_verified or s.profile_status == ProfileStatusEnum.VERIFIED
         data.append({
             "id": s.id,
@@ -851,6 +908,16 @@ def update_student(student_id):
             _linked_user.is_verified = new_val
         changes.append({"field": "is_verified", "old": old_val, "new": new_val, "source": source})
 
+    if changes:
+        log_action(
+            actor_id=g.current_user.id,
+            actor_role=g.current_user.role.value,
+            action="update_student",
+            target_type="student",
+            target_id=student.id,
+            old_value={c["field"]: c["old"] for c in changes},
+            new_value={c["field"]: c["new"] for c in changes},
+        )
     db.session.commit()
     return jsonify({"message": "Student updated", "changes": changes}), 200
 
@@ -936,13 +1003,42 @@ def create_drive():
 @bp.route("/drives", methods=["GET"])
 @role_required(RoleEnum.ADMIN)
 def list_drives():
-    """GET /api/admin/drives — List all drives (all statuses)."""
+    """GET /api/admin/drives — Paginated list of drives (all statuses)."""
     import json as _json
-    drives = PlacementDrive.query.order_by(PlacementDrive.created_at.desc()).all()
+    page = request.args.get("page", 1, type=int)
+    per_page = min(request.args.get("per_page", 20, type=int), 100)
+    status_filter = request.args.get("status", "").upper()
+
+    q = PlacementDrive.query
+    if status_filter:
+        try:
+            q = q.filter(PlacementDrive.status == DriveStatusEnum(status_filter))
+        except ValueError:
+            pass
+    pagination = q.order_by(PlacementDrive.created_at.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+
+    drive_ids = [d.id for d in pagination.items]
+    # Bulk-fetch application counts and eligibility rules in 2 queries
+    from sqlalchemy import case
+    counts = dict(
+        db.session.query(
+            PlacementApplication.drive_id,
+            func.count(PlacementApplication.id),
+        ).filter(PlacementApplication.drive_id.in_(drive_ids))
+        .group_by(PlacementApplication.drive_id)
+        .all()
+    ) if drive_ids else {}
+    rules_by_drive = {
+        r.drive_id: r for r in EligibilityRule.query.filter(
+            EligibilityRule.drive_id.in_(drive_ids)
+        ).all()
+    } if drive_ids else {}
+
     data = []
-    for d in drives:
-        apps_count = PlacementApplication.query.filter_by(drive_id=d.id).count()
-        rule = EligibilityRule.query.filter_by(drive_id=d.id).first()
+    for d in pagination.items:
+        rule = rules_by_drive.get(d.id)
         allowed_branches = []
         if rule and rule.allowed_branches:
             try:
@@ -956,13 +1052,19 @@ def list_drives():
             "ctc_lpa": float(d.ctc_lpa) if d.ctc_lpa else None,
             "job_type": d.job_type.value if d.job_type else None,
             "status": d.status.value,
-            "applications_count": apps_count,
+            "applications_count": counts.get(d.id, 0),
             "created_at": d.created_at.isoformat() if d.created_at else None,
             "application_deadline": d.application_close_at.isoformat() if d.application_close_at else None,
             "allowed_branches": allowed_branches,
             "min_cgpa": float(rule.min_cgpa) if rule and rule.min_cgpa else None,
         })
-    return jsonify(data), 200
+    return jsonify({
+        "items": data,
+        "page": pagination.page,
+        "per_page": pagination.per_page,
+        "total": pagination.total,
+        "pages": pagination.pages,
+    }), 200
 
 
 @bp.route("/drives/<drive_id>", methods=["GET"])
@@ -1117,7 +1219,17 @@ def delete_drive(drive_id):
     drive = db.session.get(PlacementDrive, drive_id)
     if not drive:
         return jsonify({"error": "Drive not found"}), 404
+    old_status = drive.status
     drive.status = DriveStatusEnum.CLOSED
+    log_action(
+        actor_id=g.current_user.id,
+        actor_role=g.current_user.role.value,
+        action="delete_drive",
+        target_type="drive",
+        target_id=drive_id,
+        old_value={"status": old_status.value, "drive_title": drive.drive_title},
+        new_value={"status": DriveStatusEnum.CLOSED.value},
+    )
     db.session.commit()
     return jsonify({"message": "Drive closed"}), 200
 
@@ -1732,7 +1844,8 @@ def admin_events():
                 yield f": heartbeat\n\n"
 
             except Exception:
-                pass
+                current_app.logger.exception("admin_events SSE generator error")
+                yield f"event: error\ndata: {json.dumps({'error': 'stream error'})}\n\n"
 
             time.sleep(5)
 
@@ -1839,6 +1952,15 @@ def update_drive_status(drive_id):
                 link="/recruiter/drives",
             )
 
+    log_action(
+        actor_id=g.current_user.id,
+        actor_role=g.current_user.role.value,
+        action="update_drive_status",
+        target_type="drive",
+        target_id=drive_id,
+        old_value={"status": old_status.value},
+        new_value={"status": new_status.value},
+    )
     db.session.commit()
     return jsonify({"message": f"Drive status updated to {drive.status.value}"}), 200
 

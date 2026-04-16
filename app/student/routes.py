@@ -5,7 +5,7 @@ All endpoints require @role_required(RoleEnum.STUDENT).
 import json
 import time
 from datetime import datetime, timezone, date
-from flask import request, jsonify, g, Response, stream_with_context
+from flask import request, jsonify, g, Response, stream_with_context, current_app
 from app.student import student_bp as bp
 from app.extensions import db
 from app.utils.decorators import role_required, verified_required
@@ -728,7 +728,8 @@ def student_events():
                 yield f": heartbeat\n\n"
 
             except Exception:
-                pass
+                current_app.logger.exception("student events SSE generator error")
+                yield f"event: error\ndata: {json.dumps({'error': 'stream error'})}\n\n"
 
             time.sleep(5)
 

@@ -8,8 +8,9 @@ import csv
 import json
 from datetime import datetime, timezone, timedelta
 import time
-from flask import request, jsonify, g, Response, stream_with_context
+from flask import request, jsonify, g, Response, stream_with_context, current_app
 from sqlalchemy import or_, func
+from sqlalchemy.orm import joinedload
 
 from app.recruiter import recruiter_bp as bp
 from app.extensions import db, limiter
@@ -422,21 +423,31 @@ def drive_applicants(drive_id):
     status_filter = request.args.get("status")
     search = request.args.get("search", "").strip()
 
-    apps = PlacementApplication.query.filter_by(drive_id=drive_id)
+    apps_q = PlacementApplication.query.filter_by(drive_id=drive_id)
     if status_filter:
         try:
-            apps = apps.filter(PlacementApplication.status == ApplicationStatusEnum(status_filter.upper()))
+            apps_q = apps_q.filter(PlacementApplication.status == ApplicationStatusEnum(status_filter.upper()))
         except ValueError:
             pass
-    apps = apps.order_by(PlacementApplication.applied_at.desc()).all()
+    apps = apps_q.order_by(PlacementApplication.applied_at.desc()).all()
+
+    # Bulk-fetch students, batches, and branches in 3 queries instead of N×3
+    student_ids = [a.student_id for a in apps]
+    students_by_id = {
+        s.id: s for s in Student.query.options(
+            joinedload(Student.academic_batch)
+        ).filter(Student.id.in_(student_ids)).all()
+    } if student_ids else {}
+    branch_ids = {s.academic_batch.branch_id for s in students_by_id.values() if s.academic_batch}
+    branches_by_id = {b.id: b for b in Branch.query.filter(Branch.id.in_(branch_ids)).all()} if branch_ids else {}
 
     data = []
     for a in apps:
-        student = db.session.get(Student, a.student_id)
+        student = students_by_id.get(a.student_id)
         if not student:
             continue
-        batch = db.session.get(AcademicBatch, student.academic_batch_id) if student.academic_batch_id else None
-        branch = db.session.get(Branch, batch.branch_id) if batch else None
+        batch = student.academic_batch
+        branch = branches_by_id.get(batch.branch_id) if batch else None
 
         # Apply in-Python filters (avoids complex joins)
         branch_name = branch.short_name if branch else None
@@ -999,7 +1010,8 @@ def recruiter_events():
                 yield f": heartbeat\n\n"
 
             except Exception:
-                pass
+                current_app.logger.exception("recruiter events SSE generator error")
+                yield f"event: error\ndata: {json.dumps({'error': 'stream error'})}\n\n"
 
             time.sleep(5)
 

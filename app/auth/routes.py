@@ -54,12 +54,32 @@ def _build_token_pair(user: User) -> dict:
 
 
 def _revoke_jti(jti: str, exp: float) -> None:
-    """Add a JTI to the Redis blocklist. Key auto-expires when token would have expired."""
-    if not redis_store:
-        return
+    """
+    Revoke a single JTI.
+
+    Primary:  Write to Redis with TTL matching token expiry (fast, auto-purging).
+    Fallback: Write to the revoked_tokens DB table so logout is durable even
+              when Redis is unavailable.
+    """
     remaining = max(0, int(exp - time.time()))
-    if remaining > 0:
-        redis_store.set(f"jwt:blocklist:{jti}", "revoked", ex=remaining)
+    if remaining <= 0:
+        return  # Token already expired — nothing to revoke
+
+    # ── Redis path ────────────────────────────────────────────────
+    if redis_store:
+        try:
+            redis_store.set(f"jwt:blocklist:{jti}", "revoked", ex=remaining)
+            return  # Redis succeeded — no need for DB fallback
+        except Exception:
+            pass  # Fall through to DB
+
+    # ── DB fallback ───────────────────────────────────────────────
+    try:
+        from app.models.revoked_token import RevokedToken
+        RevokedToken.revoke(jti, exp)
+        db.session.commit()
+    except Exception:
+        pass  # Best-effort; token will expire naturally if both paths fail
 
 
 def _revoke_all_for_user(user_id: str) -> None:

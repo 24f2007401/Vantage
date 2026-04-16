@@ -129,7 +129,7 @@ def ingest_records(
                 )
                 import bcrypt as _bcrypt
                 new_user._password = _bcrypt.hashpw(
-                    ht_no.encode("utf-8"), _bcrypt.gensalt(rounds=6)
+                    ht_no.encode("utf-8"), _bcrypt.gensalt(rounds=12)
                 ).decode("utf-8")
                 student.college_email = student_email
                 db.session.add(new_user)

@@ -46,6 +46,10 @@ from app.models.drive_message import DriveMessage, StudentMessageDelivery
 # ── Notifications ───────────────────────────────────────────────
 from app.models.notification import Notification
 
+# ── Security / Audit ────────────────────────────────────────────
+from app.models.revoked_token import RevokedToken
+from app.models.audit_log import AuditLog
+
 __all__ = [
     # Enums
     "RoleEnum", "GenderEnum", "CategoryEnum", "ProfileStatusEnum",
@@ -63,4 +67,5 @@ __all__ = [
     "PlacementDrive", "EligibilityRule", "PlacementApplication",
     "DriveMessage", "StudentMessageDelivery",
     "Notification",
+    "RevokedToken", "AuditLog",
 ]
