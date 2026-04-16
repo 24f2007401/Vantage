@@ -1,0 +1,42 @@
+# ── Secrets — NEVER commit these ──────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# ── Python ────────────────────────────────────────────────────────
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Flask / App ───────────────────────────────────────────────────
+instance/
+uploads/          # local T-Sheet fallback storage — never commit uploaded files
+
+# ── DB migrations temp ────────────────────────────────────────────
+# migrations/ is intentionally NOT ignored — commit it to git
+
+# ── IDE ───────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Testing / Coverage ────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Logs ─────────────────────────────────────────────────────────
+*.log
