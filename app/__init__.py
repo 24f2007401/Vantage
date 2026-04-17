@@ -72,8 +72,9 @@ def create_app(config_name=None):
         except ImportError:
             pass  # sentry-sdk not installed — silently skip
 
-    app = Flask(__name__)
+    app = Flask(__name__, static_url_path='/static')
     app.config.from_object(cfg)
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
     # Render (and most PaaS) terminate TLS at the edge and forward plain
     # HTTP to gunicorn. Without ProxyFix, Flask sees http:// and refuses
