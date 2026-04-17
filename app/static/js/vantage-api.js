@@ -5,29 +5,29 @@ const REFRESH_KEY = "vantage_refresh";
 const ROLE_KEY   = "vantage_role";
 const USER_KEY   = "vantage_user";
 
-let authToken = sessionStorage.getItem(TOKEN_KEY) || null;
-let authRole  = sessionStorage.getItem(ROLE_KEY)  || null;
+let authToken = localStorage.getItem(TOKEN_KEY) || null;
+let authRole  = localStorage.getItem(ROLE_KEY)  || null;
 
 function setAuth(token, role, refreshToken, user) {
     authToken = token;
     authRole  = role;
-    sessionStorage.setItem(TOKEN_KEY, token);
-    sessionStorage.setItem(ROLE_KEY,  role);
-    if (refreshToken) sessionStorage.setItem(REFRESH_KEY, refreshToken);
-    if (user) sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(ROLE_KEY,  role);
+    if (refreshToken) localStorage.setItem(REFRESH_KEY, refreshToken);
+    if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
 function clearAuth() {
     authToken = null;
     authRole  = null;
-    sessionStorage.removeItem(TOKEN_KEY);
-    sessionStorage.removeItem(REFRESH_KEY);
-    sessionStorage.removeItem(ROLE_KEY);
-    sessionStorage.removeItem(USER_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(REFRESH_KEY);
+    localStorage.removeItem(ROLE_KEY);
+    localStorage.removeItem(USER_KEY);
 }
 
 function getUser() {
-    try { return JSON.parse(sessionStorage.getItem(USER_KEY)); }
+    try { return JSON.parse(localStorage.getItem(USER_KEY)); }
     catch { return null; }
 }
 
@@ -51,7 +51,7 @@ async function apiFetch(path, options = {}) {
             // show the error; don't trigger the redirect-to-login flow.
             const isAuthEndpoint = path === "/api/auth/login" || path === "/api/auth/signup";
             if (isAuthEndpoint) return null;
-            const refreshToken = sessionStorage.getItem(REFRESH_KEY);
+            const refreshToken = localStorage.getItem(REFRESH_KEY);
             if (refreshToken && !options._isRefresh) {
                 const refreshRes = await fetch(`${API_BASE}/api/auth/refresh`, {
                     method: "POST",
