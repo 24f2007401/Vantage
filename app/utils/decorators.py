@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import jsonify, request, g
 from flask_login import current_user as session_user
-from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity, get_jwt
+from flask_jwt_extended import get_jwt_identity, get_jwt
 from app.extensions import db, redis_store
 from app.models.user import User, RoleEnum
 
@@ -22,10 +22,14 @@ def _resolve_user():
     authenticated via a stale browser session.
     """
     # ── JWT path ──────────────────────────────────────────────────
+    # before_request already called verify_jwt_in_request(optional=True) and
+    # stored the decoded payload in g — call get_jwt_identity() directly to
+    # avoid a second verification that can conflict with the first.
     if request.headers.get("Authorization", "").startswith("Bearer "):
         try:
-            verify_jwt_in_request()
             user_id = get_jwt_identity()
+            if not user_id:
+                return None, "jwt"
             claims = get_jwt()
             user = db.session.get(User, user_id)
 

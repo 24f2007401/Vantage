@@ -47,6 +47,10 @@ async function apiFetch(path, options = {}) {
 
     switch (res.status) {
         case 401: {
+            // Auth endpoints returning 401 mean bad credentials — let the caller
+            // show the error; don't trigger the redirect-to-login flow.
+            const isAuthEndpoint = path === "/api/auth/login" || path === "/api/auth/signup";
+            if (isAuthEndpoint) return null;
             const refreshToken = sessionStorage.getItem(REFRESH_KEY);
             if (refreshToken && !options._isRefresh) {
                 const refreshRes = await fetch(`${API_BASE}/api/auth/refresh`, {
