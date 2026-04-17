@@ -49,6 +49,7 @@ from app.models.notification import Notification
 # ── Security / Audit ────────────────────────────────────────────
 from app.models.revoked_token import RevokedToken
 from app.models.audit_log import AuditLog
+from app.models.password_reset_token import PasswordResetToken
 
 __all__ = [
     # Enums
@@ -67,5 +68,5 @@ __all__ = [
     "PlacementDrive", "EligibilityRule", "PlacementApplication",
     "DriveMessage", "StudentMessageDelivery",
     "Notification",
-    "RevokedToken", "AuditLog",
+    "RevokedToken", "AuditLog", "PasswordResetToken",
 ]

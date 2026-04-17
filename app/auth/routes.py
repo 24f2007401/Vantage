@@ -383,3 +383,64 @@ def change_password():
     db.session.commit()
 
     return jsonify({"message": "Password changed successfully"}), 200
+
+
+# ──────────────────────────────────────────────────────────────────
+#  POST /api/auth/forgot-password
+# ──────────────────────────────────────────────────────────────────
+
+@bp.route("/forgot-password", methods=["POST"])
+@limiter.limit("5 per hour")
+def forgot_password():
+    data  = request.get_json(silent=True) or {}
+    email = (data.get("email") or "").strip().lower()
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"message": "If that email exists, a reset link was sent."}), 200
+
+    from app.models.password_reset_token import PasswordResetToken
+    # Invalidate any existing unused tokens for this user
+    PasswordResetToken.query.filter_by(user_id=user.id, used=False).update({"used": True})
+
+    token = PasswordResetToken.generate(user.id)
+    db.session.add(token)
+    db.session.commit()
+
+    from app.email import send_password_reset
+    try:
+        send_password_reset(user.email, token.token, user.username)
+    except Exception:
+        from flask import current_app
+        current_app.logger.exception("Failed to send password reset email to %s", user.email)
+
+    return jsonify({"message": "If that email exists, a reset link was sent."}), 200
+
+
+# ──────────────────────────────────────────────────────────────────
+#  POST /api/auth/reset-password
+# ──────────────────────────────────────────────────────────────────
+
+@bp.route("/reset-password", methods=["POST"])
+@limiter.limit("10 per hour")
+def reset_password():
+    data         = request.get_json(silent=True) or {}
+    raw_token    = data.get("token") or ""
+    new_password = data.get("new_password") or ""
+
+    from app.models.password_reset_token import PasswordResetToken
+    import datetime
+
+    record = PasswordResetToken.query.get(raw_token)
+    if not record or record.used or record.expires_at < datetime.datetime.utcnow():
+        return jsonify({"error": "Invalid or expired reset token."}), 400
+
+    if len(new_password) < 8:
+        return jsonify({"error": "Password must be at least 8 characters", "code": 400}), 400
+
+    user = db.session.get(User, record.user_id)
+    user.set_password(new_password)
+    record.used = True
+    db.session.commit()
+
+    return jsonify({"message": "Password reset successful. Please log in."}), 200
