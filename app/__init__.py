@@ -75,6 +75,12 @@ def create_app(config_name=None):
     app = Flask(__name__)
     app.config.from_object(cfg)
 
+    # Render (and most PaaS) terminate TLS at the edge and forward plain
+    # HTTP to gunicorn. Without ProxyFix, Flask sees http:// and refuses
+    # to set Secure cookies — tokens are dropped on every response.
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
     # ── Configure structured logging ────────────────────────────
     _configure_logging(app)
 

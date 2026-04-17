@@ -40,6 +40,9 @@ class Config:
     SESSION_COOKIE_SAMESITE = "Lax"
     REMEMBER_COOKIE_DURATION = timedelta(days=30)
 
+    # ── JWT cookies ────────────────────────────────────────────────
+    JWT_COOKIE_SAMESITE = "Lax"
+
     # ── Redis ──────────────────────────────────────────────────────
     REDIS_URL = os.environ.get("REDIS_URL")
 
@@ -75,6 +78,7 @@ class ProductionConfig(Config):
     DEBUG = False
     SESSION_COOKIE_SECURE = True
     REMEMBER_COOKIE_SECURE = True
+    JWT_COOKIE_SECURE = True
 
 
 class TestingConfig(Config):
