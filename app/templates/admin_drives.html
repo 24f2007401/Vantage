@@ -345,18 +345,18 @@ let currentDrive = null;
 async function loadDrives() {
     const tbody = document.getElementById('drives-tbody');
     if (!tbody) return;
-    const data = await apiFetch("/api/admin/drives");
+    const url = statusFilter ? `/api/admin/drives?status=${statusFilter}` : "/api/admin/drives";
+    const data = await apiFetch(url);
     if (!data) return;
 
     const drives = data.items || [];
-    const filtered = statusFilter ? drives.filter(d => d.status === statusFilter) : drives;
-    if (!filtered.length) {
+    if (!drives.length) {
         tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-16 text-center text-slate-400">
             <span class="material-symbols-outlined text-3xl block mb-3">inbox</span>No drives found</td></tr>`;
         return;
     }
 
-    tbody.innerHTML = filtered.map(d => {
+    tbody.innerHTML = drives.map(d => {
     }).join('');
 }
 
