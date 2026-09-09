@@ -5,7 +5,7 @@
 Vantage is a full-stack placement management system built for engineering institutions. It consolidates the entire recruitment lifecycle — from T-Sheet academic data ingestion through eligibility verification, drive management, and final placement tracking — into a single auditable platform. The system eliminates spreadsheet-driven chaos, provides verifiable academic credentials to recruiters, and enforces a zero-manual-entry policy by deriving student eligibility directly from parsed grade sheets.
 
 ---
-
+  
 ## Architecture Overview
 
 Vantage runs a Flask application server backed by PostgreSQL (Supabase-hosted), with Redis providing JWT blocklisting and rate-limit storage. The frontend is server-rendered HTML using Jinja2 templates and a shared JavaScript API client. The T-Sheet pipeline runs asynchronously in background threads and streams progress to the browser via Server-Sent Events.
